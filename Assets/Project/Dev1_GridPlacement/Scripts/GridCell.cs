@@ -3,7 +3,7 @@ using UnityEngine;
 namespace HonVietThuThanh.Dev1
 {
     /// <summary>
-    /// Represents one clickable placement cell in the Dev1 grid.
+    /// Represents one clickable and hoverable placement cell in the Dev1 grid.
     /// The cell stores its grid coordinate and delegates placement requests
     /// to <see cref="HeroPlacementManager"/>.
     /// </summary>
@@ -64,6 +64,22 @@ namespace HonVietThuThanh.Dev1
             if (manager != null)
             {
                 manager.TryPlaceHero(this);
+            }
+        }
+
+        private void OnMouseEnter()
+        {
+            if (manager != null)
+            {
+                manager.HandleCellHoverEnter(this);
+            }
+        }
+
+        private void OnMouseExit()
+        {
+            if (manager != null)
+            {
+                manager.HandleCellHoverExit(this);
             }
         }
     }

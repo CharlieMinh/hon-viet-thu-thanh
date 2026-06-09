@@ -451,9 +451,13 @@ MonoBehaviour:
   heroPlaceholderPrefab: {fileID: 8075523877464239360, guid: 8b90c4a69402dbf48a0d77f786596c3f, type: 3}
   cellMaterial: {fileID: 2100000, guid: 46df6d22c9d0bda4caf710a12c80b6e6, type: 2}
   occupiedMaterial: {fileID: 2100000, guid: 49ea65989f789ec4fad811e139677e6c, type: 2}
+  validPreviewMaterial: {fileID: 2100000, guid: ac183bab51b8d3144ba42d3bb47ea0de, type: 2}
+  invalidPreviewMaterial: {fileID: 2100000, guid: 1ac2567d9efcefd4d86c14c4f719f379, type: 2}
   gridRoot: {fileID: 202143642}
   heroRoot: {fileID: 1220068271}
   generateGridOnStart: 1
+  previewHeightOffset: 0.6
+  showPlacementPreview: 1
 --- !u!4 &973942041
 Transform:
   m_ObjectHideFlags: 0

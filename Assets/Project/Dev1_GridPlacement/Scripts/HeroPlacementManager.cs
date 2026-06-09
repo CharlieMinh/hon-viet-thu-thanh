@@ -4,7 +4,7 @@ using UnityEngine;
 namespace HonVietThuThanh.Dev1
 {
     /// <summary>
-    /// Builds the Phase 1 placement grid, validates placement clicks,
+    /// Builds the placement grid, validates placement clicks, shows a hover preview,
     /// spawns placeholder heroes, and raises the shared hero placed event.
     /// </summary>
     public class HeroPlacementManager : MonoBehaviour
@@ -17,11 +17,19 @@ namespace HonVietThuThanh.Dev1
         [SerializeField] private GameObject heroPlaceholderPrefab;
         [SerializeField] private Material cellMaterial;
         [SerializeField] private Material occupiedMaterial;
+        [SerializeField] private Material validPreviewMaterial;
+        [SerializeField] private Material invalidPreviewMaterial;
         [SerializeField] private Transform gridRoot;
         [SerializeField] private Transform heroRoot;
         [SerializeField] private bool generateGridOnStart = true;
+        [SerializeField, Min(0f)] private float previewHeightOffset = 0.6f;
+        [SerializeField] private bool showPlacementPreview = true;
 
         private GridCell[,] cells;
+        private GameObject previewInstance;
+        private GridCell currentPreviewCell;
+        private Material runtimeValidPreviewMaterial;
+        private Material runtimeInvalidPreviewMaterial;
 
         /// <summary>
         /// Gets the generated placement cells indexed by column, then row.
@@ -37,11 +45,12 @@ namespace HonVietThuThanh.Dev1
         }
 
         /// <summary>
-        /// Generates a visible 5x8 default placement grid for Phase 1 testing.
+        /// Generates a visible 5x8 default placement grid for Dev1 placement testing.
         /// </summary>
         public void GenerateGrid()
         {
             EnsureRoots();
+            HidePlacementPreview();
             ClearGeneratedGridCells();
 
             cells = new GridCell[columns, rows];
@@ -81,18 +90,50 @@ namespace HonVietThuThanh.Dev1
         {
             if (cell == null || !cell.CanPlace())
             {
+                UpdatePreviewState(cell);
                 return false;
             }
 
-            GameObject hero = CreateHeroPlaceholder(cell.transform.position + Vector3.up * 0.6f);
+            GameObject hero = CreateHeroPlaceholder(GetHeroWorldPosition(cell));
             Vector2Int gridPosition = cell.GridPosition;
 
             hero.name = $"Hero_{selectedHeroType}_{gridPosition.x}_{gridPosition.y}";
             cell.SetPlacedHero(hero);
             ApplyOccupiedMaterial(cell);
+            UpdatePreviewState(cell);
 
             GameEvents.RaiseHeroPlaced(selectedHeroType, gridPosition);
             return true;
+        }
+
+        /// <summary>
+        /// Shows or moves the placement preview when the mouse enters a grid cell.
+        /// </summary>
+        /// <param name="cell">The grid cell currently under the mouse.</param>
+        public void HandleCellHoverEnter(GridCell cell)
+        {
+            if (!showPlacementPreview || cell == null)
+            {
+                return;
+            }
+
+            currentPreviewCell = cell;
+            ShowPlacementPreview(cell);
+        }
+
+        /// <summary>
+        /// Hides the placement preview when the mouse leaves the active grid cell.
+        /// </summary>
+        /// <param name="cell">The grid cell the mouse just left.</param>
+        public void HandleCellHoverExit(GridCell cell)
+        {
+            if (currentPreviewCell != cell)
+            {
+                return;
+            }
+
+            currentPreviewCell = null;
+            HidePlacementPreview();
         }
 
         private void EnsureRoots()
@@ -145,6 +186,136 @@ namespace HonVietThuThanh.Dev1
             }
 
             return hero;
+        }
+
+        private void ShowPlacementPreview(GridCell cell)
+        {
+            EnsurePreviewInstance();
+
+            if (previewInstance == null)
+            {
+                return;
+            }
+
+            previewInstance.transform.position = GetHeroWorldPosition(cell);
+            previewInstance.SetActive(true);
+            UpdatePreviewState(cell);
+        }
+
+        private void HidePlacementPreview()
+        {
+            if (previewInstance != null)
+            {
+                previewInstance.SetActive(false);
+            }
+        }
+
+        private void UpdatePreviewState(GridCell cell)
+        {
+            if (!showPlacementPreview || previewInstance == null || cell == null)
+            {
+                return;
+            }
+
+            Material previewMaterial = cell.CanPlace() ? GetValidPreviewMaterial() : GetInvalidPreviewMaterial();
+            ApplyMaterialToRenderers(previewInstance, previewMaterial);
+        }
+
+        private void EnsurePreviewInstance()
+        {
+            if (previewInstance != null)
+            {
+                return;
+            }
+
+            EnsureRoots();
+
+            if (heroPlaceholderPrefab != null)
+            {
+                previewInstance = Instantiate(heroPlaceholderPrefab, heroRoot);
+            }
+            else
+            {
+                previewInstance = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                previewInstance.transform.SetParent(heroRoot, false);
+                previewInstance.transform.localScale = Vector3.one * 0.75f;
+            }
+
+            previewInstance.name = "Dev1_HeroPlacementPreview";
+            DisablePreviewColliders(previewInstance);
+            previewInstance.SetActive(false);
+        }
+
+        private void DisablePreviewColliders(GameObject preview)
+        {
+            Collider[] colliders = preview.GetComponentsInChildren<Collider>(true);
+            foreach (Collider collider in colliders)
+            {
+                collider.enabled = false;
+            }
+        }
+
+        private Material GetValidPreviewMaterial()
+        {
+            if (validPreviewMaterial != null)
+            {
+                return validPreviewMaterial;
+            }
+
+            if (runtimeValidPreviewMaterial == null)
+            {
+                runtimeValidPreviewMaterial = CreateRuntimePreviewMaterial(new Color(0.2f, 0.9f, 0.35f, 0.55f));
+            }
+
+            return runtimeValidPreviewMaterial;
+        }
+
+        private Material GetInvalidPreviewMaterial()
+        {
+            if (invalidPreviewMaterial != null)
+            {
+                return invalidPreviewMaterial;
+            }
+
+            if (runtimeInvalidPreviewMaterial == null)
+            {
+                runtimeInvalidPreviewMaterial = CreateRuntimePreviewMaterial(new Color(1f, 0.2f, 0.15f, 0.55f));
+            }
+
+            return runtimeInvalidPreviewMaterial;
+        }
+
+        private Material CreateRuntimePreviewMaterial(Color color)
+        {
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+            if (shader == null)
+            {
+                shader = Shader.Find("Standard");
+            }
+
+            return new Material(shader)
+            {
+                color = color
+            };
+        }
+
+        private void ApplyMaterialToRenderers(GameObject target, Material material)
+        {
+            if (target == null || material == null)
+            {
+                return;
+            }
+
+            Renderer[] renderers = target.GetComponentsInChildren<Renderer>(true);
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.sharedMaterial = material;
+            }
+        }
+
+        private Vector3 GetHeroWorldPosition(GridCell cell)
+        {
+            return cell.transform.position + Vector3.up * previewHeightOffset;
         }
 
         private Vector3 GetCellCenter(Vector2Int gridPosition)

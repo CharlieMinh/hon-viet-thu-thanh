@@ -5,7 +5,7 @@
 Work on:
 
 ```bash
-git checkout feature/dev1
+git checkout feature/dev1-placement-preview
 ```
 
 ## Scene
@@ -31,16 +31,23 @@ This creates or reuses:
 - `Dev1_GridRoot`
 - `Dev1_HeroRoot`
 - Dev1 cell and occupied materials
+- Dev1 valid and invalid preview materials
 - Dev1 hero placeholder prefab
 
 ## Test
 
 1. Press Play.
-2. Click a visible grid cell.
-3. A hero cube should appear on that cell.
-4. Click the same cell again.
-5. No second hero should appear.
-6. Check the Console for:
+2. Hover an empty visible grid cell.
+3. A valid hero preview should appear on that cell.
+4. Move the mouse to another cell.
+5. The preview should move to the new cell.
+6. Click an empty grid cell.
+7. A real hero cube should appear on that cell.
+8. Hover or click the same occupied cell again.
+9. The preview should show the invalid state and no second hero should appear.
+10. Move the mouse outside the grid.
+11. The preview should hide.
+12. Check the Console for:
 
 ```text
 [Dev1 Placement] Hero placed: ThanhGiong at column X, row Y
@@ -51,11 +58,15 @@ This creates or reuses:
 - Grid is visible.
 - Grid is 5 rows x 8 columns.
 - Each cell is clickable.
+- Empty cell hover shows a valid hero preview.
+- Occupied cell hover shows an invalid hero preview.
+- Moving outside the grid hides the preview.
 - A hero placeholder cube appears on a valid clicked cell.
 - The same cell cannot be used twice.
 - `GameEvents.RaiseHeroPlaced` fires after successful placement.
+- `GameEvents.RaiseHeroPlaced` does not fire after invalid placement.
 
-## Not In Dev1 Phase 1
+## Not In Dev1 Phase 2
 
 Dev1 does not implement:
 
@@ -66,4 +77,6 @@ Dev1 does not implement:
 - GameManager
 - economy
 - full UI
+- drag preview
+- remove or sell hero
 - final hero models
