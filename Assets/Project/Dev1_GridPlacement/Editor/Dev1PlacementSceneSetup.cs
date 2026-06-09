@@ -16,6 +16,8 @@ public static class Dev1PlacementSceneSetup
     private const string PrefabsFolder = "Assets/Project/Dev1_GridPlacement/Prefabs";
     private const string CellMaterialPath = MaterialsFolder + "/MAT_Dev1_Cell.mat";
     private const string OccupiedMaterialPath = MaterialsFolder + "/MAT_Dev1_CellOccupied.mat";
+    private const string ValidPreviewMaterialPath = MaterialsFolder + "/MAT_Dev1_PreviewValid.mat";
+    private const string InvalidPreviewMaterialPath = MaterialsFolder + "/MAT_Dev1_PreviewInvalid.mat";
     private const string HeroPrefabPath = PrefabsFolder + "/PF_Dev1_HeroPlaceholder.prefab";
 
     [MenuItem("Tools/Hon Viet Thu Thanh/Dev1/Setup Placement Scene")]
@@ -47,6 +49,8 @@ public static class Dev1PlacementSceneSetup
 
         Material cellMaterial = GetOrCreateMaterial(CellMaterialPath, new Color(0.2f, 0.55f, 0.8f, 1f));
         Material occupiedMaterial = GetOrCreateMaterial(OccupiedMaterialPath, new Color(0.95f, 0.65f, 0.2f, 1f));
+        Material validPreviewMaterial = GetOrCreateMaterial(ValidPreviewMaterialPath, new Color(0.2f, 0.9f, 0.35f, 1f));
+        Material invalidPreviewMaterial = GetOrCreateMaterial(InvalidPreviewMaterialPath, new Color(1f, 0.2f, 0.15f, 1f));
         GameObject heroPrefab = GetOrCreateHeroPlaceholderPrefab();
 
         SerializedObject serializedManager = new SerializedObject(manager);
@@ -54,12 +58,16 @@ public static class Dev1PlacementSceneSetup
         serializedManager.FindProperty("heroRoot").objectReferenceValue = heroRoot.transform;
         serializedManager.FindProperty("cellMaterial").objectReferenceValue = cellMaterial;
         serializedManager.FindProperty("occupiedMaterial").objectReferenceValue = occupiedMaterial;
+        serializedManager.FindProperty("validPreviewMaterial").objectReferenceValue = validPreviewMaterial;
+        serializedManager.FindProperty("invalidPreviewMaterial").objectReferenceValue = invalidPreviewMaterial;
         serializedManager.FindProperty("heroPlaceholderPrefab").objectReferenceValue = heroPrefab;
         serializedManager.FindProperty("rows").intValue = 5;
         serializedManager.FindProperty("columns").intValue = 8;
         serializedManager.FindProperty("cellSize").floatValue = 1f;
         serializedManager.FindProperty("gridOrigin").vector3Value = Vector3.zero;
         serializedManager.FindProperty("generateGridOnStart").boolValue = true;
+        serializedManager.FindProperty("previewHeightOffset").floatValue = 0.6f;
+        serializedManager.FindProperty("showPlacementPreview").boolValue = true;
         serializedManager.ApplyModifiedProperties();
 
         SetupCamera();

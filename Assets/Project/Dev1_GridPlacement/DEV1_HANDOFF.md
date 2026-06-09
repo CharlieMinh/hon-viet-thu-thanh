@@ -1,8 +1,9 @@
-# Dev1 Phase 1 Handoff
+# Dev1 Placement Handoff
 
-## 1. Dev1 Phase 1 Status
+## 1. Dev1 Status
 
 Dev1 Grid and Hero Placement Phase 1 is implemented, manually tested, merged into `develop`, and ready for other modules to consume.
+Dev1 Phase 2 adds a placement preview / ghost system for hover feedback.
 
 Completed behavior:
 
@@ -14,6 +15,14 @@ Completed behavior:
 - Includes a Dev1 debug logger for placement event testing.
 - Includes a Dev1 scene setup tool.
 - Includes `Scene_Dev1_Placement`, test prefab, and test materials.
+
+Phase 2 preview behavior:
+
+- Hovering an empty grid cell shows a valid hero preview.
+- Moving to another grid cell moves the preview.
+- Hovering an occupied cell shows an invalid preview.
+- Moving outside the grid hides the preview.
+- Invalid hover or invalid click does not raise placement events.
 
 ## 2. Folder Structure
 
@@ -34,6 +43,8 @@ Assets/Project/Dev1_GridPlacement/Scenes/Scene_Dev1_Placement.unity
 Assets/Project/Dev1_GridPlacement/Prefabs/PF_Dev1_HeroPlaceholder.prefab
 Assets/Project/Dev1_GridPlacement/Materials/MAT_Dev1_Cell.mat
 Assets/Project/Dev1_GridPlacement/Materials/MAT_Dev1_CellOccupied.mat
+Assets/Project/Dev1_GridPlacement/Materials/MAT_Dev1_PreviewValid.mat
+Assets/Project/Dev1_GridPlacement/Materials/MAT_Dev1_PreviewInvalid.mat
 ```
 
 ## 3. How To Open And Test Scene_Dev1_Placement
@@ -50,7 +61,10 @@ Assets/Project/Dev1_GridPlacement/Scenes/Scene_Dev1_Placement.unity
 5. Click any visible grid cell.
 6. Confirm a hero placeholder cube appears on the clicked cell.
 7. Click the same cell again and confirm no second hero is placed.
-8. Click outside the grid and confirm there is no error.
+8. Hover an empty cell and confirm a valid preview appears.
+9. Hover an occupied cell and confirm an invalid preview appears.
+10. Move outside the grid and confirm the preview hides.
+11. Click outside the grid and confirm there is no error.
 
 Expected Console log:
 
@@ -74,6 +88,8 @@ The setup tool creates or reuses:
 - `Dev1_HeroRoot`
 - Dev1 cell material
 - Dev1 occupied cell material
+- Dev1 valid preview material
+- Dev1 invalid preview material
 - Dev1 hero placeholder prefab
 
 It also assigns the prefab, materials, grid root, hero root, and a basic isometric test camera view.
@@ -100,6 +116,15 @@ When the player clicks a cell:
 6. The occupied material is applied if assigned.
 7. `GameEvents.RaiseHeroPlaced(...)` is raised.
 
+When the player hovers a cell:
+
+1. `GridCell.OnMouseEnter()` notifies `HeroPlacementManager`.
+2. `HeroPlacementManager` shows or moves one reusable preview object.
+3. Empty cells use the valid preview material.
+4. Occupied cells use the invalid preview material.
+5. `GridCell.OnMouseExit()` hides the preview when the mouse leaves the active cell.
+6. Preview actions do not raise `GameEvents`.
+
 ## 6. Event Contract
 
 Dev1 raises this shared event after successful placement:
@@ -122,6 +147,7 @@ HeroType.ThanhGiong
 ```
 
 Dev1 does not raise this event on failed placement.
+Dev1 does not raise this event for hover preview updates.
 
 ## 7. What Dev3 Combat Can Consume Later
 
@@ -169,7 +195,7 @@ Dev5 should avoid changing Dev1 gameplay scripts unless coordinated with Dev1.
 - Hero is a placeholder cube.
 - No gold cost yet.
 - No UI hero selection yet.
-- No drag preview yet.
+- No drag preview yet. Phase 2 only supports hover preview.
 - No remove or sell hero feature yet.
 - No enemy interaction yet.
 - No combat behavior yet.
@@ -184,6 +210,10 @@ Before handoff or integration, verify:
 - Grid is visible in Play Mode.
 - Grid size is 5 rows x 8 columns.
 - Camera sees the full grid.
+- Hovering an empty cell shows the valid preview.
+- Moving between cells moves the preview.
+- Hovering an occupied cell shows the invalid preview.
+- Moving outside the grid hides the preview.
 - Clicking an empty cell places one hero placeholder cube.
 - Clicking the same occupied cell does not create another hero.
 - Clicking outside the grid causes no error.
