@@ -5,7 +5,7 @@
 Work on:
 
 ```bash
-git checkout feature/dev1-placement-preview
+git checkout feature/dev1-ui-safe-placement
 ```
 
 ## Scene
@@ -47,7 +47,9 @@ This creates or reuses:
 9. The preview should show the invalid state and no second hero should appear.
 10. Move the mouse outside the grid.
 11. The preview should hide.
-12. Check the Console for:
+12. If the scene has a UI button or panel, click it while a grid cell is behind it.
+13. No hero should be placed from that UI click.
+14. Check the Console for:
 
 ```text
 [Dev1 Placement] Hero placed: ThanhGiong at column X, row Y
@@ -63,10 +65,12 @@ This creates or reuses:
 - Moving outside the grid hides the preview.
 - A hero placeholder cube appears on a valid clicked cell.
 - The same cell cannot be used twice.
+- Clicking over Unity UI does not place a hero.
 - `GameEvents.RaiseHeroPlaced` fires after successful placement.
 - `GameEvents.RaiseHeroPlaced` does not fire after invalid placement.
+- `GameEvents.RaiseHeroPlaced` does not fire after a UI-blocked click.
 
-## Not In Dev1 Phase 2
+## Not In Dev1 Phase 3
 
 Dev1 does not implement:
 
@@ -76,7 +80,7 @@ Dev1 does not implement:
 - projectiles
 - GameManager
 - economy
-- full UI
+- full UI implementation
 - drag preview
 - remove or sell hero
 - final hero models
