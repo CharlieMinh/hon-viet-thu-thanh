@@ -4,6 +4,7 @@
 
 Dev1 Grid and Hero Placement Phase 1 is implemented, manually tested, merged into `develop`, and ready for other modules to consume.
 Dev1 Phase 2 adds a placement preview / ghost system for hover feedback.
+Dev1 Phase 3 adds UI-safe placement input so UI clicks do not place heroes on grid cells behind the UI.
 
 Completed behavior:
 
@@ -15,6 +16,7 @@ Completed behavior:
 - Includes a Dev1 debug logger for placement event testing.
 - Includes a Dev1 scene setup tool.
 - Includes `Scene_Dev1_Placement`, test prefab, and test materials.
+- Blocks placement while the pointer is over Unity UI when an EventSystem exists.
 
 Phase 2 preview behavior:
 
@@ -23,6 +25,13 @@ Phase 2 preview behavior:
 - Hovering an occupied cell shows an invalid preview.
 - Moving outside the grid hides the preview.
 - Invalid hover or invalid click does not raise placement events.
+
+Phase 3 UI-safe input behavior:
+
+- Clicking a UI button or panel does not place a hero.
+- UI-blocked clicks do not raise placement events.
+- If the scene has no `EventSystem`, placement continues to work normally.
+- Hover preview behavior remains unchanged.
 
 ## 2. Folder Structure
 
@@ -110,11 +119,12 @@ When the player clicks a cell:
 
 1. `GridCell.OnMouseDown()` receives the click.
 2. `GridCell` delegates to `HeroPlacementManager.TryPlaceHero(this)`.
-3. `HeroPlacementManager` checks that the cell exists and is not occupied.
-4. A hero placeholder cube is spawned at the cell center.
-5. The cell is marked occupied.
-6. The occupied material is applied if assigned.
-7. `GameEvents.RaiseHeroPlaced(...)` is raised.
+3. `HeroPlacementManager` first checks whether placement should be blocked because the pointer is over Unity UI.
+4. `HeroPlacementManager` checks that the cell exists and is not occupied.
+5. A hero placeholder cube is spawned at the cell center.
+6. The cell is marked occupied.
+7. The occupied material is applied if assigned.
+8. `GameEvents.RaiseHeroPlaced(...)` is raised.
 
 When the player hovers a cell:
 
@@ -148,6 +158,7 @@ HeroType.ThanhGiong
 
 Dev1 does not raise this event on failed placement.
 Dev1 does not raise this event for hover preview updates.
+Dev1 does not raise this event when placement is blocked by UI.
 
 ## 7. What Dev3 Combat Can Consume Later
 
@@ -195,6 +206,7 @@ Dev5 should avoid changing Dev1 gameplay scripts unless coordinated with Dev1.
 - Hero is a placeholder cube.
 - No gold cost yet.
 - No UI hero selection yet.
+- UI-safe input is implemented, but Dev1 does not provide a full UI.
 - No drag preview yet. Phase 2 only supports hover preview.
 - No remove or sell hero feature yet.
 - No enemy interaction yet.
@@ -216,7 +228,9 @@ Before handoff or integration, verify:
 - Moving outside the grid hides the preview.
 - Clicking an empty cell places one hero placeholder cube.
 - Clicking the same occupied cell does not create another hero.
+- Clicking over Unity UI does not place a hero.
 - Clicking outside the grid causes no error.
 - Console logs the placement event.
 - No red Console errors appear.
 - `GameEvents.RaiseHeroPlaced(HeroType, Vector2Int)` is raised only after successful placement.
+- `GameEvents.RaiseHeroPlaced(HeroType, Vector2Int)` is not raised by UI-blocked clicks.

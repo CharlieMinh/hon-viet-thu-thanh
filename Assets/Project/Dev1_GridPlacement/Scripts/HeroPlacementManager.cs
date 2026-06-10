@@ -1,5 +1,6 @@
 using HonVietThuThanh.Shared;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace HonVietThuThanh.Dev1
 {
@@ -24,6 +25,7 @@ namespace HonVietThuThanh.Dev1
         [SerializeField] private bool generateGridOnStart = true;
         [SerializeField, Min(0f)] private float previewHeightOffset = 0.6f;
         [SerializeField] private bool showPlacementPreview = true;
+        [SerializeField] private bool blockPlacementOverUI = true;
 
         private GridCell[,] cells;
         private GameObject previewInstance;
@@ -88,6 +90,11 @@ namespace HonVietThuThanh.Dev1
         /// <returns>True when placement succeeds.</returns>
         public bool TryPlaceHero(GridCell cell)
         {
+            if (ShouldBlockPlacementForUI())
+            {
+                return false;
+            }
+
             if (cell == null || !cell.CanPlace())
             {
                 UpdatePreviewState(cell);
@@ -104,6 +111,16 @@ namespace HonVietThuThanh.Dev1
 
             GameEvents.RaiseHeroPlaced(selectedHeroType, gridPosition);
             return true;
+        }
+
+        private bool ShouldBlockPlacementForUI()
+        {
+            return blockPlacementOverUI && IsPointerOverUI();
+        }
+
+        private bool IsPointerOverUI()
+        {
+            return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
         }
 
         /// <summary>
