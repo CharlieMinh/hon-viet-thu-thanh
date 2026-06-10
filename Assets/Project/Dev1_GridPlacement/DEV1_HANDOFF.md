@@ -5,6 +5,7 @@
 Dev1 Grid and Hero Placement Phase 1 is implemented, manually tested, merged into `develop`, and ready for other modules to consume.
 Dev1 Phase 2 adds a placement preview / ghost system for hover feedback.
 Dev1 Phase 3 adds UI-safe placement input so UI clicks do not place heroes on grid cells behind the UI.
+Dev1 Phase 4 adds an optional economy permission hook before placement side effects.
 
 Completed behavior:
 
@@ -17,6 +18,7 @@ Completed behavior:
 - Includes a Dev1 scene setup tool.
 - Includes `Scene_Dev1_Placement`, test prefab, and test materials.
 - Blocks placement while the pointer is over Unity UI when an EventSystem exists.
+- Can ask an optional economy service to approve and spend a hero placement cost before spawning.
 
 Phase 2 preview behavior:
 
@@ -33,6 +35,15 @@ Phase 3 UI-safe input behavior:
 - If the scene has no `EventSystem`, placement continues to work normally.
 - Hover preview behavior remains unchanged.
 
+Phase 4 economy permission behavior:
+
+- `HeroPlacementManager` can reference an optional serialized `MonoBehaviour` economy service.
+- The assigned service must implement `HonVietThuThanh.Shared.IPlacementEconomyService`.
+- If no service is assigned, valid placement is allowed.
+- If an assigned service does not implement the interface, Dev1 logs one warning and allows placement.
+- If the service returns `false`, placement is blocked before hero spawn, occupied state, occupied material, and `GameEvents.RaiseHeroPlaced`.
+- Placement preview remains cell-only in Phase 4 and does not check affordability.
+
 ## 2. Folder Structure
 
 Dev1 owns this folder:
@@ -47,6 +58,7 @@ Important Dev1 files:
 Assets/Project/Dev1_GridPlacement/Scripts/GridCell.cs
 Assets/Project/Dev1_GridPlacement/Scripts/HeroPlacementManager.cs
 Assets/Project/Dev1_GridPlacement/Scripts/HeroPlacementDebugLogger.cs
+Assets/Project/Dev1_GridPlacement/Scripts/Dev1MockPlacementEconomyService.cs
 Assets/Project/Dev1_GridPlacement/Editor/Dev1PlacementSceneSetup.cs
 Assets/Project/Dev1_GridPlacement/Scenes/Scene_Dev1_Placement.unity
 Assets/Project/Dev1_GridPlacement/Prefabs/PF_Dev1_HeroPlaceholder.prefab
@@ -121,10 +133,23 @@ When the player clicks a cell:
 2. `GridCell` delegates to `HeroPlacementManager.TryPlaceHero(this)`.
 3. `HeroPlacementManager` first checks whether placement should be blocked because the pointer is over Unity UI.
 4. `HeroPlacementManager` checks that the cell exists and is not occupied.
-5. A hero placeholder cube is spawned at the cell center.
-6. The cell is marked occupied.
-7. The occupied material is applied if assigned.
-8. `GameEvents.RaiseHeroPlaced(...)` is raised.
+5. `HeroPlacementManager` resolves the temporary Dev1 placement cost for the selected hero type.
+6. If an economy service is assigned, `TrySpendForPlacement(heroType, cost)` must return true.
+7. A hero placeholder cube is spawned at the cell center.
+8. The cell is marked occupied.
+9. The occupied material is applied if assigned.
+10. `GameEvents.RaiseHeroPlaced(...)` is raised.
+
+Economy contract:
+
+```csharp
+public interface IPlacementEconomyService
+{
+    bool TrySpendForPlacement(HeroType heroType, int cost);
+}
+```
+
+`TrySpendForPlacement` should return true only when the service accepts the placement and deducts the cost. It should return false without deducting when the player lacks enough gold or Linh Khi.
 
 When the player hovers a cell:
 
@@ -159,6 +184,7 @@ HeroType.ThanhGiong
 Dev1 does not raise this event on failed placement.
 Dev1 does not raise this event for hover preview updates.
 Dev1 does not raise this event when placement is blocked by UI.
+Dev1 does not raise this event when placement is blocked by economy.
 
 ## 7. What Dev3 Combat Can Consume Later
 
@@ -182,11 +208,11 @@ Possible Dev4 uses:
 
 - Log placement events.
 - Track placed hero count.
-- Apply future gold cost rules.
+- Implement `IPlacementEconomyService` to approve and deduct placement costs.
 - Validate future match rules.
 - Update future UI state after a hero is placed.
 
-Dev1 currently does not manage gold, base HP, wave state, or victory/loss rules.
+Dev1 currently does not own gold, base HP, wave state, or victory/loss rules. Dev1 only exposes a temporary cost table and optional permission hook until Dev4 owns the real economy.
 
 ## 9. What Dev5 Integration Can Consume Later
 
@@ -204,7 +230,8 @@ Dev5 should avoid changing Dev1 gameplay scripts unless coordinated with Dev1.
 ## 10. Current Limitations
 
 - Hero is a placeholder cube.
-- No gold cost yet.
+- Placement has temporary Dev1 hero costs, but no final shared `HeroData` yet.
+- Placement preview does not show affordability yet.
 - No UI hero selection yet.
 - UI-safe input is implemented, but Dev1 does not provide a full UI.
 - No drag preview yet. Phase 2 only supports hover preview.
@@ -234,3 +261,10 @@ Before handoff or integration, verify:
 - No red Console errors appear.
 - `GameEvents.RaiseHeroPlaced(HeroType, Vector2Int)` is raised only after successful placement.
 - `GameEvents.RaiseHeroPlaced(HeroType, Vector2Int)` is not raised by UI-blocked clicks.
+- With no economy service assigned, valid placement still succeeds.
+- With `Dev1MockPlacementEconomyService` assigned and enough Linh Khi, placement succeeds and deducts cost.
+- With `Dev1MockPlacementEconomyService` assigned and insufficient Linh Khi, placement is blocked.
+- Economy-blocked placement does not spawn a hero.
+- Economy-blocked placement does not mark the cell occupied.
+- Economy-blocked placement does not apply the occupied material.
+- Economy-blocked placement does not raise `GameEvents.RaiseHeroPlaced(HeroType, Vector2Int)`.
