@@ -5,7 +5,7 @@
 Work on:
 
 ```bash
-git checkout feature/dev1-phase4-economy-permission-hook
+git checkout feature/dev1-phase5-combat-handoff
 ```
 
 ## Scene
@@ -55,6 +55,48 @@ If an assigned service denies payment, Dev1 blocks placement before spawning a h
 
 Dev1 includes `Dev1MockPlacementEconomyService` for manual testing only. Add it to a temporary scene GameObject and assign that component to `HeroPlacementManager.Economy Service Behaviour` to test enough and insufficient Linh Khi cases. Do not save scene changes unless the team explicitly approves a scene setup update.
 
+## Phase 5 Combat Handoff Bridge
+
+Dev1 includes `PlacementToCombatBridge` as a Dev1-owned adapter for future combat integration.
+
+The bridge:
+
+- Subscribes to `GameEvents.OnHeroPlaced` in `OnEnable()`.
+- Unsubscribes in `OnDisable()`.
+- Reacts only after successful placement because `GameEvents.OnHeroPlaced` is raised only after Dev1 placement succeeds.
+- Republishes placement data through `PlacementToCombatBridge.OnHeroPlacementReadyForCombat`.
+- Does not implement combat logic.
+- Does not reference Dev3 code.
+
+Bridge payload:
+
+```csharp
+PlacementToCombatBridge.HeroPlacementCombatData
+```
+
+Fields:
+
+- `HeroType HeroType`
+- `Vector2Int GridPosition`
+- `int Column`
+- `int Row`
+
+For manual testing, add `PlacementToCombatBridge` to a temporary scene GameObject and press Play. Do not save scene changes unless the team explicitly approves a scene setup update.
+
+Expected bridge Console log after a valid placement:
+
+```text
+[Dev1 Combat Bridge] Hero placement ready for combat: ThanhGiong at column X, row Y.
+```
+
+Future Dev3 code can subscribe to:
+
+```csharp
+PlacementToCombatBridge.OnHeroPlacementReadyForCombat
+```
+
+Dev3 should unsubscribe safely when disabled or destroyed. Dev1 does not create combat components, choose targets, deal damage, or manage attacks.
+
 ## Test
 
 1. Press Play.
@@ -78,6 +120,8 @@ Dev1 includes `Dev1MockPlacementEconomyService` for manual testing only. Add it 
 15. For Phase 4, leave `Economy Service Behaviour` empty and confirm placement still works.
 16. Add a temporary `Dev1MockPlacementEconomyService`, assign it to the placement manager, and confirm enough Linh Khi allows placement and deducts cost.
 17. Lower mock current Linh Khi below the selected hero cost and confirm placement is blocked with no spawned hero and no placement event.
+18. For Phase 5, add a temporary `PlacementToCombatBridge` scene object and confirm valid placement logs the Dev1 combat bridge message.
+19. Confirm UI-blocked, occupied-cell-blocked, outside-grid, and economy-denied placement attempts do not log the Dev1 combat bridge message.
 
 ## Expected Behavior
 
@@ -95,8 +139,10 @@ Dev1 includes `Dev1MockPlacementEconomyService` for manual testing only. Add it 
 - `GameEvents.RaiseHeroPlaced` does not fire after a UI-blocked click.
 - If no economy service is assigned, valid placement is allowed.
 - If an economy service denies payment, placement is blocked before spawn, occupied state, occupied material, and placement event.
+- `PlacementToCombatBridge.OnHeroPlacementReadyForCombat` fires only after successful placement.
+- The combat handoff bridge does not fire after UI-blocked, invalid, occupied-cell, outside-grid, or economy-denied placement attempts.
 
-## Not In Dev1 Phase 4
+## Not In Dev1 Phase 5
 
 Dev1 does not implement:
 

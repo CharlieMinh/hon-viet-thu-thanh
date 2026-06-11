@@ -6,6 +6,7 @@ Dev1 Grid and Hero Placement Phase 1 is implemented, manually tested, merged int
 Dev1 Phase 2 adds a placement preview / ghost system for hover feedback.
 Dev1 Phase 3 adds UI-safe placement input so UI clicks do not place heroes on grid cells behind the UI.
 Dev1 Phase 4 adds an optional economy permission hook before placement side effects.
+Dev1 Phase 5 adds a placement-to-combat handoff bridge for future combat integration.
 
 Completed behavior:
 
@@ -19,6 +20,7 @@ Completed behavior:
 - Includes `Scene_Dev1_Placement`, test prefab, and test materials.
 - Blocks placement while the pointer is over Unity UI when an EventSystem exists.
 - Can ask an optional economy service to approve and spend a hero placement cost before spawning.
+- Can republish successful placement data through a Dev1-owned combat handoff bridge.
 
 Phase 2 preview behavior:
 
@@ -44,6 +46,15 @@ Phase 4 economy permission behavior:
 - If the service returns `false`, placement is blocked before hero spawn, occupied state, occupied material, and `GameEvents.RaiseHeroPlaced`.
 - Placement preview remains cell-only in Phase 4 and does not check affordability.
 
+Phase 5 combat handoff behavior:
+
+- `PlacementToCombatBridge` subscribes to `GameEvents.OnHeroPlaced` in `OnEnable()`.
+- `PlacementToCombatBridge` unsubscribes in `OnDisable()`.
+- The bridge republishes only successful placements through a Dev1-owned event.
+- UI-blocked, occupied-cell-blocked, outside-grid, and economy-denied placement attempts do not reach the bridge because they do not raise `GameEvents.OnHeroPlaced`.
+- Dev1 does not implement combat, targeting, attacks, damage, or Dev3 integration logic.
+- Dev1 does not reference Dev3 code.
+
 ## 2. Folder Structure
 
 Dev1 owns this folder:
@@ -59,6 +70,7 @@ Assets/Project/Dev1_GridPlacement/Scripts/GridCell.cs
 Assets/Project/Dev1_GridPlacement/Scripts/HeroPlacementManager.cs
 Assets/Project/Dev1_GridPlacement/Scripts/HeroPlacementDebugLogger.cs
 Assets/Project/Dev1_GridPlacement/Scripts/Dev1MockPlacementEconomyService.cs
+Assets/Project/Dev1_GridPlacement/Scripts/PlacementToCombatBridge.cs
 Assets/Project/Dev1_GridPlacement/Editor/Dev1PlacementSceneSetup.cs
 Assets/Project/Dev1_GridPlacement/Scenes/Scene_Dev1_Placement.unity
 Assets/Project/Dev1_GridPlacement/Prefabs/PF_Dev1_HeroPlaceholder.prefab
@@ -139,6 +151,7 @@ When the player clicks a cell:
 8. The cell is marked occupied.
 9. The occupied material is applied if assigned.
 10. `GameEvents.RaiseHeroPlaced(...)` is raised.
+11. If an active `PlacementToCombatBridge` exists, it receives `GameEvents.OnHeroPlaced` and republishes combat handoff data.
 
 Economy contract:
 
@@ -188,7 +201,7 @@ Dev1 does not raise this event when placement is blocked by economy.
 
 ## 7. What Dev3 Combat Can Consume Later
 
-Dev3 can listen to `GameEvents.OnHeroPlaced` to know when and where a hero was placed.
+Dev3 can listen to `GameEvents.OnHeroPlaced` directly, or use the Dev1-owned combat handoff bridge when the team wants a dedicated adapter boundary.
 
 Useful data for Dev3:
 
@@ -196,9 +209,36 @@ Useful data for Dev3:
 - `Vector2Int` tells the grid coordinate.
 - The placed hero GameObject is currently a placeholder cube, so Dev3 should not rely on final model components yet.
 
-Recommended next step for Dev3:
+Recommended bridge event:
+
+```csharp
+PlacementToCombatBridge.OnHeroPlacementReadyForCombat
+```
+
+Payload type:
+
+```csharp
+PlacementToCombatBridge.HeroPlacementCombatData
+```
+
+Payload fields:
+
+- `HeroType HeroType`
+- `Vector2Int GridPosition`
+- `int Column`
+- `int Row`
+
+Bridge Console log for manual testing:
+
+```text
+[Dev1 Combat Bridge] Hero placement ready for combat: ThanhGiong at column X, row Y.
+```
+
+Recommended next steps for Dev3:
 
 - Add combat components to a future hero prefab or use placement events to register placed heroes with a combat system.
+- Subscribe to `PlacementToCombatBridge.OnHeroPlacementReadyForCombat` from a Dev3-owned component when combat code exists.
+- Unsubscribe safely when the Dev3-owned component is disabled or destroyed.
 
 ## 8. What Dev4 GameManager Can Consume Later
 
@@ -238,6 +278,7 @@ Dev5 should avoid changing Dev1 gameplay scripts unless coordinated with Dev1.
 - No remove or sell hero feature yet.
 - No enemy interaction yet.
 - No combat behavior yet.
+- Phase 5 exposes handoff data only; it does not implement combat.
 - No final art model integration yet.
 
 ## 11. Manual Test Checklist
@@ -268,3 +309,8 @@ Before handoff or integration, verify:
 - Economy-blocked placement does not mark the cell occupied.
 - Economy-blocked placement does not apply the occupied material.
 - Economy-blocked placement does not raise `GameEvents.RaiseHeroPlaced(HeroType, Vector2Int)`.
+- With a temporary `PlacementToCombatBridge` active, valid placement logs `[Dev1 Combat Bridge]`.
+- UI-blocked placement does not log `[Dev1 Combat Bridge]`.
+- Occupied-cell placement does not log `[Dev1 Combat Bridge]`.
+- Outside-grid clicks do not log `[Dev1 Combat Bridge]`.
+- Economy-blocked placement does not log `[Dev1 Combat Bridge]`.
