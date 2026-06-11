@@ -10,6 +10,13 @@ namespace HonVietThuThanh.Dev1
     /// </summary>
     public class HeroPlacementManager : MonoBehaviour
     {
+        [System.Serializable]
+        private struct HeroPlacementCostEntry
+        {
+            public HeroType heroType;
+            [Min(0)] public int cost;
+        }
+
         [SerializeField, Min(1)] private int rows = 5;
         [SerializeField, Min(1)] private int columns = 8;
         [SerializeField, Min(0.1f)] private float cellSize = 1f;
@@ -26,12 +33,17 @@ namespace HonVietThuThanh.Dev1
         [SerializeField, Min(0f)] private float previewHeightOffset = 0.6f;
         [SerializeField] private bool showPlacementPreview = true;
         [SerializeField] private bool blockPlacementOverUI = true;
+        [SerializeField] private MonoBehaviour economyServiceBehaviour;
+        [SerializeField, Min(0)] private int defaultHeroCost = 50;
+        [SerializeField] private HeroPlacementCostEntry[] heroPlacementCosts;
 
         private GridCell[,] cells;
         private GameObject previewInstance;
         private GridCell currentPreviewCell;
         private Material runtimeValidPreviewMaterial;
         private Material runtimeInvalidPreviewMaterial;
+        private IPlacementEconomyService economyService;
+        private bool hasWarnedInvalidEconomyService;
 
         /// <summary>
         /// Gets the generated placement cells indexed by column, then row.
@@ -101,6 +113,12 @@ namespace HonVietThuThanh.Dev1
                 return false;
             }
 
+            if (!TryPayPlacementCost(selectedHeroType))
+            {
+                UpdatePreviewState(cell);
+                return false;
+            }
+
             GameObject hero = CreateHeroPlaceholder(GetHeroWorldPosition(cell));
             Vector2Int gridPosition = cell.GridPosition;
 
@@ -121,6 +139,60 @@ namespace HonVietThuThanh.Dev1
         private bool IsPointerOverUI()
         {
             return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+        }
+
+        private IPlacementEconomyService GetEconomyService()
+        {
+            if (economyServiceBehaviour == null)
+            {
+                economyService = null;
+                hasWarnedInvalidEconomyService = false;
+                return null;
+            }
+
+            if (economyService != null)
+            {
+                return economyService;
+            }
+
+            economyService = economyServiceBehaviour as IPlacementEconomyService;
+            if (economyService == null && !hasWarnedInvalidEconomyService)
+            {
+                Debug.LogWarning(
+                    $"{nameof(HeroPlacementManager)} economy service '{economyServiceBehaviour.name}' does not implement {nameof(IPlacementEconomyService)}. Placement will continue without economy blocking.",
+                    this);
+                hasWarnedInvalidEconomyService = true;
+            }
+
+            return economyService;
+        }
+
+        private int GetPlacementCost(HeroType heroType)
+        {
+            if (heroPlacementCosts != null)
+            {
+                foreach (HeroPlacementCostEntry entry in heroPlacementCosts)
+                {
+                    if (entry.heroType == heroType)
+                    {
+                        return Mathf.Max(0, entry.cost);
+                    }
+                }
+            }
+
+            return Mathf.Max(0, defaultHeroCost);
+        }
+
+        private bool TryPayPlacementCost(HeroType heroType)
+        {
+            IPlacementEconomyService service = GetEconomyService();
+            if (service == null)
+            {
+                return true;
+            }
+
+            int cost = GetPlacementCost(heroType);
+            return service.TrySpendForPlacement(heroType, cost);
         }
 
         /// <summary>
