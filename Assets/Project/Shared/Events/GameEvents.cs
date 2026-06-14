@@ -54,6 +54,19 @@ namespace HonVietThuThanh.Shared
         public static event Action<HeroType, GameObject> OnHeroAttacked;
 
         /// <summary>
+        /// Raised by Dev4 (HeroSelectionUI) when the player selects a hero type
+        /// from the panel. Dev1 (HeroPlacementManager) listens to know which hero
+        /// type to place on the next valid grid cell click.
+        /// </summary>
+        public static event Action<HeroType> OnHeroSelected;
+
+        /// <summary>
+        /// Raised by Dev4 (UIManager) when the player clicks the Start Wave button.
+        /// Dev2 (WaveManager) listens to begin spawning the next wave.
+        /// </summary>
+        public static event Action OnWaveStartRequested;
+
+        /// <summary>
         /// Raises the hero placed event after Dev1 validates placement.
         /// </summary>
         /// <param name="heroType">The type of hero that was placed.</param>
@@ -121,6 +134,25 @@ namespace HonVietThuThanh.Shared
         public static void RaiseHeroAttacked(HeroType heroType, GameObject target)
         {
             OnHeroAttacked?.Invoke(heroType, target);
+        }
+
+        /// <summary>
+        /// Raises the hero selected event after Dev4 UI registers a player
+        /// selection. Dev1 listens to set the pending hero type for placement.
+        /// </summary>
+        /// <param name="heroType">The hero type the player selected.</param>
+        public static void RaiseHeroSelected(HeroType heroType)
+        {
+            OnHeroSelected?.Invoke(heroType);
+        }
+
+        /// <summary>
+        /// Raises the wave start requested event after the player clicks the
+        /// Start Wave button in Dev4 UI. Dev2 listens to begin spawning.
+        /// </summary>
+        public static void RaiseWaveStartRequested()
+        {
+            OnWaveStartRequested?.Invoke();
         }
     }
 }
