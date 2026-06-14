@@ -53,6 +53,11 @@ namespace HonVietThuThanh.Shared
         /// </summary>
         public static event Action<HeroType, GameObject> OnHeroAttacked;
 
+        public static void InvokeOnHeroAttacked(HeroType type, GameObject go)
+        {
+            OnHeroAttacked?.Invoke(type, go);
+        }
+
         /// <summary>
         /// Raises the hero placed event after Dev1 validates placement.
         /// </summary>
