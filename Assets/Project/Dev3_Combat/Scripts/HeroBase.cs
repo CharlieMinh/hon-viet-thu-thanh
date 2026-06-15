@@ -1,18 +1,15 @@
-// Assets/Project/Dev3_Combat/Scripts/HeroBase.cs
 using HonVietThuThanh.Shared;
 using UnityEngine;
 
-namespace HVTThanh.Combat
+namespace HonVietThuThanh.Combat
 {
-
     [RequireComponent(typeof(SphereCollider))]
     public abstract class HeroBase : MonoBehaviour, IDamageable
     {
-
-        [Header("Stats — gán qua HeroData sau")]
+        [Header("Stats")]
         public float attackRange = 5f;
         public float attackDamage = 10f;
-        public float attackSpeed = 1f;   // lần/giây
+        public float attackSpeed = 1f;
         public float maxHp = 100f;
 
         protected float currentHp;
@@ -22,7 +19,6 @@ namespace HVTThanh.Combat
         protected virtual void Awake()
         {
             currentHp = maxHp;
-            // Dùng SphereCollider làm trigger để detect range
             var col = GetComponent<SphereCollider>();
             col.isTrigger = true;
             col.radius = attackRange;
@@ -33,60 +29,78 @@ namespace HVTThanh.Combat
             attackCooldown -= Time.deltaTime;
 
             currentTarget = FindClosestEnemy();
-            if (currentTarget == null) return;
+            if (currentTarget == null)
+            {
+                return;
+            }
 
-            // Quay về phía enemy
             Vector3 dir = currentTarget.GetPosition() - transform.position;
-            dir.y = 0;
+            dir.y = 0f;
             if (dir != Vector3.zero)
+            {
                 transform.rotation = Quaternion.LookRotation(dir);
+            }
 
-            // Tấn công khi hết cooldown
             if (attackCooldown <= 0f)
             {
-                attackCooldown = 1f / attackSpeed;
-                PerformAttack(currentTarget);
-                GameEvents.InvokeOnHeroAttacked(heroType, gameObject); // phát event
+                attackCooldown = 1f / Mathf.Max(0.01f, attackSpeed);
+                if (!PerformAttack(currentTarget))
+                {
+                    return;
+                }
+
+                GameObject targetObject = GetTargetGameObject(currentTarget);
+                GameEvents.RaiseHeroAttacked(heroType, targetObject);
+                Debug.Log($"[Dev3 Combat] {heroType} attacked {(targetObject != null ? targetObject.name : "target")}.", this);
             }
         }
 
-        // Subclass override cái này
         protected abstract HeroType heroType { get; }
-        protected abstract void PerformAttack(ITargetable target);
+        protected abstract bool PerformAttack(ITargetable target);
 
-        // --- IDamageable ---
         public void TakeDamage(float amount)
         {
             currentHp -= amount;
-            if (currentHp <= 0) Destroy(gameObject);
-        }
-
-        // --- Tìm enemy gần BASE nhất trong range ---
-        private ITargetable FindClosestEnemy()
-        {
-            // Dev 2 enemy có tag "Enemy"
-            var enemies = Physics.OverlapSphere(transform.position, attackRange);
-            ITargetable best = null;
-            float bestDist = float.MaxValue;
-
-            // "Gần base nhất" = z nhỏ nhất (hoặc tùy hướng lane, điều chỉnh sau)
-            foreach (var col in enemies)
+            if (currentHp <= 0f)
             {
-                if (!col.CompareTag("Enemy")) continue;
-                var t = col.GetComponent<ITargetable>();
-                if (t == null || !t.IsAlive()) continue;
-                float dist = col.transform.position.z; // điểm z gần base = nhỏ hơn
-                if (dist < bestDist)
-                {
-                    bestDist = dist;
-                    best = t;
-                }
+                Destroy(gameObject);
             }
-            return best;
         }
+
         public void Heal(float amount)
         {
             currentHp = Mathf.Min(currentHp + amount, maxHp);
+            Debug.Log($"[Dev3 Combat] {name} healed {amount}, {currentHp} HP current.", this);
+        }
+
+        private ITargetable FindClosestEnemy()
+        {
+            var colliders = Physics.OverlapSphere(transform.position, attackRange);
+            ITargetable best = null;
+            float bestDist = float.MaxValue;
+
+            foreach (var col in colliders)
+            {
+                var target = col.GetComponentInParent<ITargetable>();
+                if (target == null || !target.IsAlive())
+                {
+                    continue;
+                }
+
+                float dist = Vector3.Distance(transform.position, target.GetPosition());
+                if (dist < bestDist)
+                {
+                    bestDist = dist;
+                    best = target;
+                }
+            }
+
+            return best;
+        }
+
+        private static GameObject GetTargetGameObject(ITargetable target)
+        {
+            return target is Component component ? component.gameObject : null;
         }
     }
 }

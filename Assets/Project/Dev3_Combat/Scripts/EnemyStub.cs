@@ -1,37 +1,39 @@
-// Assets/Project/Dev3_Combat/Scripts/EnemyStub.cs
 using HonVietThuThanh.Shared;
-using HVTThanh.Combat;
 using UnityEngine;
 
-public class EnemyStub : MonoBehaviour, IDamageable, ITargetable
+namespace HonVietThuThanh.Combat
 {
-    public float hp = 50f;
-    public float speed = 2f;
-
-    public Vector3 GetPosition() => transform.position;
-    public bool IsAlive() => hp > 0;
-
-    public void TakeDamage(float amount)
+    public class EnemyStub : MonoBehaviour, IDamageable, ITargetable
     {
-        hp -= amount;
-        Debug.Log($"Enemy nhận {amount} damage, còn {hp} HP");
-        if (hp <= 0)
+        public float hp = 50f;
+        public float speed = 0f;
+
+        public float CurrentHp => hp;
+
+        public Vector3 GetPosition() => transform.position;
+        public bool IsAlive() => hp > 0f;
+
+        public void TakeDamage(float amount)
         {
-            Debug.Log("Enemy chết!");
-            Destroy(gameObject);
+            hp = Mathf.Max(0f, hp - Mathf.Max(0f, amount));
+            Debug.Log($"[Dev3 Combat] EnemyStub took {amount} damage, {hp} HP remaining.", this);
+
+            if (hp <= 0f)
+            {
+                Debug.Log("[Dev3 Combat] EnemyStub died.", this);
+                Destroy(gameObject);
+            }
         }
-    }
 
-    void Update()
-    {
-        // Di chuyển thẳng về phía base (trục Z âm)
-        transform.position += Vector3.back * speed * Time.deltaTime;
-
-        // Tới cuối lane thì log và tự xoá
-        if (transform.position.z < -10f)
+        private void Update()
         {
-            Debug.Log("Enemy tới base!");
-            Destroy(gameObject);
+            transform.position += Vector3.back * speed * Time.deltaTime;
+
+            if (transform.position.z < -10f)
+            {
+                Debug.Log("[Dev3 Combat] EnemyStub reached base preview endpoint.", this);
+                Destroy(gameObject);
+            }
         }
     }
 }
