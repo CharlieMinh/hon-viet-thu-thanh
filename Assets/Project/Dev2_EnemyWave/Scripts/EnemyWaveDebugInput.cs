@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace HonVietThuThanh.Dev2_EnemyWave
 {
@@ -28,18 +29,29 @@ namespace HonVietThuThanh.Dev2_EnemyWave
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            // Robust check for New Input System
+            if (Keyboard.current == null) 
             {
+                return;
+            }
+
+            var keyboard = Keyboard.current;
+
+            if (keyboard.spaceKey.wasPressedThisFrame)
+            {
+                Debug.Log("[Dev2 Debug] Spawning single enemy...");
                 enemySpawner?.SpawnSingleEnemy();
             }
 
-            if (Input.GetKeyDown(KeyCode.K))
+            if (keyboard.kKey.wasPressedThisFrame)
             {
+                Debug.Log("[Dev2 Debug] Applying debug damage to first alive enemy...");
                 enemySpawner?.DamageFirstAliveEnemy(debugDamageAmount);
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (keyboard.rKey.wasPressedThisFrame)
             {
+                Debug.Log("[Dev2 Debug] Resetting prototype...");
                 enemySpawner?.ResetPrototype();
 
                 if (restartPrototypeOnReset)
@@ -48,8 +60,9 @@ namespace HonVietThuThanh.Dev2_EnemyWave
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.N))
+            if (keyboard.nKey.wasPressedThisFrame)
             {
+                Debug.Log("[Dev2 Debug] Manually starting next wave...");
                 waveManager?.StartNextWaveManually();
             }
         }
