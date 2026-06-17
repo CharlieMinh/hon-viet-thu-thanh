@@ -27,7 +27,7 @@ namespace HonVietThuThanh.Combat
         private void RegisterPlacedHero(PlacementToCombatBridge.HeroPlacementCombatData data)
         {
             Vector3 worldPosition = GridToWorld(data.GridPosition);
-            GameObject hero = CreateCombatHero(data.HeroType, worldPosition);
+            GameObject hero = CreateCombatHero(data.HeroType, data.GridPosition, worldPosition);
             if (hero == null)
             {
                 Debug.LogWarning($"[Dev3 Combat] Placement received for unsupported hero type {data.HeroType}; no Dev3 combat script exists yet.", this);
@@ -43,17 +43,28 @@ namespace HonVietThuThanh.Combat
             return combatOrigin + new Vector3(gridPosition.x * gridCellSize, 1f, gridPosition.y * gridCellSize);
         }
 
-        private GameObject CreateCombatHero(HeroType heroType, Vector3 worldPosition)
+        private GameObject CreateCombatHero(HeroType heroType, Vector2Int gridPosition, Vector3 worldPosition)
         {
-            string heroName = $"Dev3_CombatHero_{heroType}_{registeredPlacements.Count}";
-            GameObject hero = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            hero.name = heroName;
+            GameObject hero = FindPlacedHero(heroType, gridPosition);
+            bool createdFallbackHero = hero == null;
+            if (createdFallbackHero)
+            {
+                hero = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                hero.name = $"Dev3_CombatHero_{heroType}_{registeredPlacements.Count}";
+            }
+
             hero.transform.position = worldPosition;
 
             switch (heroType)
             {
                 case HeroType.ThanhGiong:
-                    var thanhGiong = hero.AddComponent<ThanhGiong_Attack>();
+                    var thanhGiong = GetOrAddHeroAttack<ThanhGiong_Attack>(hero);
+                    if (thanhGiong == null)
+                    {
+                        DestroyFallbackHeroIfNeeded(hero, createdFallbackHero);
+                        return null;
+                    }
+
                     thanhGiong.attackDamage = 10f;
                     thanhGiong.attackRange = 5f;
                     thanhGiong.attackSpeed = 1f;
@@ -61,7 +72,13 @@ namespace HonVietThuThanh.Combat
                     return hero;
 
                 case HeroType.SonTinh:
-                    var sonTinh = hero.AddComponent<SonTinh_Attack>();
+                    var sonTinh = GetOrAddHeroAttack<SonTinh_Attack>(hero);
+                    if (sonTinh == null)
+                    {
+                        DestroyFallbackHeroIfNeeded(hero, createdFallbackHero);
+                        return null;
+                    }
+
                     sonTinh.attackDamage = 10f;
                     sonTinh.attackRange = 5f;
                     sonTinh.attackSpeed = 1f;
@@ -69,15 +86,53 @@ namespace HonVietThuThanh.Combat
                     return hero;
 
                 case HeroType.ChuDongTu:
-                    var chuDongTu = hero.AddComponent<ChuDongTu_Attack>();
+                    var chuDongTu = GetOrAddHeroAttack<ChuDongTu_Attack>(hero);
+                    if (chuDongTu == null)
+                    {
+                        DestroyFallbackHeroIfNeeded(hero, createdFallbackHero);
+                        return null;
+                    }
+
                     chuDongTu.attackDamage = 8f;
                     chuDongTu.attackRange = 5f;
                     chuDongTu.attackSpeed = 1f;
                     return hero;
 
                 default:
-                    Destroy(hero);
+                    DestroyFallbackHeroIfNeeded(hero, createdFallbackHero);
                     return null;
+            }
+        }
+
+        private static GameObject FindPlacedHero(HeroType heroType, Vector2Int gridPosition)
+        {
+            string expectedName = $"Hero_{heroType}_{gridPosition.x}_{gridPosition.y}";
+            return GameObject.Find(expectedName);
+        }
+
+        private static T GetOrAddHeroAttack<T>(GameObject hero) where T : HeroBase
+        {
+            HeroBase existingHero = hero.GetComponent<HeroBase>();
+            if (existingHero != null && !(existingHero is T))
+            {
+                Debug.LogWarning($"[Dev3 Combat] {hero.name} already has combat script {existingHero.GetType().Name}; skipping duplicate combat registration.", hero);
+                return null;
+            }
+
+            T attack = hero.GetComponent<T>();
+            if (attack == null)
+            {
+                attack = hero.AddComponent<T>();
+            }
+
+            return attack;
+        }
+
+        private static void DestroyFallbackHeroIfNeeded(GameObject hero, bool createdFallbackHero)
+        {
+            if (createdFallbackHero && hero != null)
+            {
+                Destroy(hero);
             }
         }
 
