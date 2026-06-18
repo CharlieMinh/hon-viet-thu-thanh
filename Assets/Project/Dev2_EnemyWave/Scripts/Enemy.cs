@@ -22,9 +22,17 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         [SerializeField] private bool isAlive = true;
         [SerializeField] private bool hasReachedBase;
 
+        [Header("Visual Feedback")]
+        [SerializeField] private Color flashColor = Color.red;
+        [SerializeField] private float flashDuration = 0.1f;
+
         private EnemyMover mover;
         private EnemyPool ownerPool;
         private EnemySpawner ownerSpawner;
+        private Renderer _renderer;
+        private MaterialPropertyBlock _propBlock;
+        private Coroutine _flashRoutine;
+        private static readonly int ColorPropId = Shader.PropertyToID("_BaseColor"); // URP default
 
         public EnemyType EnemyType => enemyType;
         public float CurrentHealth => currentHealth;
@@ -36,6 +44,8 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         private void Awake()
         {
             mover = GetComponent<EnemyMover>();
+            _renderer = GetComponentInChildren<Renderer>();
+            _propBlock = new MaterialPropertyBlock();
         }
 
         public void Initialize(
@@ -45,6 +55,8 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             EnemySpawner spawner,
             bool shouldCountTowardWave)
         {
+            if (mover == null) mover = GetComponent<EnemyMover>();
+            
             enemyType = data != null ? data.EnemyType : EnemyType.LinhXamLuoc;
             maxHealth = data != null ? Mathf.Max(1f, data.MaxHealth) : 15f;
             currentHealth = maxHealth;
@@ -59,6 +71,7 @@ namespace HonVietThuThanh.Dev2_EnemyWave
 
             gameObject.name = $"Enemy_{enemyType}";
             mover.Initialize(lanePath, this, moveSpeed);
+            ResetVisuals();
         }
 
         public void TakeDamage(float amount)
@@ -69,6 +82,8 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             }
 
             currentHealth = Mathf.Max(0f, currentHealth - Mathf.Max(0f, amount));
+            
+            TriggerFlash();
 
             if (currentHealth <= 0f)
             {
@@ -106,6 +121,43 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             hasReachedBase = false;
             currentHealth = 0f;
             mover.StopMovement();
+            ResetVisuals();
+        }
+
+        private void TriggerFlash()
+        {
+            if (!gameObject.activeInHierarchy) return;
+            if (_flashRoutine != null) StopCoroutine(_flashRoutine);
+            _flashRoutine = StartCoroutine(FlashRoutine());
+        }
+
+        private System.Collections.IEnumerator FlashRoutine()
+        {
+            if (_renderer != null)
+            {
+                _renderer.GetPropertyBlock(_propBlock);
+                _propBlock.SetColor(ColorPropId, flashColor);
+                _renderer.SetPropertyBlock(_propBlock);
+            }
+
+            yield return new WaitForSeconds(flashDuration);
+
+            ResetVisuals();
+            _flashRoutine = null;
+        }
+
+        private void ResetVisuals()
+        {
+            if (_flashRoutine != null)
+            {
+                StopCoroutine(_flashRoutine);
+                _flashRoutine = null;
+            }
+
+            if (_renderer != null)
+            {
+                _renderer.SetPropertyBlock(null);
+            }
         }
 
         private void HandleDeath()
@@ -123,6 +175,8 @@ namespace HonVietThuThanh.Dev2_EnemyWave
 
         private void ReleaseSelf()
         {
+            ResetVisuals();
+
             if (ownerSpawner != null)
             {
                 ownerSpawner.NotifyEnemyReleased(this, countsTowardWave);

@@ -8,17 +8,21 @@ namespace HonVietThuThanh.Dev2_EnemyWave
     [DisallowMultipleComponent]
     public class EnemyMover : MonoBehaviour
     {
-        [SerializeField] private float arrivalThreshold = 0.05f;
+        [SerializeField] private float arrivalThreshold = 0.1f;
+        [SerializeField] private float rotationSpeed = 10f;
 
         private Enemy owner;
-        private Vector3 targetPosition;
+        private LanePath currentPath;
+        private int currentWaypointIndex = -1;
         private float moveSpeed;
         private bool isMoving;
 
         public void Initialize(LanePath lanePath, Enemy enemy, float speed)
         {
             owner = enemy;
+            currentPath = lanePath;
             moveSpeed = Mathf.Max(0.1f, speed);
+            
             isMoving = lanePath != null && lanePath.HasValidPath;
 
             if (!isMoving)
@@ -26,14 +30,9 @@ namespace HonVietThuThanh.Dev2_EnemyWave
                 return;
             }
 
-            transform.position = lanePath.GetSpawnPosition();
-            targetPosition = lanePath.GetEndPosition();
-
-            Vector3 forward = lanePath.GetForwardDirection();
-            if (forward.sqrMagnitude > 0.0001f)
-            {
-                transform.forward = forward;
-            }
+            transform.position = lanePath.GetWaypointPosition(0);
+            currentWaypointIndex = 1;
+            UpdateRotation();
         }
 
         public void StopMovement()
@@ -43,20 +42,51 @@ namespace HonVietThuThanh.Dev2_EnemyWave
 
         private void Update()
         {
-            if (!isMoving || owner == null || !owner.IsAlive())
+            if (!isMoving || owner == null || !owner.IsAlive() || currentPath == null)
             {
                 return;
             }
 
+            Vector3 targetPosition = currentPath.GetWaypointPosition(currentWaypointIndex);
+            
+            // Move toward current waypoint
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 targetPosition,
                 moveSpeed * Time.deltaTime);
 
+            // Smooth rotation toward target
+            Vector3 direction = targetPosition - transform.position;
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
+
+            // Check if reached current waypoint
             if (Vector3.Distance(transform.position, targetPosition) <= arrivalThreshold)
             {
-                isMoving = false;
-                owner.MarkReachedBase();
+                currentWaypointIndex++;
+
+                // Check if reached the end of path
+                if (currentWaypointIndex >= currentPath.WaypointCount)
+                {
+                    isMoving = false;
+                    owner.MarkReachedBase();
+                }
+            }
+        }
+
+        private void UpdateRotation()
+        {
+            if (currentPath == null || currentWaypointIndex < 0 || currentWaypointIndex >= currentPath.WaypointCount)
+                return;
+
+            Vector3 targetPosition = currentPath.GetWaypointPosition(currentWaypointIndex);
+            Vector3 direction = targetPosition - transform.position;
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                transform.forward = direction.normalized;
             }
         }
     }
