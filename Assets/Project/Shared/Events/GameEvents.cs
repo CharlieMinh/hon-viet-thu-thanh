@@ -53,11 +53,6 @@ namespace HonVietThuThanh.Shared
         /// </summary>
         public static event Action<HeroType, GameObject> OnHeroAttacked;
 
-        public static void InvokeOnHeroAttacked(HeroType type, GameObject go)
-        {
-            OnHeroAttacked?.Invoke(type, go);
-        }
-
         /// <summary>
         /// Raised by Dev4 (HeroSelectionUI) when the player selects a hero type
         /// from the panel. Dev1 (HeroPlacementManager) listens to know which hero
