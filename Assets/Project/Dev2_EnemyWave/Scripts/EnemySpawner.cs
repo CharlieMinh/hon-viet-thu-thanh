@@ -10,7 +10,7 @@ namespace HonVietThuThanh.Dev2_EnemyWave
     [DisallowMultipleComponent]
     public class EnemySpawner : MonoBehaviour
     {
-        [SerializeField] private LanePath lanePath;
+        [SerializeField] private List<LanePath> lanePaths = new();
         [SerializeField] private WaveManager waveManager;
         [SerializeField] private EnemyPool enemyPool;
         [SerializeField] private GameObject enemyPrefab;
@@ -43,12 +43,12 @@ namespace HonVietThuThanh.Dev2_EnemyWave
 
         public void SpawnSingleEnemy()
         {
-            SpawnEnemy(waveManager != null ? waveManager.GetDebugSpawnProfile() : new EnemySpawnProfile(), false);
+            SpawnEnemy(waveManager != null ? waveManager.GetDebugEnemyData() : null, false);
         }
 
-        public void SpawnWaveEnemy(EnemySpawnProfile profile)
+        public void SpawnWaveEnemy(EnemyData data)
         {
-            if (SpawnEnemy(profile, true) != null)
+            if (SpawnEnemy(data, true) != null)
             {
                 waveManager?.NotifyWaveEnemySpawned();
             }
@@ -100,11 +100,20 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             }
         }
 
-        private Enemy SpawnEnemy(EnemySpawnProfile profile, bool countTowardWave)
+        private Enemy SpawnEnemy(EnemyData data, bool countTowardWave)
         {
+            if (lanePaths == null || lanePaths.Count == 0)
+            {
+                Debug.LogError("EnemySpawner requires at least one LanePath.", this);
+                return null;
+            }
+
+            // Pick a random lane
+            LanePath lanePath = lanePaths[Random.Range(0, lanePaths.Count)];
+
             if (lanePath == null || !lanePath.HasValidPath)
             {
-                Debug.LogError("EnemySpawner requires a valid LanePath.", this);
+                Debug.LogError("Selected LanePath is invalid.", this);
                 return null;
             }
 
@@ -122,7 +131,7 @@ namespace HonVietThuThanh.Dev2_EnemyWave
 
             Enemy preparedEnemy = EnemyBootstrapper.PrepareEnemy(
                 enemy,
-                profile,
+                data,
                 lanePath,
                 enemyPool,
                 this,
@@ -141,9 +150,13 @@ namespace HonVietThuThanh.Dev2_EnemyWave
 
         private void AutoAssignReferences()
         {
-            if (lanePath == null)
+            if (lanePaths == null || lanePaths.Count == 0)
             {
-                lanePath = transform.root.GetComponentInChildren<LanePath>(true);
+                LanePath foundPath = transform.root.GetComponentInChildren<LanePath>(true);
+                if (foundPath != null)
+                {
+                    lanePaths = new List<LanePath> { foundPath };
+                }
             }
 
             if (waveManager == null)
