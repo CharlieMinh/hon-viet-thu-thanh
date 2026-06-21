@@ -443,8 +443,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bfe3f864bdb4df7bb4f2599efac60d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev1.HeroPlacementManager
-  rows: 5
-  columns: 8
+  rows: 8
+  columns: 5
   cellSize: 1
   gridOrigin: {x: 0, y: 0, z: 0}
   selectedHeroType: 0
