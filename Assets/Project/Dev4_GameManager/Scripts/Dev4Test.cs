@@ -5,140 +5,202 @@ using HonVietThuThanh.Shared;
 namespace HonVietThuThanh.Dev4
 {
     /// <summary>
-    /// Dev4Test — script test tạm để giả lập events từ Dev1/2/3.
-    /// Dùng TRONG EDITOR để kiểm tra EconomyManager, BaseHealthManager,
-    /// GameStateManager, UIManager hoạt động đúng mà không cần module thật.
+    /// Dev4Test — test harness độc lập cho Dev4 module.
     ///
-    /// ⚠️ XÓA hoặc disable script này trước khi ghép Integration với Dev1/2/3.
+    /// Giả lập events từ Dev1/2/3 bằng phím số để verify toàn bộ Dev4
+    /// (EconomyManager, BaseHealthManager, GameStateManager, UIManager)
+    /// mà không cần module thật.
     ///
-    /// CÁCH DÙNG:
-    ///   1. Gắn script này vào bất kỳ GameObject nào trong Scene_Dev4_UI
-    ///   2. Nhấn Play
-    ///   3. Dùng phím số 1-7 để giả lập từng event
-    ///   4. Quan sát Console + HUD cập nhật
+    /// PHÍM TEST:
+    ///   T → TrySpendForPlacement trực tiếp (test IPlacementEconomyService)
+    ///   1 → Raise OnHeroPlaced ThanhGiong  (chỉ log, không trừ tiền)
+    ///   2 → Raise OnHeroPlaced SonTinh
+    ///   3 → Raise OnHeroPlaced ChuDongTu
+    ///   4 → Enemy chết (+25 gold)
+    ///   5 → Enemy tới base (-10 HP)
+    ///   6 → Bắt đầu wave
+    ///   7 → Hoàn thành wave (3 lần → WIN)
+    ///   R → Reset wave index
+    ///   H → In lại hướng dẫn
     ///
-    /// NOTE: Project dùng New Input System → dùng Keyboard.current thay vì
-    /// UnityEngine.Input.GetKeyDown (legacy).
+    /// ⚠️ Disable hoặc xóa trước khi merge vào Integration.
     /// </summary>
     public class Dev4Test : MonoBehaviour
     {
-        [Header("Thông tin test (chỉ đọc, cập nhật trong Play Mode)")]
-        [SerializeField, Tooltip("Linh Khí hiện tại")]
-        private int debugGold;
+        [Header("Debug Info (read-only in Play Mode)")]
+        [SerializeField] private int    debugGold;
+        [SerializeField] private int    debugBaseHP;
+        [SerializeField] private string debugGameState;
 
-        [SerializeField, Tooltip("HP thành hiện tại")]
-        private int debugBaseHP;
+        private int _waveIndex;
 
-        [SerializeField, Tooltip("Trạng thái game hiện tại")]
-        private string debugGameState;
-
-        private int _waveIndex = 0;
+        // ---------------------------------------------------------------
+        // Named handlers — fix blocker 4: lambda -= không remove được,
+        // phải dùng named method để unsubscribe đúng cách.
+        // ---------------------------------------------------------------
+        private void OnGoldChanged(int gold)         => debugGold      = gold;
+        private void OnBaseHPChanged(int cur, int _) => debugBaseHP    = cur;
+        private void OnStateChanged(GameState state) => debugGameState = state.ToString();
 
         private void OnEnable()
         {
-            EconomyManager.OnGoldChanged        += g      => debugGold      = g;
-            BaseHealthManager.OnBaseHPChanged   += (c, _) => debugBaseHP    = c;
-            GameStateManager.OnGameStateChanged += s      => debugGameState = s.ToString();
+            EconomyManager.OnGoldChanged        += OnGoldChanged;
+            BaseHealthManager.OnBaseHPChanged   += OnBaseHPChanged;
+            GameStateManager.OnGameStateChanged += OnStateChanged;
         }
 
         private void OnDisable()
         {
-            EconomyManager.OnGoldChanged        -= g      => debugGold      = g;
-            BaseHealthManager.OnBaseHPChanged   -= (c, _) => debugBaseHP    = c;
-            GameStateManager.OnGameStateChanged -= s      => debugGameState = s.ToString();
+            EconomyManager.OnGoldChanged        -= OnGoldChanged;
+            BaseHealthManager.OnBaseHPChanged   -= OnBaseHPChanged;
+            GameStateManager.OnGameStateChanged -= OnStateChanged;
         }
 
         private void Start()
         {
-            // Sync giá trị ban đầu
             if (EconomyManager.Instance)    debugGold      = EconomyManager.Instance.CurrentGold;
             if (BaseHealthManager.Instance) debugBaseHP    = BaseHealthManager.Instance.CurrentBaseHP;
             if (GameStateManager.Instance)  debugGameState = GameStateManager.Instance.CurrentState.ToString();
 
+            RunAutoValidation();
             PrintHelp();
         }
 
         private void Update()
         {
-            // New Input System: dùng Keyboard.current thay cho Input.GetKeyDown
             var kb = Keyboard.current;
-            if (kb == null) return; // không có keyboard (build mobile, etc.)
+            if (kb == null) return;
 
-            // Phím 1: Giả lập đặt Thánh Gióng (trừ 100 Linh Khí)
+            // T: gọi thẳng TrySpendForPlacement (test blocker 1 & 2)
+            if (kb.tKey.wasPressedThisFrame)
+                TestTrySpendForPlacement();
+
+            // 1-3: Raise OnHeroPlaced — verify chỉ log, không trừ tiền
             if (kb.digit1Key.wasPressedThisFrame)
             {
-                Debug.Log("--- [TEST] Đặt Thánh Gióng (cost 100) ---");
-                GameEvents.RaiseHeroPlaced(HeroType.ThanhGiong, new Vector2Int(0, 0));
+                Debug.Log("--- [TEST] Raise OnHeroPlaced ThanhGiong (chỉ log, không trừ tiền) ---");
+                GameEvents.RaiseHeroPlaced(HeroType.ThanhGiong, Vector2Int.zero);
             }
-
-            // Phím 2: Giả lập đặt Sơn Tinh (trừ 125 Linh Khí)
             if (kb.digit2Key.wasPressedThisFrame)
             {
-                Debug.Log("--- [TEST] Đặt Sơn Tinh (cost 125) ---");
+                Debug.Log("--- [TEST] Raise OnHeroPlaced SonTinh (chỉ log, không trừ tiền) ---");
                 GameEvents.RaiseHeroPlaced(HeroType.SonTinh, new Vector2Int(1, 0));
             }
-
-            // Phím 3: Giả lập đặt Chử Đồng Tử (trừ 75 Linh Khí)
             if (kb.digit3Key.wasPressedThisFrame)
             {
-                Debug.Log("--- [TEST] Đặt Chử Đồng Tử (cost 75) ---");
+                Debug.Log("--- [TEST] Raise OnHeroPlaced ChuDongTu (chỉ log, không trừ tiền) ---");
                 GameEvents.RaiseHeroPlaced(HeroType.ChuDongTu, new Vector2Int(2, 0));
             }
 
-            // Phím 4: Giả lập 1 enemy chết (+25 Linh Khí)
+            // 4: enemy chết → gold tăng
             if (kb.digit4Key.wasPressedThisFrame)
             {
                 Debug.Log("--- [TEST] Enemy chết → +25 Linh Khí ---");
                 GameEvents.RaiseEnemyDied(null, 25);
             }
 
-            // Phím 5: Giả lập enemy tới base (-10 HP thành)
+            // 5: enemy tới base → HP thành giảm
             if (kb.digit5Key.wasPressedThisFrame)
             {
                 Debug.Log("--- [TEST] Enemy tới base → -10 HP thành ---");
                 GameEvents.RaiseEnemyReachedBase(null);
             }
 
-            // Phím 6: Giả lập bắt đầu wave tiếp theo
+            // 6: bắt đầu wave
             if (kb.digit6Key.wasPressedThisFrame)
             {
-                Debug.Log($"--- [TEST] Bắt đầu Wave {_waveIndex + 1} ---");
+                Debug.Log($"--- [TEST] Wave {_waveIndex + 1} bắt đầu ---");
                 GameEvents.RaiseWaveStarted(_waveIndex);
             }
 
-            // Phím 7: Giả lập hoàn thành wave hiện tại
+            // 7: hoàn thành wave — 3 lần → WIN
             if (kb.digit7Key.wasPressedThisFrame)
             {
-                Debug.Log($"--- [TEST] Hoàn thành Wave {_waveIndex + 1} ---");
+                Debug.Log($"--- [TEST] Wave {_waveIndex + 1} hoàn thành ---");
                 GameEvents.RaiseWaveCompleted(_waveIndex);
                 _waveIndex++;
             }
 
-            // Phím R: Reset wave index về 0
+            // R: reset wave index
             if (kb.rKey.wasPressedThisFrame)
             {
                 _waveIndex = 0;
-                Debug.Log("--- [TEST] Reset wave index về 0 ---");
+                Debug.Log("--- [TEST] Wave index reset về 0 ---");
             }
 
-            // Phím H: In lại hướng dẫn phím
+            // H: in hướng dẫn
             if (kb.hKey.wasPressedThisFrame)
-            {
                 PrintHelp();
+        }
+
+        // ---------------------------------------------------------------
+        // Test TrySpendForPlacement trực tiếp
+        // ---------------------------------------------------------------
+
+        private void TestTrySpendForPlacement()
+        {
+            if (EconomyManager.Instance == null)
+            {
+                Debug.LogError("[Dev4Test T] EconomyManager.Instance null!");
+                return;
             }
+
+            int before = EconomyManager.Instance.CurrentGold;
+            bool result = EconomyManager.Instance.TrySpendForPlacement(HeroType.ThanhGiong, 100);
+            int after  = EconomyManager.Instance.CurrentGold;
+
+            if (result)
+                Debug.Log($"[Dev4Test T] ✅ TrySpend ThanhGiong -100. Gold: {before} → {after}");
+            else
+                Debug.Log($"[Dev4Test T] ❌ Không đủ tiền (cần 100, có {before}). Gold không đổi: {after}");
+        }
+
+        // ---------------------------------------------------------------
+        // Auto-validation chạy khi Start
+        // ---------------------------------------------------------------
+
+        private void RunAutoValidation()
+        {
+            Debug.Log("===== [Dev4Test] Auto-Validation =====");
+            bool pass = true;
+
+            if (EconomyManager.Instance == null)
+            { Debug.LogError("[Dev4Test] ❌ EconomyManager.Instance null"); pass = false; }
+            else
+                Debug.Log($"[Dev4Test] ✅ EconomyManager OK — Gold: {EconomyManager.Instance.CurrentGold}");
+
+            if (BaseHealthManager.Instance == null)
+            { Debug.LogError("[Dev4Test] ❌ BaseHealthManager.Instance null"); pass = false; }
+            else
+                Debug.Log($"[Dev4Test] ✅ BaseHealthManager OK — HP: {BaseHealthManager.Instance.CurrentBaseHP}/{BaseHealthManager.Instance.MaxBaseHP}");
+
+            if (GameStateManager.Instance == null)
+            { Debug.LogError("[Dev4Test] ❌ GameStateManager.Instance null"); pass = false; }
+            else
+                Debug.Log($"[Dev4Test] ✅ GameStateManager OK — State: {GameStateManager.Instance.CurrentState}");
+
+            if (EconomyManager.Instance is IPlacementEconomyService)
+                Debug.Log("[Dev4Test] ✅ EconomyManager implements IPlacementEconomyService");
+            else
+            { Debug.LogError("[Dev4Test] ❌ EconomyManager KHÔNG implement IPlacementEconomyService!"); pass = false; }
+
+            Debug.Log(pass
+                ? "===== [Dev4Test] PASSED ====="
+                : "===== [Dev4Test] FAILED — xem lỗi ở trên =====");
         }
 
         private static void PrintHelp()
         {
             Debug.Log(
                 "===== DEV4 TEST KEYS =====\n" +
-                "1 → Đặt Thánh Gióng (-100 Linh Khí)\n" +
-                "2 → Đặt Sơn Tinh    (-125 Linh Khí)\n" +
-                "3 → Đặt Chử Đồng Tử (-75  Linh Khí)\n" +
-                "4 → Enemy chết      (+25  Linh Khí)\n" +
-                "5 → Enemy tới base  (-10  HP Thành)\n" +
+                "T → TrySpendForPlacement ThanhGiong -100 (test IPlacementEconomyService)\n" +
+                "1 → OnHeroPlaced ThanhGiong  (chỉ log, KHÔNG trừ tiền)\n" +
+                "2 → OnHeroPlaced SonTinh     (chỉ log, KHÔNG trừ tiền)\n" +
+                "3 → OnHeroPlaced ChuDongTu   (chỉ log, KHÔNG trừ tiền)\n" +
+                "4 → Enemy chết → +25 Linh Khí\n" +
+                "5 → Enemy tới base → -10 HP thành\n" +
                 "6 → Bắt đầu wave tiếp theo\n" +
-                "7 → Hoàn thành wave hiện tại\n" +
+                "7 → Hoàn thành wave (3 lần → WIN)\n" +
                 "R → Reset wave index về 0\n" +
                 "H → Hiện lại hướng dẫn này\n" +
                 "=========================="
