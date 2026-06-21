@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HonVietThuThanh.Shared;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace HonVietThuThanh.Combat
         protected override bool PerformAttack(ITargetable target)
         {
             var cols = Physics.OverlapSphere(transform.position, attackRange);
+            var healedHeroes = new HashSet<HeroBase>();
+
             foreach (var col in cols)
             {
                 if (col.gameObject == gameObject)
@@ -18,7 +21,7 @@ namespace HonVietThuThanh.Combat
                 }
 
                 var hero = col.GetComponentInParent<HeroBase>();
-                if (hero != null)
+                if (hero != null && healedHeroes.Add(hero))
                 {
                     hero.Heal(attackDamage);
                 }
