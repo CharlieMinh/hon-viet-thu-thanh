@@ -10,7 +10,8 @@ Dev1 Phase 5 adds a placement-to-combat handoff bridge for future combat integra
 
 Completed behavior:
 
-- Generates a 5 row x 8 column placement grid.
+- Generates the official 5 column x 8 row placement grid.
+- Total grid cells: 40.
 - Allows clicking an empty cell to place a hero placeholder cube.
 - Prevents placement on an occupied cell.
 - Prevents placement outside the grid because only grid cells receive placement clicks.
@@ -185,8 +186,9 @@ Coordinate rules:
 
 - `Vector2Int.x = column`
 - `Vector2Int.y = row`
-- Valid columns: `0..7`
-- Valid rows: `0..4`
+- Valid columns: `0..4`
+- Valid rows: `0..7`
+- Total cells: `5 columns x 8 rows = 40`
 
 Current default hero type:
 
@@ -288,7 +290,9 @@ Before handoff or integration, verify:
 - `Scene_Dev1_Placement.unity` opens without missing script errors.
 - Setup tool can run from the Unity menu.
 - Grid is visible in Play Mode.
-- Grid size is 5 rows x 8 columns.
+- Grid size is 5 columns x 8 rows.
+- Total grid cells: 40.
+- Valid coordinates are column `0..4` and row `0..7`.
 - Camera sees the full grid.
 - Hovering an empty cell shows the valid preview.
 - Moving between cells moves the preview.

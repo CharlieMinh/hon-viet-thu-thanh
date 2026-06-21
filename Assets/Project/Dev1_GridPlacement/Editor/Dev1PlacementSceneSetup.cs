@@ -61,8 +61,8 @@ public static class Dev1PlacementSceneSetup
         serializedManager.FindProperty("validPreviewMaterial").objectReferenceValue = validPreviewMaterial;
         serializedManager.FindProperty("invalidPreviewMaterial").objectReferenceValue = invalidPreviewMaterial;
         serializedManager.FindProperty("heroPlaceholderPrefab").objectReferenceValue = heroPrefab;
-        serializedManager.FindProperty("rows").intValue = 5;
-        serializedManager.FindProperty("columns").intValue = 8;
+        serializedManager.FindProperty("rows").intValue = 8;
+        serializedManager.FindProperty("columns").intValue = 5;
         serializedManager.FindProperty("cellSize").floatValue = 1f;
         serializedManager.FindProperty("gridOrigin").vector3Value = Vector3.zero;
         serializedManager.FindProperty("generateGridOnStart").boolValue = true;
@@ -139,7 +139,7 @@ public static class Dev1PlacementSceneSetup
         }
 
         Camera camera = GetOrAddComponent<Camera>(cameraObject);
-        camera.transform.position = new Vector3(4f, 7f, -8f);
+        camera.transform.position = new Vector3(2f, 8f, -9f);
         camera.transform.rotation = Quaternion.Euler(50f, 0f, 0f);
         camera.fieldOfView = 45f;
     }

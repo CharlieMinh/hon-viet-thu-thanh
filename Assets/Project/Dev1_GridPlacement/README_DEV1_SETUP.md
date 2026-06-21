@@ -34,6 +34,15 @@ This creates or reuses:
 - Dev1 valid and invalid preview materials
 - Dev1 hero placeholder prefab
 
+## Official Grid Orientation
+
+- Official grid: 5 columns x 8 rows.
+- Total cells: 40.
+- Coordinate convention: `Vector2Int(column, row)`.
+- `Vector2Int.x = column`, valid range `0..4`.
+- `Vector2Int.y = row`, valid range `0..7`.
+- `GameEvents.OnHeroPlaced` uses the same `Vector2Int(column, row)` payload.
+
 ## Phase 4 Economy Hook
 
 Dev1 placement can optionally ask an economy service for permission before placing a hero.
@@ -126,7 +135,9 @@ Dev3 should unsubscribe safely when disabled or destroyed. Dev1 does not create 
 ## Expected Behavior
 
 - Grid is visible.
-- Grid is 5 rows x 8 columns.
+- Grid is 5 columns x 8 rows.
+- Total grid cells: 40.
+- Valid coordinates are column `0..4` and row `0..7`.
 - Each cell is clickable.
 - Empty cell hover shows a valid hero preview.
 - Occupied cell hover shows an invalid hero preview.
