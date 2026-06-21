@@ -1,77 +1,80 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HonVietThuThanh.Dev2_EnemyWave
 {
     /// <summary>
-    /// Simple lane definition for the Dev2 prototype.
+    /// Defines a path for enemies using a start point and a sequence of waypoints.
     /// </summary>
     [DisallowMultipleComponent]
     public class LanePath : MonoBehaviour
     {
         [SerializeField] private Transform laneStart;
-        [SerializeField] private Transform laneEnd;
+        [SerializeField] private List<Transform> waypoints = new();
         [SerializeField] private Color gizmoColor = new(0.95f, 0.6f, 0.15f, 1f);
 
         public Transform LaneStart => laneStart;
-        public Transform LaneEnd => laneEnd;
-        public bool HasValidPath => laneStart != null && laneEnd != null && laneStart != laneEnd;
+        public IReadOnlyList<Transform> Waypoints => waypoints;
+        public bool HasValidPath => laneStart != null && waypoints != null && waypoints.Count > 0;
 
         public Vector3 GetSpawnPosition()
         {
             return laneStart != null ? laneStart.position : transform.position;
         }
 
+        /// <summary>
+        /// Returns the world position for a unified path index.
+        /// Index 0 is laneStart (spawn point); index 1+ maps to waypoints[index - 1].
+        /// </summary>
+        public Vector3 GetWaypointPosition(int index)
+        {
+            if (index == 0)
+            {
+                return GetSpawnPosition();
+            }
+
+            int waypointIndex = index - 1;
+            if (waypoints == null || waypointIndex < 0 || waypointIndex >= waypoints.Count)
+            {
+                return GetSpawnPosition();
+            }
+
+            return waypoints[waypointIndex].position;
+        }
+
+        /// <summary>
+        /// Total unified path length: laneStart (index 0) + all waypoints.
+        /// </summary>
+        public int WaypointCount => (laneStart != null ? 1 : 0) + (waypoints?.Count ?? 0);
+
         public Vector3 GetEndPosition()
         {
-            return laneEnd != null ? laneEnd.position : transform.position;
-        }
-
-        public Vector3 GetForwardDirection()
-        {
-            Vector3 direction = GetEndPosition() - GetSpawnPosition();
-            return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector3.forward;
-        }
-
-        private void Reset()
-        {
-            AutoAssignChildren();
-        }
-
-        private void OnValidate()
-        {
-            AutoAssignChildren();
+            if (waypoints == null || waypoints.Count == 0)
+            {
+                return GetSpawnPosition();
+            }
+            return waypoints[waypoints.Count - 1].position;
         }
 
         private void OnDrawGizmos()
         {
-            if (!HasValidPath)
-            {
-                return;
-            }
+            if (laneStart == null) return;
 
             Gizmos.color = gizmoColor;
             Gizmos.DrawSphere(laneStart.position, 0.25f);
-            Gizmos.DrawSphere(laneEnd.position, 0.25f);
-            Gizmos.DrawLine(laneStart.position, laneEnd.position);
-        }
 
-        private void AutoAssignChildren()
-        {
-            if (laneStart == null)
-            {
-                Transform start = transform.Find("LaneStart");
-                if (start != null)
-                {
-                    laneStart = start;
-                }
-            }
+            Vector3 previousPos = laneStart.position;
 
-            if (laneEnd == null)
+            if (waypoints != null)
             {
-                Transform end = transform.Find("LaneEnd");
-                if (end != null)
+                for (int i = 0; i < waypoints.Count; i++)
                 {
-                    laneEnd = end;
+                    if (waypoints[i] == null) continue;
+
+                    Vector3 currentPos = waypoints[i].position;
+                    Gizmos.DrawSphere(currentPos, 0.2f);
+                    Gizmos.DrawLine(previousPos, currentPos);
+                    previousPos = currentPos;
                 }
             }
         }

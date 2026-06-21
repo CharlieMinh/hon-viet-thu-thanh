@@ -21,8 +21,8 @@ namespace HonVietThuThanh.Dev1
 #pragma warning restore CS0649
         }
 
-        [SerializeField, Min(1)] private int rows = 5;
-        [SerializeField, Min(1)] private int columns = 8;
+        [SerializeField, Min(1)] private int rows = 8;
+        [SerializeField, Min(1)] private int columns = 5;
         [SerializeField, Min(0.1f)] private float cellSize = 1f;
         [SerializeField] private Vector3 gridOrigin = Vector3.zero;
         [SerializeField] private HeroType selectedHeroType = HeroType.ThanhGiong;
@@ -65,7 +65,7 @@ namespace HonVietThuThanh.Dev1
         }
 
         /// <summary>
-        /// Generates a visible 5x8 default placement grid for Dev1 placement testing.
+        /// Generates the official 5-column x 8-row Dev1 placement grid.
         /// </summary>
         public void GenerateGrid()
         {
@@ -75,9 +75,9 @@ namespace HonVietThuThanh.Dev1
 
             cells = new GridCell[columns, rows];
 
-            for (int row = 0; row < rows; row++)
+            for (int column = 0; column < columns; column++)
             {
-                for (int column = 0; column < columns; column++)
+                for (int row = 0; row < rows; row++)
                 {
                     Vector2Int gridPosition = new Vector2Int(column, row);
                     Vector3 worldPosition = GetCellCenter(gridPosition);
@@ -437,9 +437,9 @@ namespace HonVietThuThanh.Dev1
         {
             Gizmos.color = Color.cyan;
 
-            for (int row = 0; row < rows; row++)
+            for (int column = 0; column < columns; column++)
             {
-                for (int column = 0; column < columns; column++)
+                for (int row = 0; row < rows; row++)
                 {
                     Vector3 center = gridOrigin + new Vector3(column * cellSize, 0f, row * cellSize);
                     Gizmos.DrawWireCube(center, new Vector3(cellSize, 0.05f, cellSize));
