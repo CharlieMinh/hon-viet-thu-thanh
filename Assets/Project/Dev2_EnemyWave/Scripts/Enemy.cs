@@ -17,6 +17,7 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         [SerializeField] private float currentHealth = 15f;
         [SerializeField] private float moveSpeed = 2.5f;
         [SerializeField] private int goldReward = 10;
+        [SerializeField] private float damageToBase = 10f;
         [SerializeField] private bool countsTowardWave = true;
         [SerializeField] private bool isAlive = true;
         [SerializeField] private bool hasReachedBase;
@@ -29,6 +30,7 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         public float CurrentHealth => currentHealth;
         public float MaxHealth => maxHealth;
         public int GoldReward => goldReward;
+        public float DamageToBase => damageToBase;
         public bool CountsTowardWave => countsTowardWave;
 
         private void Awake()
@@ -37,17 +39,18 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         }
 
         public void Initialize(
-            EnemySpawnProfile profile,
+            EnemyData data,
             LanePath lanePath,
             EnemyPool pool,
             EnemySpawner spawner,
             bool shouldCountTowardWave)
         {
-            enemyType = profile != null ? profile.EnemyType : EnemyType.LinhXamLuoc;
-            maxHealth = profile != null ? Mathf.Max(1f, profile.MaxHealth) : 15f;
+            enemyType = data != null ? data.EnemyType : EnemyType.LinhXamLuoc;
+            maxHealth = data != null ? Mathf.Max(1f, data.MaxHealth) : 15f;
             currentHealth = maxHealth;
-            moveSpeed = profile != null ? Mathf.Max(0.1f, profile.MoveSpeed) : 2.5f;
-            goldReward = profile != null ? Mathf.Max(0, profile.GoldReward) : 10;
+            moveSpeed = data != null ? Mathf.Max(0.1f, data.MoveSpeed) : 2.5f;
+            goldReward = data != null ? Mathf.Max(0, data.GoldReward) : 10;
+            damageToBase = data != null ? data.DamageToBase : 10f;
             countsTowardWave = shouldCountTowardWave;
             isAlive = true;
             hasReachedBase = false;

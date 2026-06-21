@@ -1,3 +1,4 @@
+using System;
 using HonVietThuThanh.Shared;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,8 +14,11 @@ namespace HonVietThuThanh.Dev1
         [System.Serializable]
         private struct HeroPlacementCostEntry
         {
+            // Unity serialization assigns these fields from the Inspector.
+#pragma warning disable CS0649
             public HeroType heroType;
             [Min(0)] public int cost;
+#pragma warning restore CS0649
         }
 
         [SerializeField, Min(1)] private int rows = 5;
@@ -49,6 +53,8 @@ namespace HonVietThuThanh.Dev1
         /// Gets the generated placement cells indexed by column, then row.
         /// </summary>
         public GridCell[,] Cells => cells;
+
+        public static event Action<HeroType, Vector2Int, GameObject> OnHeroPlacedWithObject;
 
         private void Start()
         {
@@ -128,6 +134,7 @@ namespace HonVietThuThanh.Dev1
             UpdatePreviewState(cell);
 
             GameEvents.RaiseHeroPlaced(selectedHeroType, gridPosition);
+            OnHeroPlacedWithObject?.Invoke(selectedHeroType, gridPosition, hero);
             return true;
         }
 

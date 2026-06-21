@@ -15,23 +15,32 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         [Serializable]
         public class WaveDefinition
         {
-            [SerializeField] private EnemySpawnProfile enemyProfile = new();
-            [SerializeField] private int enemyCount = 3;
-            [SerializeField] private float spawnInterval = 1.25f;
+            [Serializable]
+            public class EnemyGroup
+            {
+                public EnemyData enemyData;
+                public int count = 3;
+                public float spawnInterval = 1.25f;
+            }
 
-            public EnemySpawnProfile EnemyProfile => enemyProfile;
-            public int EnemyCount => Mathf.Max(1, enemyCount);
-            public float SpawnInterval => Mathf.Max(0.1f, spawnInterval);
+            [SerializeField] private List<EnemyGroup> enemyGroups = new();
+
+            public List<EnemyGroup> EnemyGroups => enemyGroups;
+            public int TotalEnemyCount
+            {
+                get
+                {
+                    int total = 0;
+                    foreach (var group in enemyGroups) total += group.count;
+                    return total;
+                }
+            }
         }
 
         [SerializeField] private bool autoStartOnPlay = true;
         [SerializeField] private bool autoAdvanceToNextWave = true;
-        [SerializeField] private float nextWaveDelay = 1.5f;
-        [SerializeField] private List<WaveDefinition> waves = new()
-        {
-            new WaveDefinition(),
-            new WaveDefinition()
-        };
+        [SerializeField] private float nextWaveDelay = 2.5f;
+        [SerializeField] private List<WaveDefinition> waves = new();
 
         private EnemySpawner spawner;
         private Coroutine activeWaveRoutine;
@@ -48,6 +57,25 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             if (autoStartOnPlay)
             {
                 StartPrototype();
+            }
+        }
+
+        private void OnEnable()
+        {
+            GameEvents.OnWaveStartRequested += HandleWaveStartRequested;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.OnWaveStartRequested -= HandleWaveStartRequested;
+        }
+
+        private void HandleWaveStartRequested()
+        {
+            Debug.Log("[WaveManager] Wave start requested via GameEvents.", this);
+            if (!IsWaveRunning)
+            {
+                StartNextWaveManually();
             }
         }
 
@@ -93,21 +121,23 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         {
             if (IsWaveRunning)
             {
+                Debug.Log("[WaveManager] Cannot start next wave manually: A wave is already running or spawning.", this);
                 return;
             }
 
             int nextWaveIndex = currentWaveIndex < 0 ? 0 : currentWaveIndex + 1;
+            Debug.Log($"[WaveManager] Manually requesting wave {nextWaveIndex}.", this);
             StartWave(nextWaveIndex);
         }
 
-        public EnemySpawnProfile GetDebugSpawnProfile()
+        public EnemyData GetDebugEnemyData()
         {
-            if (waves.Count > 0 && waves[0] != null)
+            if (waves.Count > 0 && waves[0].EnemyGroups.Count > 0)
             {
-                return waves[0].EnemyProfile;
+                return waves[0].EnemyGroups[0].enemyData;
             }
 
-            return new EnemySpawnProfile();
+            return null;
         }
 
         public void NotifyWaveEnemySpawned()
@@ -145,10 +175,15 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         {
             GameEvents.RaiseWaveStarted(waveIndex);
 
-            for (int i = 0; i < waveDefinition.EnemyCount; i++)
+            foreach (var group in waveDefinition.EnemyGroups)
             {
-                spawner.SpawnWaveEnemy(waveDefinition.EnemyProfile);
-                yield return new WaitForSeconds(waveDefinition.SpawnInterval);
+                if (group.enemyData == null) continue;
+
+                for (int i = 0; i < group.count; i++)
+                {
+                    spawner.SpawnWaveEnemy(group.enemyData);
+                    yield return new WaitForSeconds(group.spawnInterval);
+                }
             }
 
             hasSpawnedAllForCurrentWave = true;

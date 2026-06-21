@@ -10,7 +10,7 @@ namespace HonVietThuThanh.Dev2_EnemyWave
     {
         public static Enemy PrepareEnemy(
             Enemy enemy,
-            EnemySpawnProfile profile,
+            EnemyData data,
             LanePath lanePath,
             EnemyPool pool,
             EnemySpawner spawner,
@@ -27,7 +27,7 @@ namespace HonVietThuThanh.Dev2_EnemyWave
                 enemy.transform.SetParent(activeParent, false);
             }
 
-            enemy.Initialize(profile, lanePath, pool, spawner, shouldCountTowardWave);
+            enemy.Initialize(data, lanePath, pool, spawner, shouldCountTowardWave);
             return enemy;
         }
     }
