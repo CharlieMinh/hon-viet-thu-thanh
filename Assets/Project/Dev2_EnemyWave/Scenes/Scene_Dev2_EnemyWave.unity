@@ -702,7 +702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 879dd7d8fa62455ab6557782a7ac5335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoStartOnPlay: 1
+  autoStartOnPlay: 0
   autoAdvanceToNextWave: 0
   nextWaveDelay: 1.5
   waves:
