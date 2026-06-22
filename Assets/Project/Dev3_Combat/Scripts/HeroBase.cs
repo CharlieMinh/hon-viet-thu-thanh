@@ -15,6 +15,7 @@ namespace HonVietThuThanh.Combat
         protected float currentHp;
         protected float attackCooldown;
         protected ITargetable currentTarget;
+        protected virtual bool CanAttackWithoutTarget => false;
 
         protected virtual void Awake()
         {
@@ -29,16 +30,19 @@ namespace HonVietThuThanh.Combat
             attackCooldown -= Time.deltaTime;
 
             currentTarget = FindClosestEnemy();
-            if (currentTarget == null)
+            if (currentTarget == null && !CanAttackWithoutTarget)
             {
                 return;
             }
 
-            Vector3 dir = currentTarget.GetPosition() - transform.position;
-            dir.y = 0f;
-            if (dir != Vector3.zero)
+            if (currentTarget != null)
             {
-                transform.rotation = Quaternion.LookRotation(dir);
+                Vector3 dir = currentTarget.GetPosition() - transform.position;
+                dir.y = 0f;
+                if (dir != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(dir);
+                }
             }
 
             if (attackCooldown <= 0f)
@@ -49,7 +53,7 @@ namespace HonVietThuThanh.Combat
                     return;
                 }
 
-                GameObject targetObject = GetTargetGameObject(currentTarget);
+                GameObject targetObject = GetActionTarget(currentTarget);
                 GameEvents.RaiseHeroAttacked(heroType, targetObject);
                 Debug.Log($"[Dev3 Combat] {heroType} attacked {(targetObject != null ? targetObject.name : "target")}.", this);
             }
@@ -57,6 +61,9 @@ namespace HonVietThuThanh.Combat
 
         protected abstract HeroType heroType { get; }
         protected abstract bool PerformAttack(ITargetable target);
+        protected virtual GameObject GetActionTarget(ITargetable target) => GetTargetGameObject(target);
+
+        public bool NeedsHealing => currentHp < maxHp;
 
         public void TakeDamage(float amount)
         {

@@ -1,4 +1,5 @@
 using System.Collections;
+using HonVietThuThanh.Dev2_EnemyWave;
 using HonVietThuThanh.Shared;
 using UnityEngine;
 
@@ -8,14 +9,19 @@ namespace HonVietThuThanh.Combat
     {
         [SerializeField] private bool createPreviewSetup = true;
         [SerializeField] private bool logCombatEvents = true;
+        [SerializeField] private GameObject projectilePrefab;
+        [SerializeField] private GameObject dev2EnemyPrefab;
 
         private const string PreviewRootName = "Dev3_CombatPreview_Runtime";
         private const float ThanhGiongTargetInitialHp = 20f;
 
-        private GameObject projectilePrefab;
         private GameObject obstaclePrefab;
         private EnemyStub thanhGiongTarget;
+        private Enemy dev2Target;
+        private float dev2TargetInitialHp;
         private int heroAttackEventCount;
+        private int projectileHitCleanupCount;
+        private int projectileTimeoutCleanupCount;
 
         private void OnEnable()
         {
@@ -23,17 +29,26 @@ namespace HonVietThuThanh.Combat
             {
                 GameEvents.OnHeroAttacked += HandleHeroAttacked;
             }
+
+            Projectile.OnProjectileCleanedUp += HandleProjectileCleanedUp;
         }
 
         private void OnDisable()
         {
             GameEvents.OnHeroAttacked -= HandleHeroAttacked;
+            Projectile.OnProjectileCleanedUp -= HandleProjectileCleanedUp;
         }
 
         private void Start()
         {
             if (!createPreviewSetup)
             {
+                return;
+            }
+
+            if (projectilePrefab == null)
+            {
+                Debug.LogError("[Dev3 Combat] Preview requires the stable projectile prefab asset.", this);
                 return;
             }
 
@@ -44,23 +59,36 @@ namespace HonVietThuThanh.Combat
             }
 
             GameObject root = new GameObject(PreviewRootName);
-            projectilePrefab = CreateProjectilePrefab(root.transform);
             obstaclePrefab = CreateObstaclePrefab(root.transform);
 
             CreateThanhGiongLane(root.transform);
             CreateSonTinhLane(root.transform);
             CreateChuDongTuLane(root.transform);
             CreateOutOfRangeEnemy(root.transform);
+            CreateDev2IntegrationLane(root.transform);
+            CreateProjectileTimeoutProbe(root.transform);
             StartCoroutine(ReportPreviewResult());
 
-            Debug.Log("[Dev3 Combat] Preview setup spawned test heroes, enemies, projectile prefab, and obstacle prefab.", this);
+            Debug.Log("[Dev3 Combat] Preview setup spawned test heroes, enemies, and cleanup probes.", this);
         }
 
         private void HandleHeroAttacked(HeroType heroType, GameObject target)
         {
             heroAttackEventCount++;
             string targetName = target != null ? target.name : "target";
-            Debug.Log($"[Dev3 Combat] OnHeroAttacked confirmed: {heroType} attacked {targetName}.", this);
+            Debug.Log($"[Dev3 Combat] OnHeroAttacked confirmed: {heroType} acted on {targetName}.", this);
+        }
+
+        private void HandleProjectileCleanedUp(Projectile.CleanupReason reason)
+        {
+            if (reason == Projectile.CleanupReason.Hit)
+            {
+                projectileHitCleanupCount++;
+            }
+            else if (reason == Projectile.CleanupReason.Timeout)
+            {
+                projectileTimeoutCleanupCount++;
+            }
         }
 
         private void CreateThanhGiongLane(Transform parent)
@@ -134,25 +162,44 @@ namespace HonVietThuThanh.Combat
             CreateEnemy("Dev3_OutOfRangeEnemy_DoesNotAttackUntilMoved", new Vector3(-4f, 0.5f, 8f), 50f, parent);
         }
 
-        private static GameObject CreateProjectilePrefab(Transform parent)
+        private void CreateDev2IntegrationLane(Transform parent)
         {
-            GameObject projectile = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            projectile.name = "Dev3_RuntimeProjectilePrefab";
-            projectile.transform.SetParent(parent);
-            projectile.transform.position = new Vector3(0f, -50f, 0f);
-            projectile.transform.localScale = Vector3.one * 0.25f;
+            if (dev2EnemyPrefab == null)
+            {
+                Debug.LogWarning("[Dev3 Combat] Dev2 enemy prefab is not assigned; integration probe skipped.", this);
+                return;
+            }
 
-            Collider collider = projectile.GetComponent<Collider>();
-            collider.isTrigger = true;
+            GameObject hero = CreateHeroShell("Dev3_TestHero_Dev2Integration", new Vector3(8f, 1f, 0f), parent);
+            var attack = hero.AddComponent<ThanhGiong_Attack>();
+            attack.attackDamage = 10f;
+            attack.attackRange = 5f;
+            attack.attackSpeed = 2f;
+            attack.projectilePrefab = projectilePrefab;
 
-            var rigidbody = projectile.AddComponent<Rigidbody>();
-            rigidbody.isKinematic = true;
-            rigidbody.useGravity = false;
+            GameObject enemy = Instantiate(dev2EnemyPrefab, new Vector3(8f, 0.5f, 3f), Quaternion.identity, parent);
+            enemy.name = "Dev3_RealDev2Enemy_IntegrationProbe";
+            dev2Target = enemy.GetComponent<Enemy>();
+            if (dev2Target != null)
+            {
+                dev2TargetInitialHp = dev2Target.CurrentHealth;
+            }
+        }
 
-            var projectileComponent = projectile.AddComponent<Projectile>();
-            projectileComponent.speed = 8f;
-            projectile.SetActive(false);
-            return projectile;
+        private void CreateProjectileTimeoutProbe(Transform parent)
+        {
+            GameObject probeObject = Instantiate(projectilePrefab, new Vector3(0f, 20f, 0f), Quaternion.identity, parent);
+            probeObject.name = "Dev3_ProjectileTimeoutProbe";
+            Projectile probe = probeObject.GetComponent<Projectile>();
+            if (probe == null)
+            {
+                Debug.LogError("[Dev3 Combat] Stable projectile prefab is missing its Projectile component.", probeObject);
+                Destroy(probeObject);
+                return;
+            }
+
+            probe.Init(Vector3.right, 0f, false);
+            probeObject.SetActive(true);
         }
 
         private static GameObject CreateObstaclePrefab(Transform parent)
@@ -174,11 +221,18 @@ namespace HonVietThuThanh.Combat
             bool attackEventConfirmed = heroAttackEventCount > 0;
             bool damageConfirmed = thanhGiongTarget == null || thanhGiongTarget.CurrentHp < ThanhGiongTargetInitialHp;
             bool deathConfirmed = thanhGiongTarget == null;
+            bool hitCleanupConfirmed = projectileHitCleanupCount > 0;
+            bool timeoutCleanupConfirmed = projectileTimeoutCleanupCount > 0;
+            bool dev2DamageConfirmed = dev2Target != null &&
+                (!dev2Target.IsAlive() || dev2Target.CurrentHealth < dev2TargetInitialHp);
 
             Debug.Log(
                 $"[Dev3 Combat] Preview check: attackEvent={(attackEventConfirmed ? "PASS" : "FAIL")}, " +
                 $"damage={(damageConfirmed ? "PASS" : "FAIL")}, " +
-                $"enemyDeath={(deathConfirmed ? "PASS" : "FAIL")}.",
+                $"enemyDeath={(deathConfirmed ? "PASS" : "FAIL")}, " +
+                $"projectileHitCleanup={(hitCleanupConfirmed ? "PASS" : "FAIL")}, " +
+                $"projectileTimeoutCleanup={(timeoutCleanupConfirmed ? "PASS" : "FAIL")}, " +
+                $"realDev2EnemyDamage={(dev2DamageConfirmed ? "PASS" : "FAIL")}.",
                 this);
         }
     }

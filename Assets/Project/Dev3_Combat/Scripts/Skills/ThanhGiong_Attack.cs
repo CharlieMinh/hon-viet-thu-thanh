@@ -28,11 +28,15 @@ namespace HonVietThuThanh.Combat
             go.SetActive(true);
 
             var proj = go.GetComponent<Projectile>();
-            if (proj != null)
+            if (proj == null)
             {
-                proj.Init(direction, attackDamage, true);
+                Debug.LogError("[Dev3 Combat] Assigned projectile prefab is missing the Projectile component.", go);
+                Destroy(go);
+                return false;
             }
 
+            // Phase 1 uses a regular projectile. Pierce remains available for a later skill upgrade.
+            proj.Init(direction, attackDamage, false);
             return true;
         }
     }

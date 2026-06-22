@@ -10,9 +10,10 @@ namespace HonVietThuThanh.Combat
         [SerializeField] private List<RegisteredPlacement> registeredPlacements = new List<RegisteredPlacement>();
         [SerializeField] private Vector3 combatOrigin = Vector3.zero;
         [SerializeField] private float gridCellSize = 1f;
-
-        private GameObject projectilePrefab;
-        private GameObject obstaclePrefab;
+        [SerializeField] private GameObject projectilePrefab;
+        [SerializeField] private GameObject obstaclePrefab;
+        [SerializeField] private bool allowDebugFallbackCapsule;
+        [SerializeField] private HeroData[] heroDataCatalog;
 
         private void OnEnable()
         {
@@ -44,7 +45,10 @@ namespace HonVietThuThanh.Combat
                 return;
             }
 
-            registeredPlacements.Add(new RegisteredPlacement(data.HeroType, data.GridPosition, hero));
+            if (!IsRegistered(hero))
+            {
+                registeredPlacements.Add(new RegisteredPlacement(data.HeroType, data.GridPosition, hero));
+            }
             Debug.Log(
                 $"[Dev3 Combat] Registered placed hero for combat: {data.HeroType} at {data.GridPosition} using {source}. Duplicate component avoided: {reusedExistingComponent}.",
                 hero);
@@ -76,9 +80,18 @@ namespace HonVietThuThanh.Combat
                 return namedHero;
             }
 
-            createdFallback = true;
-            source = "capsule fallback";
-            return CreateCombatHeroShell(data.HeroType, worldPosition);
+            if (allowDebugFallbackCapsule)
+            {
+                createdFallback = true;
+                source = "debug capsule fallback";
+                return CreateCombatHeroShell(data.HeroType, worldPosition);
+            }
+
+            source = "none";
+            Debug.LogWarning(
+                $"[Dev3 Combat] No placed hero object found for {data.HeroType} at {data.GridPosition}. Debug fallback is disabled.",
+                this);
+            return null;
         }
 
         private GameObject FindPlacedHeroByName(HeroType heroType, int column, int row)
@@ -92,7 +105,7 @@ namespace HonVietThuThanh.Combat
 
             string prefix = $"Hero_{heroType}";
             string coordinateSuffix = $"_{column}_{row}";
-            Transform[] sceneObjects = FindObjectsByType<Transform>(FindObjectsSortMode.None);
+            Transform[] sceneObjects = FindObjectsByType<Transform>();
             foreach (Transform sceneObject in sceneObjects)
             {
                 if (sceneObject.name.StartsWith(prefix) && sceneObject.name.EndsWith(coordinateSuffix))
@@ -136,9 +149,7 @@ namespace HonVietThuThanh.Combat
                         reusedExistingComponent = true;
                     }
 
-                    thanhGiong.attackDamage = 10f;
-                    thanhGiong.attackRange = 5f;
-                    thanhGiong.attackSpeed = 1f;
+                    ApplyStats(thanhGiong, heroType, 10f, 5f, 1f);
                     thanhGiong.projectilePrefab = GetProjectilePrefab();
                     return true;
 
@@ -159,9 +170,7 @@ namespace HonVietThuThanh.Combat
                         reusedExistingComponent = true;
                     }
 
-                    sonTinh.attackDamage = 10f;
-                    sonTinh.attackRange = 5f;
-                    sonTinh.attackSpeed = 1f;
+                    ApplyStats(sonTinh, heroType, 10f, 5f, 1f);
                     sonTinh.obstaclePrefab = GetObstaclePrefab();
                     return true;
 
@@ -182,9 +191,7 @@ namespace HonVietThuThanh.Combat
                         reusedExistingComponent = true;
                     }
 
-                    chuDongTu.attackDamage = 8f;
-                    chuDongTu.attackRange = 5f;
-                    chuDongTu.attackSpeed = 1f;
+                    ApplyStats(chuDongTu, heroType, 8f, 5f, 1f);
                     return true;
 
                 default:
@@ -202,26 +209,45 @@ namespace HonVietThuThanh.Combat
 
         private GameObject GetProjectilePrefab()
         {
-            if (projectilePrefab != null)
+            if (projectilePrefab == null)
             {
-                return projectilePrefab;
+                Debug.LogError("[Dev3 Combat] Projectile prefab is not assigned on Dev3PlacementCombatRegistrar.", this);
             }
 
-            projectilePrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            projectilePrefab.name = "Dev3_PlacementProjectilePrefab";
-            projectilePrefab.transform.position = new Vector3(0f, -50f, 0f);
-            projectilePrefab.transform.localScale = Vector3.one * 0.25f;
-            projectilePrefab.SetActive(false);
-
-            Collider collider = projectilePrefab.GetComponent<Collider>();
-            collider.isTrigger = true;
-
-            var rb = projectilePrefab.AddComponent<Rigidbody>();
-            rb.isKinematic = true;
-            rb.useGravity = false;
-
-            projectilePrefab.AddComponent<Projectile>();
             return projectilePrefab;
+        }
+
+        private bool IsRegistered(GameObject hero)
+        {
+            foreach (RegisteredPlacement placement in registeredPlacements)
+            {
+                if (placement.heroObject == hero)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void ApplyStats(HeroBase hero, HeroType heroType, float defaultDamage, float defaultRange, float defaultSpeed)
+        {
+            HeroData data = null;
+            if (heroDataCatalog != null)
+            {
+                foreach (HeroData candidate in heroDataCatalog)
+                {
+                    if (candidate != null && candidate.heroType == heroType)
+                    {
+                        data = candidate;
+                        break;
+                    }
+                }
+            }
+
+            hero.attackDamage = data != null ? data.damage : defaultDamage;
+            hero.attackRange = data != null ? data.attackRange : defaultRange;
+            hero.attackSpeed = data != null ? data.attackSpeed : defaultSpeed;
         }
 
         private GameObject GetObstaclePrefab()
