@@ -8,18 +8,17 @@ namespace HonVietThuThanh.Dev4
     /// <summary>
     /// EconomyManager — quản lý Linh Khí (gold) của người chơi.
     ///
+    /// LUỒNG ĐÚNG:
+    ///   Dev1 gọi TrySpendForPlacement(heroType) TRƯỚC khi spawn hero.
+    ///   Nếu đủ tiền -> trừ tiền -> Dev1 mới được đặt hero.
+    ///   Nếu không đủ tiền -> không đặt hero.
+    ///
     /// LẮNG NGHE:
-    ///   GameEvents.OnHeroPlaced  → trừ cost của hero đó
-    ///   GameEvents.OnEnemyDied   → cộng goldReward
+    ///   GameEvents.OnEnemyDied -> cộng goldReward.
     ///
-    /// PHÁT RA:
-    ///   OnGoldChanged(int currentGold) → UIManager cập nhật HUD
-    ///
-    /// SETUP trong Inspector:
-    ///   - startGold   = 150 (Phase 1 default)
-    ///   - heroDatas   = kéo tất cả HeroData assets vào đây
+    /// KHÔNG trừ tiền trong OnHeroPlaced để tránh double-spend hoặc free placement.
     /// </summary>
-    public class EconomyManager : MonoBehaviour
+    public class EconomyManager : MonoBehaviour, IPlacementEconomyService
     {
         public static EconomyManager Instance { get; private set; }
 
@@ -38,7 +37,12 @@ namespace HonVietThuThanh.Dev4
 
         private void Awake()
         {
-            if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             Instance = this;
 
             CurrentGold = startGold;
@@ -47,34 +51,59 @@ namespace HonVietThuThanh.Dev4
             Debug.Log($"[EconomyManager] Khởi tạo. Linh Khí: {CurrentGold}");
         }
 
+        private void Start()
+        {
+            // Đẩy giá trị ban đầu lên UI sau khi các UI listener đã OnEnable.
+            OnGoldChanged?.Invoke(CurrentGold);
+        }
+
         private void OnEnable()
         {
-            GameEvents.OnHeroPlaced += HandleHeroPlaced;
-            GameEvents.OnEnemyDied  += HandleEnemyDied;
+            GameEvents.OnEnemyDied += HandleEnemyDied;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnHeroPlaced -= HandleHeroPlaced;
-            GameEvents.OnEnemyDied  -= HandleEnemyDied;
+            GameEvents.OnEnemyDied -= HandleEnemyDied;
         }
 
-        // --- Event Handlers ---
-
-        private void HandleHeroPlaced(HeroType heroType, Vector2Int gridPosition)
+        private void OnDestroy()
         {
-            int cost = GetCost(heroType);
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+        }
+
+        // --- IPlacementEconomyService ---
+
+        /// <summary>
+        /// Dev1 gọi hàm này trước khi đặt hero.
+        /// Đủ tiền thì trừ luôn và trả true.
+        /// Không đủ tiền thì không trừ và trả false.
+        /// </summary>
+        public bool TrySpendForPlacement(HeroType heroType, int cost)
+        {
+            if (cost < 0)
+            {
+                Debug.LogWarning($"[EconomyManager] Cost không hợp lệ cho {heroType}: {cost}");
+                return false;
+            }
+
             if (CurrentGold < cost)
             {
-                // Phase 1: chỉ log — UI validation sẽ ngăn trước khi đặt
-                Debug.LogWarning($"[EconomyManager] Không đủ Linh Khí! Cần {cost}, có {CurrentGold}");
-                return;
+                Debug.LogWarning($"[EconomyManager] Không đủ Linh Khí để đặt {heroType}. Cần {cost}, có {CurrentGold}");
+                return false;
             }
 
             CurrentGold -= cost;
             Debug.Log($"[EconomyManager] Đặt {heroType} (-{cost}). Linh Khí: {CurrentGold}");
             OnGoldChanged?.Invoke(CurrentGold);
+
+            return true;
         }
+
+        // --- Event Handlers ---
 
         private void HandleEnemyDied(GameObject enemy, int goldReward)
         {
@@ -88,7 +117,10 @@ namespace HonVietThuThanh.Dev4
         // --- Public API ---
 
         /// <summary>Kiểm tra người chơi có đủ tiền để đặt hero này không.</summary>
-        public bool CanAfford(HeroType heroType) => CurrentGold >= GetCost(heroType);
+        public bool CanAfford(HeroType heroType)
+        {
+            return CurrentGold >= GetCost(heroType);
+        }
 
         /// <summary>Lấy cost của hero type. Trả về 50 nếu chưa config.</summary>
         public int GetCost(HeroType heroType)
@@ -100,6 +132,8 @@ namespace HonVietThuThanh.Dev4
 
         private void BuildCostLookup()
         {
+            _costLookup.Clear();
+
             foreach (var data in heroDatas)
             {
                 if (data == null) continue;
@@ -108,8 +142,8 @@ namespace HonVietThuThanh.Dev4
 
             // Fallback defaults nếu chưa có HeroData asset
             if (!_costLookup.ContainsKey(HeroType.ThanhGiong)) _costLookup[HeroType.ThanhGiong] = 100;
-            if (!_costLookup.ContainsKey(HeroType.SonTinh))    _costLookup[HeroType.SonTinh]    = 125;
-            if (!_costLookup.ContainsKey(HeroType.ChuDongTu))  _costLookup[HeroType.ChuDongTu]  = 75;
+            if (!_costLookup.ContainsKey(HeroType.SonTinh)) _costLookup[HeroType.SonTinh] = 125;
+            if (!_costLookup.ContainsKey(HeroType.ChuDongTu)) _costLookup[HeroType.ChuDongTu] = 75;
         }
     }
 }

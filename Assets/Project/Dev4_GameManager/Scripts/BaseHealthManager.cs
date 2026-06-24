@@ -59,6 +59,14 @@ namespace HonVietThuThanh.Dev4
             GameEvents.OnEnemyReachedBase -= HandleEnemyReachedBase;
         }
 
+        private void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+        }
+
         // --- Event Handler ---
 
         private void HandleEnemyReachedBase(GameObject enemy)

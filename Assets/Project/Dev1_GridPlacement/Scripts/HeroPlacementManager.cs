@@ -56,6 +56,24 @@ namespace HonVietThuThanh.Dev1
 
         public static event Action<HeroType, Vector2Int, GameObject> OnHeroPlacedWithObject;
 
+        private void OnEnable()
+        {
+            GameEvents.OnHeroSelected += HandleHeroSelected;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.OnHeroSelected -= HandleHeroSelected;
+        }
+
+        private void HandleHeroSelected(HeroType heroType)
+        {
+            selectedHeroType = heroType;
+            UpdatePreviewState(currentPreviewCell);
+
+            Debug.Log($"[HeroPlacementManager] Selected hero changed to {selectedHeroType}");
+        }
+
         private void Start()
         {
             if (generateGridOnStart)
@@ -153,7 +171,15 @@ namespace HonVietThuThanh.Dev1
             if (economyServiceBehaviour == null)
             {
                 economyService = null;
-                hasWarnedInvalidEconomyService = false;
+
+                if (!hasWarnedInvalidEconomyService)
+                {
+                    Debug.LogError(
+                        $"{nameof(HeroPlacementManager)} missing economy service. Placement is blocked to prevent free heroes.",
+                        this);
+                    hasWarnedInvalidEconomyService = true;
+                }
+
                 return null;
             }
 
@@ -163,10 +189,11 @@ namespace HonVietThuThanh.Dev1
             }
 
             economyService = economyServiceBehaviour as IPlacementEconomyService;
+
             if (economyService == null && !hasWarnedInvalidEconomyService)
             {
-                Debug.LogWarning(
-                    $"{nameof(HeroPlacementManager)} economy service '{economyServiceBehaviour.name}' does not implement {nameof(IPlacementEconomyService)}. Placement will continue without economy blocking.",
+                Debug.LogError(
+                    $"{nameof(HeroPlacementManager)} economy service '{economyServiceBehaviour.name}' does not implement {nameof(IPlacementEconomyService)}. Placement is blocked.",
                     this);
                 hasWarnedInvalidEconomyService = true;
             }
@@ -187,15 +214,20 @@ namespace HonVietThuThanh.Dev1
                 }
             }
 
+            Debug.LogWarning(
+                $"[HeroPlacementManager] Missing placement cost for {heroType}. Using default cost: {defaultHeroCost}",
+                this);
+
             return Mathf.Max(0, defaultHeroCost);
         }
 
         private bool TryPayPlacementCost(HeroType heroType)
         {
             IPlacementEconomyService service = GetEconomyService();
+
             if (service == null)
             {
-                return true;
+                return false;
             }
 
             int cost = GetPlacementCost(heroType);

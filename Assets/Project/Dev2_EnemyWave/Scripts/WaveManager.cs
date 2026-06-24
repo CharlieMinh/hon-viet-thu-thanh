@@ -37,8 +37,8 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             }
         }
 
-        [SerializeField] private bool autoStartOnPlay = true;
-        [SerializeField] private bool autoAdvanceToNextWave = true;
+        [SerializeField] private bool autoStartOnPlay = false;
+        [SerializeField] private bool autoAdvanceToNextWave = false;
         [SerializeField] private float nextWaveDelay = 2.5f;
         [SerializeField] private List<WaveDefinition> waves = new();
 
@@ -57,6 +57,10 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             if (autoStartOnPlay)
             {
                 StartPrototype();
+            }
+            else
+            {
+                Debug.Log("[WaveManager] Auto start disabled. Waiting for Start Wave request.", this);
             }
         }
 
@@ -205,6 +209,10 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             if (autoAdvanceToNextWave && completedWaveIndex + 1 < waves.Count)
             {
                 delayedNextWaveRoutine = StartCoroutine(StartNextWaveAfterDelay(completedWaveIndex + 1));
+            }
+            else
+            {
+                Debug.Log($"[WaveManager] Wave {completedWaveIndex} completed. Waiting for manual next wave request.", this);
             }
         }
 

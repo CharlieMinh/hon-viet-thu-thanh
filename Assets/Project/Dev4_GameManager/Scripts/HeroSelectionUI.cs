@@ -67,45 +67,96 @@ namespace HonVietThuThanh.Dev4
         {
             BuildButtons();
             // Chọn hero đầu tiên mặc định
-            if (heroDatas.Count > 0)
-                SelectHero(heroDatas[0].heroType);
+            HeroData firstHero = heroDatas.Find(data => data != null);
+            if (firstHero != null)
+                SelectHero(firstHero.heroType);
         }
 
         // --- Build UI ---
 
         private void BuildButtons()
         {
+            if (heroButtonContainer == null)
+            {
+                Debug.LogError("[HeroSelectionUI] Chưa gán heroButtonContainer.", this);
+                return;
+            }
+
+            if (heroButtonPrefab == null)
+            {
+                Debug.LogError("[HeroSelectionUI] Chưa gán heroButtonPrefab.", this);
+                return;
+            }
+
+            foreach (Transform child in heroButtonContainer)
+            {
+                Destroy(child.gameObject);
+            }
+
+            _buttons.Clear();
+
             foreach (var data in heroDatas)
             {
-                if (data == null || heroButtonPrefab == null) continue;
+                if (data == null)
+                {
+                    Debug.LogWarning("[HeroSelectionUI] HeroData bị null, bỏ qua.");
+                    continue;
+                }
 
                 GameObject go = Instantiate(heroButtonPrefab, heroButtonContainer);
                 go.name = $"HeroBtn_{data.heroType}";
 
-                // Gán tên
+                // Gán tên hero
                 var nameText = go.transform.Find("NameText")?.GetComponent<TextMeshProUGUI>();
-                if (nameText) nameText.text = data.heroName;
 
-                // Gán icon
+                if (nameText == null)
+                {
+                    nameText = go.GetComponentInChildren<TextMeshProUGUI>();
+                }
+
+                if (nameText)
+                {
+                    nameText.text = data.heroName;
+                }
+                else
+                {
+                    Debug.LogWarning($"[HeroSelectionUI] Không tìm thấy text để hiện tên hero trên {go.name}", go);
+                }
+
+                // Gán icon nếu prefab có Icon
                 var icon = go.transform.Find("Icon")?.GetComponent<Image>();
-                if (icon && data.heroIcon) icon.sprite = data.heroIcon;
+                if (icon && data.heroIcon)
+                {
+                    icon.sprite = data.heroIcon;
+                }
 
-                // Gán cost text
+                // Gán cost text nếu prefab có CostText
                 var costText = go.transform.Find("CostText")?.GetComponent<TextMeshProUGUI>();
-                if (costText) costText.text = $"⚡ {data.cost}";
+                if (costText)
+                {
+                    costText.text = $"⚡ {data.cost}";
+                }
 
-                var btn        = go.GetComponent<Button>();
+                var btn = go.GetComponent<Button>();
                 var background = go.GetComponent<Image>();
-                HeroType capturedType = data.heroType; // capture cho lambda
 
-                btn?.onClick.AddListener(() => SelectHero(capturedType));
+                if (btn == null)
+                {
+                    Debug.LogError($"[HeroSelectionUI] Prefab {go.name} thiếu Button component.", go);
+                    continue;
+                }
+
+                HeroType capturedType = data.heroType;
+
+                btn.onClick.RemoveAllListeners();
+                btn.onClick.AddListener(() => SelectHero(capturedType));
 
                 _buttons.Add(new HeroButtonEntry
                 {
-                    HeroType   = data.heroType,
-                    Button     = btn,
+                    HeroType = data.heroType,
+                    Button = btn,
                     Background = background,
-                    CostText   = costText
+                    CostText = costText
                 });
             }
 

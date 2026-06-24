@@ -50,15 +50,26 @@ namespace HonVietThuThanh.Dev4
 
         private void Awake()
         {
-            if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+            Debug.Log($"[UIManager] Awake on {gameObject.name}, parent = {(transform.parent ? transform.parent.name : "null")}", this);
+
+            if (Instance != null && Instance != this)
+            {
+                Debug.LogWarning($"[UIManager] Duplicate detected. Existing = {Instance.name}, New = {gameObject.name}. Removing only the duplicate component.", this);
+                enabled = false;
+                Destroy(this);
+                return;
+            }
+
             Instance = this;
         }
 
         private void OnEnable()
         {
-            EconomyManager.OnGoldChanged        += UpdateGoldUI;
-            BaseHealthManager.OnBaseHPChanged   += UpdateBaseHPUI;
-            GameEvents.OnWaveStarted            += UpdateWaveUI;
+            Debug.Log("[UIManager] OnEnable subscribe events", this);
+
+            EconomyManager.OnGoldChanged += UpdateGoldUI;
+            BaseHealthManager.OnBaseHPChanged += UpdateBaseHPUI;
+            GameEvents.OnWaveStarted += UpdateWaveUI;
             GameStateManager.OnGameStateChanged += HandleGameStateChanged;
         }
 
@@ -70,17 +81,27 @@ namespace HonVietThuThanh.Dev4
             GameStateManager.OnGameStateChanged -= HandleGameStateChanged;
         }
 
+        private void OnDestroy()
+        {
+            Debug.Log($"[UIManager] OnDestroy called on {gameObject.name}", this);
+
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+        }
+
         private void Start()
         {
-            // Ẩn tất cả overlay panels
-            SetActive(winPanel,  false);
+            Debug.Log("[UIManager] Start called", this);
+
+            SetActive(winPanel, false);
             SetActive(losePanel, false);
             SetActive(startWaveButton, true);
 
-            // Hiển thị giá trị ban đầu
             int initGold = EconomyManager.Instance ? EconomyManager.Instance.CurrentGold : 150;
-            int initHP   = BaseHealthManager.Instance ? BaseHealthManager.Instance.CurrentBaseHP : 100;
-            int maxHP    = BaseHealthManager.Instance ? BaseHealthManager.Instance.MaxBaseHP    : 100;
+            int initHP = BaseHealthManager.Instance ? BaseHealthManager.Instance.CurrentBaseHP : 100;
+            int maxHP = BaseHealthManager.Instance ? BaseHealthManager.Instance.MaxBaseHP : 100;
 
             UpdateGoldUI(initGold);
             UpdateBaseHPUI(initHP, maxHP);
@@ -91,12 +112,12 @@ namespace HonVietThuThanh.Dev4
 
         private void UpdateGoldUI(int gold)
         {
-            if (goldText) goldText.text = $"⚡ {gold}";
+            if (goldText) goldText.text = $"Linh Khi: {gold}";
         }
 
         private void UpdateBaseHPUI(int current, int max)
         {
-            if (baseHPText)   baseHPText.text = $"❤ {current} / {max}";
+            if (baseHPText)   baseHPText.text = $"Base HP: {current} / {max}";
             if (baseHPSlider)
             {
                 baseHPSlider.maxValue = max;
@@ -176,7 +197,21 @@ namespace HonVietThuThanh.Dev4
         // --- Helper ---
         private static void SetActive(GameObject go, bool active)
         {
-            if (go) go.SetActive(active);
+            if (!go)
+            {
+                Debug.LogWarning("[UIManager] SetActive skipped because target is null.");
+                return;
+            }
+
+            Debug.Log($"[UIManager] SetActive target={go.name}, active={active}, scene={go.scene.name}", go);
+
+            if (go.GetComponent<Canvas>() != null)
+            {
+                Debug.LogError($"[UIManager] ERROR: Trying to SetActive Canvas directly: {go.name}", go);
+                return;
+            }
+
+            go.SetActive(active);
         }
     }
 }
