@@ -18,12 +18,19 @@ namespace HonVietThuThanh.Dev4
     /// GameStateManager — máy trạng thái trung tâm của game.
     ///
     /// LẮNG NGHE:
-    ///   GameEvents.OnWaveStarted   → chuyển sang WaveInProgress
-    ///   GameEvents.OnWaveCompleted → nếu đủ 3 wave → Win, ngược lại → WaveComplete
+    ///   GameEvents.OnWaveStarted(waveIndex)   → 0-based index từ Dev2, chuyển sang WaveInProgress
+    ///   GameEvents.OnWaveCompleted(waveNumber) → 1-based number từ Dev2 (= waveIndex + 1)
+    ///                                            nếu waveNumber >= totalWaves → Win
+    ///                                            ngược lại → WaveComplete
     ///   BaseHealthManager.OnBaseDestroyed → chuyển sang Lose
     ///
     /// PHÁT RA:
     ///   OnGameStateChanged(GameState) → UIManager hiện/ẩn panel, button
+    ///
+    /// CONVENTION đã xác nhận với Dev2:
+    ///   OnWaveStarted  → tham số là waveIndex (0-based): wave 1 = 0, wave 2 = 1, wave 3 = 2
+    ///   OnWaveCompleted → tham số là waveNumber (1-based): wave 1 = 1, wave 2 = 2, wave 3 = 3
+    ///   (Dev2 WaveManager line 225: RaiseWaveCompleted(completedWaveNumber) = completedWaveIndex + 1)
     ///
     /// SETUP trong Inspector:
     ///   - totalWaves = 3
@@ -70,7 +77,7 @@ namespace HonVietThuThanh.Dev4
             SetState(GameState.WaveInProgress);
         }
 
-        private void HandleWaveCompleted(int waveIndex)
+        private void HandleWaveCompleted(int waveNumber)
         {
             int completedWaveIndex = ResolveCompletedWaveIndex(waveIndex);
             bool isLastWave = (completedWaveIndex >= totalWaves - 1);
@@ -79,7 +86,6 @@ namespace HonVietThuThanh.Dev4
 
         private void HandleBaseDestroyed()
         {
-            // Lose có thể xảy ra bất kỳ lúc nào, kể cả giữa wave
             SetState(GameState.Lose);
         }
 
