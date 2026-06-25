@@ -2,35 +2,35 @@
 
 ## Dev3
 
-- Enemy prefab placeholder nằm tại `Assets/Project/Dev2_EnemyWave/Prefabs/Enemy_Prototype.prefab`.
-- Component `HonVietThuThanh.Dev2_EnemyWave.Enemy` implement cả `IDamageable` và `ITargetable`.
-- Projectile chỉ cần gọi `TakeDamage(float amount)` lên component `Enemy` hoặc bất kỳ component nào đọc ra được qua `IDamageable`.
-- `ITargetable.GetPosition()` trả về `transform.position` hiện tại của enemy.
-- `ITargetable.IsAlive()` trả `false` ngay sau khi enemy chết hoặc chạm base để projectile/hệ target không giữ mục tiêu lỗi thời.
-- Collider nằm ngay trên root cube của prefab placeholder, nên raycast/trigger hit trực tiếp vào object root là đủ.
+- Enemy placeholder prefab is at `Assets/Project/Dev2_EnemyWave/Prefabs/Enemy_Prototype.prefab`.
+- `HonVietThuThanh.Dev2_EnemyWave.Enemy` implements both `IDamageable` and `ITargetable`.
+- Projectiles only need to call `TakeDamage(float amount)` on the `Enemy` component, or any component reached through `IDamageable`.
+- `ITargetable.GetPosition()` returns the enemy's current `transform.position`.
+- `ITargetable.IsAlive()` returns `false` immediately after the enemy dies or reaches base, so targeting systems can drop stale targets.
+- The placeholder cube keeps its collider on the root object, so direct raycast or trigger hits on the root are sufficient.
 
 ## Dev4
 
-- `GameEvents.RaiseEnemySpawned(EnemyType, GameObject)` được bắn mỗi lần Dev2 spawn ra 1 enemy instance.
-- `GameEvents.RaiseEnemyDied(GameObject enemy, int goldReward)` được bắn đúng 1 lần cho mỗi enemy chết vì hết HP.
-- `GameEvents.RaiseEnemyReachedBase(GameObject enemy)` được bắn đúng 1 lần cho mỗi enemy chạm đích lane.
-- Enemy chết sẽ không còn được tính là reached base; enemy đã reached base cũng không còn bắn death event.
-- `GameEvents.RaiseWaveStarted(int waveIndex)` và `GameEvents.RaiseWaveCompleted(int waveIndex)` đang dùng `waveIndex` zero-based.
+- `GameEvents.RaiseEnemySpawned(EnemyType, GameObject)` fires every time Dev2 spawns one enemy instance.
+- `GameEvents.RaiseEnemyDied(GameObject enemy, int goldReward)` fires exactly once for each enemy that dies from HP reaching zero.
+- `GameEvents.RaiseEnemyReachedBase(GameObject enemy)` fires exactly once for each enemy that reaches the lane end.
+- An enemy that dies will not also count as reached base, and an enemy that reaches base will not also fire the death event.
+- `GameEvents.RaiseWaveStarted(int waveIndex)` and `GameEvents.RaiseWaveCompleted(int waveIndex)` both use zero-based `waveIndex`.
 
 ## Dev5
 
-- Scene prototype: `Assets/Project/Dev2_EnemyWave/Scenes/Scene_Dev2_EnemyWave.unity`.
-- Prefab enemy: `Assets/Project/Dev2_EnemyWave/Prefabs/Enemy_Prototype.prefab`.
-- Object bắt buộc để mang sang integration scene:
-  - `EnemySpawner`
-  - `WaveManager`
-  - `LanePath`
-  - `EnemyRoot`
-  - `EnemyPool`
-- Prototype hiện dùng straight lane với 2 mốc `LaneStart` và `LaneEnd`; khi căn theo board chỉ cần đặt lại 2 transform này.
-- Debug controls trong scene prototype:
-  - `Space`: spawn 1 enemy test
-  - `K`: gây damage lên enemy đầu tiên còn sống
-  - `R`: reset prototype và chạy lại
-  - `N`: chạy wave kế tiếp thủ công
-- Nếu mang vào `Scene_Integration`, có thể giữ `EnemySpawner`, `WaveManager`, `LanePath`, `EnemyPool`; `EnemyWaveDebugInput` chỉ nên giữ tạm trong lúc tích hợp/test.
+- Prototype scene: `Assets/Project/Dev2_EnemyWave/Scenes/Scene_Dev2_EnemyWave.unity`.
+- Enemy prefab: `Assets/Project/Dev2_EnemyWave/Prefabs/Enemy_Prototype.prefab`.
+- Required objects to bring into the integration scene:
+- `EnemySpawner`
+- `WaveManager`
+- `LanePath`
+- `EnemyRoot`
+- `EnemyPool`
+- The prototype currently uses a straight lane with `LaneStart` and `LaneEnd`; when aligning to the board, only those transforms need to be repositioned.
+- Debug controls in the prototype scene:
+- `Space`: spawn one test enemy
+- `K`: damage the first alive enemy
+- `R`: reset the prototype and start again
+- `N`: start the next wave manually
+- If moved into `Scene_Integration`, `EnemySpawner`, `WaveManager`, `LanePath`, and `EnemyPool` can remain; `EnemyWaveDebugInput` should stay temporary for integration testing only.
