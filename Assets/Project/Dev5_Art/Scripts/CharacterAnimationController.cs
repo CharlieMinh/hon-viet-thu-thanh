@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 namespace HonVietThuThanh.Dev5
 {
@@ -18,6 +19,12 @@ namespace HonVietThuThanh.Dev5
         [Tooltip("Ngưỡng khoảng cách tối thiểu mỗi giây để coi là di chuyển")]
         public float movementThreshold = 0.01f;
 
+        [Tooltip("Delay thêm (giây) sau khi animation Death kết thúc trước khi Destroy")]
+        public float deathLingerSeconds = 0.5f;
+
+        [Tooltip("Fallback delay (giây) nếu không đọc được clip length của animation Death")]
+        public float deathFallbackDelay = 2f;
+
         [Header("Animator Reference (Auto Detected)")]
         [SerializeField] private Animator animator;
 
@@ -25,6 +32,7 @@ namespace HonVietThuThanh.Dev5
         private Health health;
         private bool isMoving = false;
         private bool isDirectControl = false;
+        private bool isDying = false;
 
         private void Awake()
         {
@@ -51,6 +59,9 @@ namespace HonVietThuThanh.Dev5
 
         private void Update()
         {
+            // Không cập nhật animation khi đang dying
+            if (isDying) return;
+
             // Tự động phát hiện di chuyển nếu không chịu điều khiển trực tiếp từ script ngoài
             if (autoDetectMovement && !isDirectControl)
             {
@@ -132,6 +143,7 @@ namespace HonVietThuThanh.Dev5
         /// </summary>
         public void SetMoving(bool moving)
         {
+            if (isDying) return;
             isDirectControl = true; // Bật điều khiển trực tiếp
             if (isMoving != moving)
             {
@@ -141,19 +153,85 @@ namespace HonVietThuThanh.Dev5
         }
 
         /// <summary>
+        /// Khôi phục lại autoDetect (gọi khi thoát khỏi Combat Phase).
+        /// </summary>
+        public void ResetToAutoDetect()
+        {
+            if (isDying) return;
+            isDirectControl = false;
+            isMoving = false;
+            UpdateAnimatorBool("IsMoving", false);
+            lastPosition = transform.position;
+        }
+
+        /// <summary>
         /// Kích hoạt trigger Attack.
         /// </summary>
         public void PlayAttack()
         {
+            if (isDying) return;
             TriggerAnimator("Attack");
         }
 
         /// <summary>
-        /// Kích hoạt trigger Death.
+        /// Kích hoạt trigger Death, rồi Destroy sau khi animation kết thúc.
         /// </summary>
         public void PlayDeath()
         {
+            if (isDying) return;
+            isDying = true;
+
+            // Dừng di chuyển và đặt IsMoving = false
+            isMoving = false;
+            UpdateAnimatorBool("IsMoving", false);
+
             TriggerAnimator("Death");
+
+            // Bắt đầu coroutine chờ animation xong rồi Destroy
+            StartCoroutine(DestroyAfterDeathAnimation());
+        }
+
+        /// <summary>
+        /// Coroutine: đợi animation Death phát xong, rồi gọi Health.DestroyAfterDelay().
+        /// </summary>
+        private IEnumerator DestroyAfterDeathAnimation()
+        {
+            float clipLength = deathFallbackDelay;
+
+            if (animator != null)
+            {
+                // Đợi 1 frame để Animator xử lý trigger và chuyển state
+                yield return null;
+                yield return null;
+
+                // Lấy độ dài clip Death hiện tại đang phát
+                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                if (stateInfo.IsName("Death") || stateInfo.IsTag("Death"))
+                {
+                    float rawLength = stateInfo.length;
+                    if (rawLength > 0.1f)
+                    {
+                        clipLength = rawLength;
+                    }
+                }
+
+                if (debugLog)
+                {
+                    Debug.Log($"[{gameObject.name}] Death animation clip length = {clipLength:F2}s. Sẽ Destroy sau {clipLength + deathLingerSeconds:F2}s.");
+                }
+            }
+
+            yield return new WaitForSeconds(clipLength + deathLingerSeconds);
+
+            // Gọi Destroy qua Health nếu còn tồn tại
+            if (health != null && gameObject != null)
+            {
+                health.DestroyAfterDelay(0f);
+            }
+            else if (gameObject != null)
+            {
+                Destroy(gameObject);
+            }
         }
 
         private void UpdateAnimatorBool(string parameterName, bool value)
