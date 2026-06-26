@@ -174,7 +174,10 @@ namespace HonVietThuThanh.Dev5
             target = null;
             cooldownTimer = 0f;
             hasLoggedNoEnemies = false;
-            if (animationController != null) animationController.SetMoving(false);
+            if (animationController != null)
+            {
+                animationController.ResetToAutoDetect();
+            }
         }
     }
 }

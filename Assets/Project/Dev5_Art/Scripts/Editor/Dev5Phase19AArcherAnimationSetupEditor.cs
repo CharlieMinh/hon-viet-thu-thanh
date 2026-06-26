@@ -36,13 +36,63 @@ namespace HonVietThuThanh.Dev5Editor
                 AssetDatabase.Refresh();
             }
 
-            // 2. Tạo hoặc tải các clip placeholder (.anim)
-            AnimationClip idleClip = GetOrCreateClip(ANIMATIONS_DIR + "/Archer_Idle_Placeholder.anim");
-            AnimationClip moveClip = GetOrCreateClip(ANIMATIONS_DIR + "/Archer_Move_Placeholder.anim");
-            AnimationClip attackClip = GetOrCreateClip(ANIMATIONS_DIR + "/Archer_Attack_Placeholder.anim");
-            AnimationClip deathClip = GetOrCreateClip(ANIMATIONS_DIR + "/Archer_Death_Placeholder.anim");
+            // 2. Quét và phân loại các file FBX từ thư mục Animation/
+            string realAnimDir = "Assets/Project/Dev5_Art/Animations/Archer/Animation";
+            string idleFbx = null;
+            string moveFbx = null;
+            string attackFbx = null;
+            string deathFbx = null;
 
-            // 3. Tạo hoặc tải Animator Controller
+            if (System.IO.Directory.Exists(realAnimDir))
+            {
+                string[] fbxFiles = System.IO.Directory.GetFiles(realAnimDir, "*.fbx", System.IO.SearchOption.AllDirectories);
+                foreach (string file in fbxFiles)
+                {
+                    string normalizedPath = file.Replace('\\', '/');
+                    string fileNameLower = System.IO.Path.GetFileName(file).ToLower();
+                    string dirNameLower = System.IO.Path.GetDirectoryName(file).ToLower().Replace('\\', '/');
+
+                    if (dirNameLower.Contains("/idle"))
+                    {
+                        idleFbx = normalizedPath;
+                    }
+                    else if (dirNameLower.Contains("/t_pose") && fileNameLower.Contains("walking"))
+                    {
+                        moveFbx = normalizedPath;
+                    }
+                    else if (dirNameLower.Contains("/attack"))
+                    {
+                        attackFbx = normalizedPath;
+                    }
+                    else if (dirNameLower.Contains("/dead") || dirNameLower.Contains("/death"))
+                    {
+                        deathFbx = normalizedPath;
+                    }
+                }
+            }
+
+            // 3. Định cấu hình Rig = Humanoid và Loop settings cho từng FBX
+            ConfigureModelImporter(idleFbx, true);
+            ConfigureModelImporter(moveFbx, true);
+            ConfigureModelImporter(attackFbx, false);
+            ConfigureModelImporter(deathFbx, false);
+
+            AssetDatabase.Refresh();
+
+            // 4. Lấy các clip thật hoặc dùng placeholder làm fallback
+            AnimationClip idleClip = GetClipFromFBX(idleFbx) ?? GetOrCreateClip(ANIMATIONS_DIR + "/Archer_Idle_Placeholder.anim");
+            AnimationClip moveClip = GetClipFromFBX(moveFbx) ?? GetOrCreateClip(ANIMATIONS_DIR + "/Archer_Move_Placeholder.anim");
+            AnimationClip attackClip = GetClipFromFBX(attackFbx) ?? GetOrCreateClip(ANIMATIONS_DIR + "/Archer_Attack_Placeholder.anim");
+            AnimationClip deathClip = GetClipFromFBX(deathFbx) ?? GetOrCreateClip(ANIMATIONS_DIR + "/Archer_Death_Placeholder.anim");
+
+            // Báo cáo kết quả map hoạt ảnh
+            Debug.Log($"[Phase19ASetup] Mapping clips:\n" +
+                      $"- Idle: {(idleFbx != null ? System.IO.Path.GetFileName(idleFbx) : "Fallback to placeholder")}\n" +
+                      $"- Move: {(moveFbx != null ? System.IO.Path.GetFileName(moveFbx) : "Fallback to placeholder")}\n" +
+                      $"- Attack: {(attackFbx != null ? System.IO.Path.GetFileName(attackFbx) : "Fallback to placeholder")}\n" +
+                      $"- Death: {(deathFbx != null ? System.IO.Path.GetFileName(deathFbx) : "Fallback to placeholder")}");
+
+            // 5. Tạo hoặc tải Animator Controller
             AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(CONTROLLER_PATH);
             if (controller == null)
             {
@@ -50,18 +100,22 @@ namespace HonVietThuThanh.Dev5Editor
                 Debug.Log($"[Phase19ASetup] Đã tạo Animator Controller mới tại: {CONTROLLER_PATH}");
             }
 
-            // 4. Thiết lập Parameters
+            // 6. Thiết lập Parameters
             EnsureParameter(controller, "IsMoving", AnimatorControllerParameterType.Bool);
             EnsureParameter(controller, "Attack", AnimatorControllerParameterType.Trigger);
             EnsureParameter(controller, "Death", AnimatorControllerParameterType.Trigger);
 
-            // 5. Thiết lập States và Transitions
+            // 7. Thiết lập States và Transitions
             SetupStatesAndTransitions(controller, idleClip, moveClip, attackClip, deathClip);
 
-            // 6. Cập nhật Prefab Archer
-            RestructureArcherPrefab(ARCHER_PREFAB_PATH, controller);
+            // 8. Cập nhật Prefab Archer (sử dụng Model từ Alert/Idle FBX làm visual chính)
+            string modelToInstantiate = idleFbx ?? moveFbx ?? attackFbx ?? deathFbx;
+            RestructureArcherPrefab(ARCHER_PREFAB_PATH, controller, modelToInstantiate);
 
             Undo.CollapseUndoOperations(undoGroup);
+
+            // Đánh dấu controller dirty để lưu thay đổi
+            EditorUtility.SetDirty(controller);
 
             // Lưu thay đổi asset database
             AssetDatabase.SaveAssets();
@@ -70,13 +124,71 @@ namespace HonVietThuThanh.Dev5Editor
             Debug.Log($"[Phase19ASetup] ✅ Setup Phase 19A - Archer Animation hoàn tất!");
         }
 
+        private static void ConfigureModelImporter(string fbxPath, bool isLoop)
+        {
+            if (string.IsNullOrEmpty(fbxPath)) return;
+
+            ModelImporter modelImporter = AssetImporter.GetAtPath(fbxPath) as ModelImporter;
+            if (modelImporter != null)
+            {
+                bool changed = false;
+                if (modelImporter.animationType != ModelImporterAnimationType.Human)
+                {
+                    modelImporter.animationType = ModelImporterAnimationType.Human;
+                    changed = true;
+                }
+
+                ModelImporterClipAnimation[] clips = modelImporter.clipAnimations;
+                if (clips == null || clips.Length == 0)
+                {
+                    clips = modelImporter.defaultClipAnimations;
+                }
+
+                if (clips != null && clips.Length > 0)
+                {
+                    for (int i = 0; i < clips.Length; i++)
+                    {
+                        if (clips[i].loopTime != isLoop)
+                        {
+                            clips[i].loopTime = isLoop;
+                            changed = true;
+                        }
+                    }
+                    if (changed)
+                    {
+                        modelImporter.clipAnimations = clips;
+                    }
+                }
+
+                if (changed)
+                {
+                    modelImporter.SaveAndReimport();
+                    Debug.Log($"[Phase19ASetup] Configured Rig=Humanoid and Loop={isLoop} on: {fbxPath}");
+                }
+            }
+        }
+
+        private static AnimationClip GetClipFromFBX(string fbxPath)
+        {
+            if (string.IsNullOrEmpty(fbxPath)) return null;
+
+            var assets = AssetDatabase.LoadAllAssetsAtPath(fbxPath);
+            foreach (var asset in assets)
+            {
+                if (asset is AnimationClip clip && !clip.name.StartsWith("__"))
+                {
+                    return clip;
+                }
+            }
+            return null;
+        }
+
         private static AnimationClip GetOrCreateClip(string path)
         {
             AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
             if (clip == null)
             {
                 clip = new AnimationClip();
-                // Set default properties if needed
                 AssetDatabase.CreateAsset(clip, path);
                 Debug.Log($"[Phase19ASetup] Đã tạo AnimationClip placeholder mới tại: {path}");
             }
@@ -136,11 +248,18 @@ namespace HonVietThuThanh.Dev5Editor
             anyToAttack.duration = 0.1f;
             anyToAttack.AddCondition(AnimatorConditionMode.If, 0f, "Attack");
 
-            // 4. Attack -> Idle sau khi attack kết thúc (Exit Time)
+            // 4. Attack -> Idle/Move sau khi attack kết thúc (Exit Time)
             var attackToIdle = attackState.AddTransition(idleState);
             attackToIdle.hasExitTime = true;
             attackToIdle.exitTime = 1.0f; // Chạy hết animation của clip
             attackToIdle.duration = 0.2f;
+            attackToIdle.AddCondition(AnimatorConditionMode.IfNot, 0f, "IsMoving");
+
+            var attackToMove = attackState.AddTransition(moveState);
+            attackToMove.hasExitTime = true;
+            attackToMove.exitTime = 1.0f;
+            attackToMove.duration = 0.2f;
+            attackToMove.AddCondition(AnimatorConditionMode.If, 0f, "IsMoving");
 
             // 5. Any State -> Death khi trigger Death
             var anyToDeath = rootStateMachine.AddAnyStateTransition(deathState);
@@ -164,7 +283,7 @@ namespace HonVietThuThanh.Dev5Editor
             return state;
         }
 
-        private static void RestructureArcherPrefab(string path, AnimatorController controller)
+        private static void RestructureArcherPrefab(string path, AnimatorController controller, string modelFbxPath)
         {
             GameObject prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
             if (prefabAsset == null)
@@ -189,19 +308,112 @@ namespace HonVietThuThanh.Dev5Editor
                 Debug.Log($"[Phase19ASetup] Đã thêm CharacterAnimationController vào root của Archer prefab.");
             }
 
-            // 2. Cập nhật Animator nếu model con trong ModelSlot có sẵn Animator
+            // 2. Cập nhật ModelSlot và Animator
             Transform visualChild = instance.transform.Find("Visual");
             if (visualChild != null)
             {
                 Transform modelSlotChild = visualChild.Find("ModelSlot");
                 if (modelSlotChild != null)
                 {
-                    Animator modelAnimator = modelSlotChild.GetComponentInChildren<Animator>();
-                    if (modelAnimator != null)
+                    GameObject modelFbx = AssetDatabase.LoadAssetAtPath<GameObject>(modelFbxPath);
+                    if (modelFbx != null)
                     {
-                        modelAnimator.runtimeAnimatorController = controller;
-                        modelAnimator.applyRootMotion = false;
-                        Debug.Log($"[Phase19ASetup] Đã gán AnimatorController và đặt applyRootMotion = false cho model con của Archer.");
+                        // Luôn dọn dẹp ModelSlot để đảm bảo chỉ dùng model Skinned FBX thật sự
+                        for (int i = modelSlotChild.childCount - 1; i >= 0; i--)
+                        {
+                            UnityEngine.Object.DestroyImmediate(modelSlotChild.GetChild(i).gameObject);
+                        }
+
+                        GameObject modelInstance = PrefabUtility.InstantiatePrefab(modelFbx, modelSlotChild) as GameObject;
+                        if (modelInstance != null)
+                        {
+                            modelInstance.name = "Meshy_AI_Dragonbow_General_biped";
+
+                            // Fix: Dịch chuyển model xuống -1 để chân chạm đất
+                            // (Root prefab đặt ở cellTop + 1.0 để CapsuleCollider center = 0, cao 2 đơn vị,
+                            //  nên chân model phải tại localY = -1.0 để chạm mặt ô cờ)
+                            modelInstance.transform.localPosition = new Vector3(0f, -1f, 0f);
+                            modelInstance.transform.localRotation = Quaternion.identity;
+                            modelInstance.transform.localScale = Vector3.one;
+
+                            // Cấu hình Material và Texture cho SkinnedMeshRenderer của model
+                            string fbxDir = System.IO.Path.GetDirectoryName(modelFbxPath).Replace('\\', '/');
+                            string texPath = fbxDir + "/Meshy_AI_Dragonbow_General_biped_texture_0.png";
+                            string metallicPath = fbxDir + "/Meshy_AI_Dragonbow_General_biped_texture_0_metallic.png";
+                            string roughnessPath = fbxDir + "/Meshy_AI_Dragonbow_General_biped_texture_0_roughness.png";
+
+                            Texture2D baseTex = AssetDatabase.LoadAssetAtPath<Texture2D>(texPath);
+                            Texture2D metallicTex = AssetDatabase.LoadAssetAtPath<Texture2D>(metallicPath);
+                            Texture2D roughnessTex = AssetDatabase.LoadAssetAtPath<Texture2D>(roughnessPath);
+
+                            string matPath = "Assets/Project/Dev5_Art/Materials/M_Unit_Archer.mat";
+                            Material mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+                            if (mat != null)
+                            {
+                                if (baseTex != null)
+                                {
+                                    mat.SetTexture("_BaseMap", baseTex);
+                                    mat.SetTexture("_MainTex", baseTex);
+                                }
+                                if (metallicTex != null)
+                                {
+                                    mat.SetTexture("_MetallicGlossMap", metallicTex);
+                                    mat.EnableKeyword("_METALLICGLOSSMAP");
+                                }
+                                EditorUtility.SetDirty(mat);
+
+                                var smr = modelInstance.GetComponentInChildren<SkinnedMeshRenderer>();
+                                if (smr != null)
+                                {
+                                    smr.sharedMaterial = mat;
+                                }
+                            }
+
+                            Animator animator = modelInstance.GetComponent<Animator>();
+                            if (animator == null)
+                            {
+                                animator = modelInstance.AddComponent<Animator>();
+                            }
+                            animator.runtimeAnimatorController = controller;
+                            animator.applyRootMotion = false;
+                            animator.updateMode = AnimatorUpdateMode.Normal;
+
+                            // Tìm Avatar từ tất cả assets bên trong FBX model (ưu tiên idle FBX có skinned mesh)
+                            Avatar foundAvatar = null;
+
+                            // 1. Thử lấy từ Animator component của FBX gốc
+                            Animator fbxModelAnimator = modelFbx.GetComponent<Animator>();
+                            if (fbxModelAnimator != null && fbxModelAnimator.avatar != null)
+                            {
+                                foundAvatar = fbxModelAnimator.avatar;
+                            }
+
+                            // 2. Nếu không thấy, load toàn bộ assets trong FBX
+                            if (foundAvatar == null)
+                            {
+                                var assets = AssetDatabase.LoadAllAssetsAtPath(modelFbxPath);
+                                foreach (var asset in assets)
+                                {
+                                    if (asset is Avatar av && av.isValid)
+                                    {
+                                        foundAvatar = av;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (foundAvatar != null)
+                            {
+                                animator.avatar = foundAvatar;
+                                Debug.Log($"[Phase19ASetup] ✅ Gán Avatar '{foundAvatar.name}' cho Animator (isValid={foundAvatar.isValid}, isHuman={foundAvatar.isHuman})");
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"[Phase19ASetup] ⚠️ Không tìm thấy Avatar trong {modelFbxPath}. Animation sẽ không chạy!");
+                            }
+                            string avatarName = animator.avatar != null ? animator.avatar.name : "(null)";
+                            Debug.Log($"[Phase19ASetup] Khởi tạo model thật với localPosition.y=-1 (chân chạm đất), Animator với Avatar: {avatarName}");
+                        }
                     }
                 }
             }
@@ -211,7 +423,7 @@ namespace HonVietThuThanh.Dev5Editor
 
             // 3. Lưu lại prefab và xóa instance tạm
             PrefabUtility.SaveAsPrefabAsset(instance, path);
-            Object.DestroyImmediate(instance);
+            UnityEngine.Object.DestroyImmediate(instance);
 
             Debug.Log($"[Phase19ASetup] Đã cập nhật thành công Archer Prefab tại: {path}");
         }

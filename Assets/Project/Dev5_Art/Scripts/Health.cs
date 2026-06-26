@@ -122,15 +122,31 @@ namespace HonVietThuThanh.Dev5
 
         /// <summary>
         /// Thực hiện logic chết của đối tượng.
+        /// Chỉ set flag và fire event — KHÔNG tự Destroy ngay.
+        /// Destroy sẽ được xử lý bởi CharacterAnimationController (sau animation)
+        /// hoặc DestroyAfterDelay() cho các đối tượng không có animation.
         /// </summary>
         private void Die()
         {
             isDead = true;
             Debug.Log($"[{gameObject.name}] Đã chết!");
             OnDeath?.Invoke();
+            
+            // Nếu có CharacterAnimationController, nó sẽ chịu trách nhiệm gọi DestroyAfterDelay sau khi animation kết thúc.
+            // Ngược lại (các đối tượng khác không có animation), huỷ đối tượng ngay lập tức.
+            if (GetComponent<CharacterAnimationController>() == null)
+            {
+                Destroy(gameObject);
+            }
+        }
 
-            // Huỷ hoặc ẩn đối tượng tuỳ cấu hình
-            Destroy(gameObject);
+        /// <summary>
+        /// Gọi để huỷ GameObject sau một khoảng delay (giây).
+        /// CharacterAnimationController hoặc EnemyController gọi khi animation Death kết thúc.
+        /// </summary>
+        public void DestroyAfterDelay(float delay = 0f)
+        {
+            Destroy(gameObject, delay);
         }
     }
 }
