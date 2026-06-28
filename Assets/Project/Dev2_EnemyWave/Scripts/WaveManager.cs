@@ -218,11 +218,10 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             }
 
             int completedWaveIndex = currentWaveIndex;
-            int completedWaveNumber = completedWaveIndex + 1;
             activeWaveRoutine = null;
             hasCompletedCurrentWave = true;
             hasSpawnedAllForCurrentWave = false;
-            GameEvents.RaiseWaveCompleted(completedWaveNumber);
+            GameEvents.RaiseWaveCompleted(completedWaveIndex);
 
             if (autoAdvanceToNextWave && completedWaveIndex + 1 < waves.Count)
             {
