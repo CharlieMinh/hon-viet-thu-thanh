@@ -174,6 +174,8 @@ GameObject:
   - component: {fileID: 8526237540776264917}
   - component: {fileID: 7411952318670018631}
   - component: {fileID: 1563056141022768037}
+  - component: {fileID: 6148739201456328011}
+  - component: {fileID: 6148739201456328012}
   m_Layer: 0
   m_Name: Tank_Unit_Prefab
   m_TagString: Untagged
@@ -231,7 +233,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce91ff09bc0b8af40802d7ef193b4df7, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.PlaceableUnit
   unitName: Tank
   normalColor: {r: 0.55, g: 0.55, b: 0.55, a: 1}
@@ -247,7 +249,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9d47dd9d9c537048bd74a62914292e1, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitCombatStats
   damage: 6
   baseDamage: -1
@@ -266,7 +268,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c00510050d9aed48882494d41cee07b, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitAutoAttack
   projectilePrefab: {fileID: 0}
 --- !u!114 &3224021805255874217
@@ -279,7 +281,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 013eb2c588c9ee14693f9280e3a5954d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.Health
   maxHealth: 200
   baseMaxHealth: -1
@@ -293,7 +295,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 091f212098278794aae424f015b478bf, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitStarData
   unitId: Tank
   starLevel: 1
@@ -307,7 +309,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dcf09185352ce9647ac2c91d481dde25, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitStarVisual
 --- !u!114 &8526237540776264917
 MonoBehaviour:
@@ -319,7 +321,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b834fdc66bb37342972403c4a49314d, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.HealthBar
   health: {fileID: 3224021805255874217}
   fillImage: {fileID: 0}
@@ -333,7 +335,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cb0224e3ca31684d8e256c6c25caf0a, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitRole
   role: 2
   attackType: 0
@@ -349,11 +351,57 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e61898b87e502a438e6711c1fd00328, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.CharacterVisualSlot
   visualRoot: {fileID: 7224150915594690520}
   modelSlot: {fileID: 9195823007708563900}
   placeholder: {fileID: 256903063720193685}
+--- !u!114 &6148739201456328011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2151458694166277999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7d0f8dbb8d40b4a8a4f1f6d7f0c9a2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.TankVisualFeedback
+  visualRoot: {fileID: 0}
+  bodyRenderer: {fileID: 0}
+  idleAmplitude: 0.035
+  idleFrequency: 1.4
+  idleScalePulse: 0.015
+  moveLeanAngle: 4
+  moveLeanSpeed: 10
+  attackLungeDistance: 0.18
+  attackTiltAngle: 8
+  attackOutDuration: 0.12
+  attackReturnDuration: 0.16
+  hitFlashColor: {r: 1, g: 0.82, b: 0.36, a: 1}
+  hitFlashDuration: 0.14
+  deathTiltAngle: 72
+  deathFallDuration: 0.8
+  deathSinkDistance: 0.08
+--- !u!114 &6148739201456328012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2151458694166277999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1958c7db963994748a7c83e267b9fabd, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.CharacterAnimationController
+  debugLog: 0
+  autoDetectMovement: 0
+  movementThreshold: 0.01
+  deathLingerSeconds: 0
+  deathFallbackDelay: 0.85
+  animator: {fileID: 0}
 --- !u!1 &5828273559349497042
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +509,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Tank_Visual
       objectReference: {fileID: 0}
+    - target: {fileID: 4641191281627396659, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6973726691410226076, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.81
@@ -515,7 +567,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9033207303205954401, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7692308
+      value: -0.3335697
+      objectReference: {fileID: 0}
+    - target: {fileID: 9033207303205954401, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.46289706
+      objectReference: {fileID: 0}
+    - target: {fileID: 9033207303205954401, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.72820807
+      objectReference: {fileID: 0}
+    - target: {fileID: 9033207303205954401, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6853562
+      objectReference: {fileID: 0}
+    - target: {fileID: 9033207303205954401, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9033207303205954401, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9033207303205954401, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -86.527
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
