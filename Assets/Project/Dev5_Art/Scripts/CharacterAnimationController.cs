@@ -28,6 +28,12 @@ namespace HonVietThuThanh.Dev5
         [Header("Animator Reference (Auto Detected)")]
         [SerializeField] private Animator animator;
 
+        [Header("Audio Setup")]
+        [SerializeField] private AudioSource attackAudioSource;
+        [SerializeField] private AudioSource deathAudioSource;
+        [SerializeField] private AudioClip attackClip;
+        [SerializeField] private AudioClip deathClip;
+
         private Vector3 lastPosition;
         private Health health;
         private bool isMoving = false;
@@ -38,6 +44,30 @@ namespace HonVietThuThanh.Dev5
         {
             FindAnimator();
             health = GetComponent<Health>();
+            SetupAudioSources();
+        }
+
+        private void SetupAudioSources()
+        {
+            if (attackAudioSource == null)
+            {
+                AudioSource[] sources = GetComponents<AudioSource>();
+                if (sources.Length > 0) attackAudioSource = sources[0];
+                if (sources.Length > 1) deathAudioSource = sources[1];
+            }
+
+            if (attackAudioSource == null)
+            {
+                attackAudioSource = gameObject.AddComponent<AudioSource>();
+                attackAudioSource.playOnAwake = false;
+                attackAudioSource.loop = false;
+            }
+            if (deathAudioSource == null)
+            {
+                deathAudioSource = gameObject.AddComponent<AudioSource>();
+                deathAudioSource.playOnAwake = false;
+                deathAudioSource.loop = false;
+            }
         }
 
         private void Start()
@@ -171,6 +201,30 @@ namespace HonVietThuThanh.Dev5
         {
             if (isDying) return;
             TriggerAnimator("Attack");
+
+            if (attackAudioSource != null && attackClip != null)
+            {
+                attackAudioSource.Stop();
+                attackAudioSource.clip = attackClip;
+                attackAudioSource.Play();
+                Debug.Log($"[{gameObject.name}] PlayAttack: Playing attack sound '{attackClip.name}' on {attackAudioSource.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"[{gameObject.name}] PlayAttack: Cannot play sound! attackAudioSource is {(attackAudioSource == null ? "null" : "not null")}, attackClip is {(attackClip == null ? "null" : "not null")}");
+            }
+        }
+
+        /// <summary>
+        /// Dừng phát âm thanh tấn công.
+        /// </summary>
+        public void StopAttackSound()
+        {
+            if (attackAudioSource != null && attackAudioSource.isPlaying)
+            {
+                attackAudioSource.Stop();
+                Debug.Log($"[{gameObject.name}] StopAttackSound: Stopped attack sound");
+            }
         }
 
         /// <summary>
@@ -184,6 +238,19 @@ namespace HonVietThuThanh.Dev5
             // Dừng di chuyển và đặt IsMoving = false
             isMoving = false;
             UpdateAnimatorBool("IsMoving", false);
+
+            StopAttackSound();
+            if (deathAudioSource != null && deathClip != null)
+            {
+                deathAudioSource.Stop();
+                deathAudioSource.clip = deathClip;
+                deathAudioSource.Play();
+                Debug.Log($"[{gameObject.name}] PlayDeath: Playing death sound '{deathClip.name}' on {deathAudioSource.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"[{gameObject.name}] PlayDeath: Cannot play sound! deathAudioSource is {(deathAudioSource == null ? "null" : "not null")}, deathClip is {(deathClip == null ? "null" : "not null")}");
+            }
 
             TriggerAnimator("Death");
 

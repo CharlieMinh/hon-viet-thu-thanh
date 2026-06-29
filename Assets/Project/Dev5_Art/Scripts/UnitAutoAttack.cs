@@ -38,7 +38,11 @@ namespace HonVietThuThanh.Dev5
             if (myHealth != null && myHealth.IsDead)
             {
                 target = null;
-                if (animationController != null) animationController.SetMoving(false);
+                if (animationController != null)
+                {
+                    animationController.SetMoving(false);
+                    animationController.StopAttackSound();
+                }
                 return;
             }
 
@@ -46,7 +50,11 @@ namespace HonVietThuThanh.Dev5
             if (!placeableUnit.IsPlacedOnBoard)
             {
                 target = null;
-                if (animationController != null) animationController.SetMoving(false);
+                if (animationController != null)
+                {
+                    animationController.SetMoving(false);
+                    animationController.StopAttackSound();
+                }
                 return;
             }
 
@@ -54,7 +62,11 @@ namespace HonVietThuThanh.Dev5
             if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.IsCombatPhase)
             {
                 target = null;
-                if (animationController != null) animationController.SetMoving(false);
+                if (animationController != null)
+                {
+                    animationController.SetMoving(false);
+                    animationController.StopAttackSound();
+                }
                 return;
             }
 
@@ -70,7 +82,11 @@ namespace HonVietThuThanh.Dev5
             // 4. Nếu không tìm thấy bất kỳ kẻ địch nào
             if (target == null)
             {
-                if (animationController != null) animationController.SetMoving(false);
+                if (animationController != null)
+                {
+                    animationController.SetMoving(false);
+                    animationController.StopAttackSound();
+                }
                 if (!hasLoggedNoEnemies)
                 {
                     Debug.Log($"[{gameObject.name}] Không phát hiện kẻ địch nào trên bản đồ. Dừng di chuyển và chờ đợi...");
@@ -100,7 +116,11 @@ namespace HonVietThuThanh.Dev5
             {
                 // Kẻ địch ngoài tầm đánh -> Di chuyển lại gần
                 transform.position = Vector3.MoveTowards(transform.position, targetPos, combatStats.moveSpeed * Time.deltaTime);
-                if (animationController != null) animationController.SetMoving(true);
+                if (animationController != null)
+                {
+                    animationController.SetMoving(true);
+                    animationController.StopAttackSound();
+                }
             }
             else
             {
@@ -177,6 +197,7 @@ namespace HonVietThuThanh.Dev5
             if (animationController != null)
             {
                 animationController.ResetToAutoDetect();
+                animationController.StopAttackSound();
             }
         }
     }
