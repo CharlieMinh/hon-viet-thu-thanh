@@ -308,6 +308,50 @@ namespace HonVietThuThanh.Dev5Editor
                 Debug.Log($"[Phase19ASetup] Đã thêm CharacterAnimationController vào root của Archer prefab.");
             }
 
+            // Gán AudioSources và AudioClips
+            AudioSource[] audioSources = instance.GetComponents<AudioSource>();
+            AudioSource attackSource = null;
+            AudioSource deathSource = null;
+
+            if (audioSources.Length >= 2)
+            {
+                attackSource = audioSources[0];
+                deathSource = audioSources[1];
+            }
+            else if (audioSources.Length == 1)
+            {
+                attackSource = audioSources[0];
+                deathSource = instance.AddComponent<AudioSource>();
+            }
+            else
+            {
+                attackSource = instance.AddComponent<AudioSource>();
+                deathSource = instance.AddComponent<AudioSource>();
+            }
+
+            // Cấu hình AudioSource
+            attackSource.playOnAwake = false;
+            attackSource.loop = false;
+            deathSource.playOnAwake = false;
+            deathSource.loop = false;
+
+            // Load AudioClips
+            string attackClipPath = "Assets/Project/Dev5_Art/Audio/Archer/Audio/Attack/freesound_community-punches-32563.mp3";
+            string deathClipPath = "Assets/Project/Dev5_Art/Audio/Archer/Audio/Dead/freesound_community-male_grunts-100281.mp3";
+
+            AudioClip attackClip = AssetDatabase.LoadAssetAtPath<AudioClip>(attackClipPath);
+            AudioClip deathClip = AssetDatabase.LoadAssetAtPath<AudioClip>(deathClipPath);
+
+            // Gán vào CharacterAnimationController thông qua SerializedObject
+            SerializedObject so = new SerializedObject(animCtrl);
+            so.FindProperty("attackAudioSource").objectReferenceValue = attackSource;
+            so.FindProperty("deathAudioSource").objectReferenceValue = deathSource;
+            so.FindProperty("attackClip").objectReferenceValue = attackClip;
+            so.FindProperty("deathClip").objectReferenceValue = deathClip;
+            so.ApplyModifiedProperties();
+
+            Debug.Log($"[Phase19ASetup] Đã tự động cấu hình AudioSource và gán AudioClips cho Archer Prefab.");
+
             // 2. Cập nhật ModelSlot và Animator
             Transform visualChild = instance.transform.Find("Visual");
             if (visualChild != null)
