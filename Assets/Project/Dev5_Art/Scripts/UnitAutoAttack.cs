@@ -18,6 +18,7 @@ namespace HonVietThuThanh.Dev5
         private Health myHealth;
         private UnitRole unitRole;
         private CharacterAnimationController animationController;
+        private TankVisualFeedback tankVisualFeedback;
 
         private float cooldownTimer = 0f;
         private bool hasLoggedNoEnemies = false;
@@ -30,6 +31,7 @@ namespace HonVietThuThanh.Dev5
             myHealth = GetComponent<Health>();
             unitRole = GetComponent<UnitRole>();
             animationController = GetComponent<CharacterAnimationController>();
+            tankVisualFeedback = GetComponent<TankVisualFeedback>();
         }
 
         private void Update()
@@ -38,11 +40,8 @@ namespace HonVietThuThanh.Dev5
             if (myHealth != null && myHealth.IsDead)
             {
                 target = null;
-                if (animationController != null)
-                {
-                    animationController.SetMoving(false);
-                    animationController.StopAttackSound();
-                }
+                if (animationController != null) animationController.SetMoving(false);
+                if (tankVisualFeedback != null) tankVisualFeedback.SetMoving(false);
                 return;
             }
 
@@ -50,11 +49,8 @@ namespace HonVietThuThanh.Dev5
             if (!placeableUnit.IsPlacedOnBoard)
             {
                 target = null;
-                if (animationController != null)
-                {
-                    animationController.SetMoving(false);
-                    animationController.StopAttackSound();
-                }
+                if (animationController != null) animationController.SetMoving(false);
+                if (tankVisualFeedback != null) tankVisualFeedback.SetMoving(false);
                 return;
             }
 
@@ -62,11 +58,8 @@ namespace HonVietThuThanh.Dev5
             if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.IsCombatPhase)
             {
                 target = null;
-                if (animationController != null)
-                {
-                    animationController.SetMoving(false);
-                    animationController.StopAttackSound();
-                }
+                if (animationController != null) animationController.SetMoving(false);
+                if (tankVisualFeedback != null) tankVisualFeedback.SetMoving(false);
                 return;
             }
 
@@ -82,11 +75,8 @@ namespace HonVietThuThanh.Dev5
             // 4. Nếu không tìm thấy bất kỳ kẻ địch nào
             if (target == null)
             {
-                if (animationController != null)
-                {
-                    animationController.SetMoving(false);
-                    animationController.StopAttackSound();
-                }
+                if (animationController != null) animationController.SetMoving(false);
+                if (tankVisualFeedback != null) tankVisualFeedback.SetMoving(false);
                 if (!hasLoggedNoEnemies)
                 {
                     Debug.Log($"[{gameObject.name}] Không phát hiện kẻ địch nào trên bản đồ. Dừng di chuyển và chờ đợi...");
@@ -116,20 +106,19 @@ namespace HonVietThuThanh.Dev5
             {
                 // Kẻ địch ngoài tầm đánh -> Di chuyển lại gần
                 transform.position = Vector3.MoveTowards(transform.position, targetPos, combatStats.moveSpeed * Time.deltaTime);
-                if (animationController != null)
-                {
-                    animationController.SetMoving(true);
-                    animationController.StopAttackSound();
-                }
+                if (animationController != null) animationController.SetMoving(true);
+                if (tankVisualFeedback != null) tankVisualFeedback.SetMoving(true);
             }
             else
             {
                 // Kẻ địch đã vào tầm đánh -> Dừng di chuyển và tấn công
                 if (animationController != null) animationController.SetMoving(false);
+                if (tankVisualFeedback != null) tankVisualFeedback.SetMoving(false);
 
                 if (cooldownTimer >= combatStats.attackCooldown)
                 {
                     if (animationController != null) animationController.PlayAttack();
+                    if (tankVisualFeedback != null) tankVisualFeedback.PlayAttack();
                     ExecuteAttack(target);
                 }
             }
@@ -197,7 +186,10 @@ namespace HonVietThuThanh.Dev5
             if (animationController != null)
             {
                 animationController.ResetToAutoDetect();
-                animationController.StopAttackSound();
+            }
+            if (tankVisualFeedback != null)
+            {
+                tankVisualFeedback.SetMoving(false);
             }
         }
     }
