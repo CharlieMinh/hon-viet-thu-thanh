@@ -70,7 +70,7 @@ namespace HonVietThuThanh.Dev5
 
             if (InspectPanel.Instance != null)
             {
-                InspectPanel.Instance.Hide();
+                InspectPanel.Instance.ShowDefaultInfo();
             }
         }
     }

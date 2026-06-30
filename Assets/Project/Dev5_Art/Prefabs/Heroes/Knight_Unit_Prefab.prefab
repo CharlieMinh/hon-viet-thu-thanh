@@ -370,6 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf09185352ce9647ac2c91d481dde25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitStarVisual
+  starSprite: {fileID: 21300000, guid: 712775499d58fa84295f2a1ba4541adf, type: 3}
 --- !u!114 &4231225939891219383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,6 +385,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.HealthBar
   health: {fileID: 757179035699678208}
   fillImage: {fileID: 0}
+  frameSprite: {fileID: 21300000, guid: ab39b945a79795544a6e71c6d0abffcb, type: 3}
+  fillSprite: {fileID: 21300000, guid: aadabebc70a9c904da8b394824f5472f, type: 3}
 --- !u!114 &710235327129898375
 MonoBehaviour:
   m_ObjectHideFlags: 0

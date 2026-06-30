@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 268390254711458868}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -88,7 +88,7 @@ Transform:
   m_GameObject: {fileID: 2062672510236677300}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.2, z: 0}
+  m_LocalPosition: {x: 0, y: 1.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -407,6 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf09185352ce9647ac2c91d481dde25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitStarVisual
+  starSprite: {fileID: 21300000, guid: 712775499d58fa84295f2a1ba4541adf, type: 3}
 --- !u!114 &4474261750135004437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,6 +422,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.HealthBar
   health: {fileID: 88005697261912760}
   fillImage: {fileID: 0}
+  frameSprite: {fileID: 21300000, guid: ab39b945a79795544a6e71c6d0abffcb, type: 3}
+  fillSprite: {fileID: 21300000, guid: aadabebc70a9c904da8b394824f5472f, type: 3}
 --- !u!114 &7986126259232172456
 MonoBehaviour:
   m_ObjectHideFlags: 0

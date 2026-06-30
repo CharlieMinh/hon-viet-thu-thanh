@@ -1,6 +1,9 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace HonVietThuThanh.Dev5
 {
@@ -31,9 +34,11 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
             Instance = this;
+            ApplyArtLayout();
+            ShowDefaultInfo();
             
             // Ẩn panel lúc khởi động
-            Hide();
+            ShowDefaultInfo();
         }
 
         private void Start()
@@ -68,7 +73,7 @@ namespace HonVietThuThanh.Dev5
                 if (targetDestroyed)
                 {
                     Debug.Log("[InspectPanel] Đối tượng đang inspect đã bị Destroy, tự động ẩn panel.");
-                    Hide();
+                    ShowDefaultInfo();
                 }
             }
         }
@@ -80,7 +85,7 @@ namespace HonVietThuThanh.Dev5
         {
             if (unit == null)
             {
-                Hide();
+                ShowDefaultInfo();
                 return;
             }
 
@@ -91,6 +96,7 @@ namespace HonVietThuThanh.Dev5
 
             if (panelParent != null)
             {
+                ApplyArtLayout();
                 panelParent.SetActive(true);
             }
 
@@ -104,7 +110,7 @@ namespace HonVietThuThanh.Dev5
         {
             if (enemy == null)
             {
-                Hide();
+                ShowDefaultInfo();
                 return;
             }
 
@@ -115,6 +121,7 @@ namespace HonVietThuThanh.Dev5
 
             if (panelParent != null)
             {
+                ApplyArtLayout();
                 panelParent.SetActive(true);
             }
 
@@ -139,6 +146,32 @@ namespace HonVietThuThanh.Dev5
         /// <summary>
         /// Cập nhật hiển thị thông số chi tiết.
         /// </summary>
+        public void ShowDefaultInfo()
+        {
+            UnsubscribeAll();
+            targetUnit = null;
+            targetEnemy = null;
+
+            ApplyArtLayout();
+
+            if (titleText != null)
+            {
+                titleText.text = "Thông tin tướng";
+            }
+
+            if (statsText != null)
+            {
+                statsText.text = "Cung thủ : 4 tiền\n" +
+                                 "Hiệp sĩ : 3 tiền\n" +
+                                 "Đỡ đòn : 5 tiền";
+            }
+
+            if (panelParent != null)
+            {
+                panelParent.SetActive(true);
+            }
+        }
+
         public void Refresh()
         {
             // Trường hợp 1: Đang inspect Player Unit
@@ -262,7 +295,81 @@ namespace HonVietThuThanh.Dev5
         private void HandleTargetDeath()
         {
             Debug.Log("[InspectPanel] Target đã chết → tự động ẩn panel.");
-            Hide();
+            ShowDefaultInfo();
+        }
+
+        private void ApplyArtLayout()
+        {
+            GameObject root = panelParent != null ? panelParent : gameObject;
+
+            RectTransform panelRect = root.GetComponent<RectTransform>();
+            if (panelRect != null)
+            {
+                panelRect.sizeDelta = new Vector2(330f, 320f);
+            }
+
+            Image panelImage = root.GetComponent<Image>();
+            if (panelImage != null)
+            {
+                panelImage.color = Color.white;
+                panelImage.type = Image.Type.Simple;
+                panelImage.preserveAspect = false;
+#if UNITY_EDITOR
+                Sprite panelSprite = AssetDatabase.LoadAssetAtPath<Sprite>(
+                    "Assets/Project/Dev5_Art/UI/UI/Clean/Bang_Hien_TT_panel.png");
+                if (panelSprite != null)
+                {
+                    panelImage.sprite = panelSprite;
+                }
+#endif
+            }
+
+            ApplyTitleLayout(titleText);
+            ApplyStatsLayout(statsText);
+        }
+
+        private static void ApplyTitleLayout(TMP_Text text)
+        {
+            if (text == null)
+            {
+                return;
+            }
+
+            RectTransform rect = text.GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                rect.anchorMin = new Vector2(0f, 1f);
+                rect.anchorMax = new Vector2(1f, 1f);
+                rect.pivot = new Vector2(0.5f, 1f);
+                rect.anchoredPosition = new Vector2(0f, -34f);
+                rect.sizeDelta = new Vector2(-110f, 30f);
+            }
+
+            text.alignment = TextAlignmentOptions.Left;
+            text.fontSize = 16f;
+            text.enableWordWrapping = false;
+        }
+
+        private static void ApplyStatsLayout(TMP_Text text)
+        {
+            if (text == null)
+            {
+                return;
+            }
+
+            RectTransform rect = text.GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.anchoredPosition = new Vector2(8f, -20f);
+                rect.sizeDelta = new Vector2(-96f, -126f);
+            }
+
+            text.alignment = TextAlignmentOptions.TopLeft;
+            text.fontSize = 13f;
+            text.enableWordWrapping = false;
         }
     }
 }
