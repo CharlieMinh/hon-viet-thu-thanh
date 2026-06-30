@@ -68,6 +68,7 @@ namespace HonVietThuThanh.Dev5
         private void Awake()
         {
             currentHealth = maxHealth;
+            EnsureHealthBar();
         }
 
         private void Start()
@@ -147,6 +148,17 @@ namespace HonVietThuThanh.Dev5
         public void DestroyAfterDelay(float delay = 0f)
         {
             Destroy(gameObject, delay);
+        }
+
+        private void EnsureHealthBar()
+        {
+            if (GetComponent<HealthBar>() != null)
+            {
+                return;
+            }
+
+            HealthBar healthBar = gameObject.AddComponent<HealthBar>();
+            healthBar.health = this;
         }
     }
 }

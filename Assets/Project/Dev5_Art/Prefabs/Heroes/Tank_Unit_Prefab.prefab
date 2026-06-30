@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce91ff09bc0b8af40802d7ef193b4df7, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.PlaceableUnit
   unitName: Tank
   normalColor: {r: 0.55, g: 0.55, b: 0.55, a: 1}
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9d47dd9d9c537048bd74a62914292e1, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitCombatStats
   damage: 6
   baseDamage: -1
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c00510050d9aed48882494d41cee07b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitAutoAttack
   projectilePrefab: {fileID: 0}
 --- !u!114 &3224021805255874217
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 013eb2c588c9ee14693f9280e3a5954d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.Health
   maxHealth: 200
   baseMaxHealth: -1
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 091f212098278794aae424f015b478bf, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitStarData
   unitId: Tank
   starLevel: 1
@@ -310,8 +310,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dcf09185352ce9647ac2c91d481dde25, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitStarVisual
+  starSprite: {fileID: 21300000, guid: 712775499d58fa84295f2a1ba4541adf, type: 3}
 --- !u!114 &8526237540776264917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,10 +323,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b834fdc66bb37342972403c4a49314d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.HealthBar
   health: {fileID: 3224021805255874217}
   fillImage: {fileID: 0}
+  frameSprite: {fileID: 21300000, guid: ab39b945a79795544a6e71c6d0abffcb, type: 3}
+  fillSprite: {fileID: 21300000, guid: aadabebc70a9c904da8b394824f5472f, type: 3}
 --- !u!114 &7411952318670018631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,7 +339,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cb0224e3ca31684d8e256c6c25caf0a, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitRole
   role: 2
   attackType: 0
@@ -352,7 +355,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e61898b87e502a438e6711c1fd00328, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.CharacterVisualSlot
   visualRoot: {fileID: 7224150915594690520}
   modelSlot: {fileID: 9195823007708563900}
@@ -367,7 +370,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b7d0f8dbb8d40b4a8a4f1f6d7f0c9a2, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.TankVisualFeedback
   visualRoot: {fileID: 0}
   bodyRenderer: {fileID: 0}
@@ -395,7 +398,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1958c7db963994748a7c83e267b9fabd, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.CharacterAnimationController
   debugLog: 0
   autoDetectMovement: 0
@@ -403,6 +406,10 @@ MonoBehaviour:
   deathLingerSeconds: 0
   deathFallbackDelay: 0.85
   animator: {fileID: 0}
+  attackAudioSource: {fileID: 0}
+  deathAudioSource: {fileID: 0}
+  attackClip: {fileID: 0}
+  deathClip: {fileID: 0}
 --- !u!114 &5661017639066211324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,7 +420,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89fc0a937d56fe54fbe020f7f597f76d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.TankVoiceFeedback
   audioSource: {fileID: 0}
   placedClips:
@@ -484,7 +491,7 @@ Transform:
   m_GameObject: {fileID: 6164240895880439854}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.94, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -515,7 +522,7 @@ Transform:
   m_GameObject: {fileID: 8449290825238537163}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.68, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

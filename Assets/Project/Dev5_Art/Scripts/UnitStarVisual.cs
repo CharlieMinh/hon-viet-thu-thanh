@@ -1,15 +1,19 @@
-using UnityEngine;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace HonVietThuThanh.Dev5
 {
-    /// <summary>
-    /// Component quản lý hiển thị sao trên đầu cờ và scale kích thước cờ (Phase 12).
-    /// </summary>
     [RequireComponent(typeof(UnitStarData))]
     public class UnitStarVisual : MonoBehaviour
     {
+        [Header("Art")]
+        public Sprite starSprite;
+
         private TMP_Text starText;
+        private Canvas starCanvas;
+        private readonly List<Image> starImages = new List<Image>();
         private UnitStarData starData;
         private Vector3 baseScale;
         private bool baseScaleCaptured = false;
@@ -37,15 +41,11 @@ namespace HonVietThuThanh.Dev5
 
         private void SetupTextComponent()
         {
-            // Tìm trong các gameobject con trước
             starText = GetComponentInChildren<TMP_Text>();
             if (starText == null)
             {
-                // Tìm Transform cha thích hợp (tìm child "UI")
                 Transform uiParent = transform.Find("UI");
                 Transform parentToUse = uiParent != null ? uiParent : transform;
-
-                // Tìm hoặc tạo child "StarText" dưới parentToUse
                 Transform existingStarText = parentToUse.Find("StarText");
                 if (existingStarText != null)
                 {
@@ -57,66 +57,168 @@ namespace HonVietThuThanh.Dev5
                 }
                 else
                 {
-                    // Nếu chưa có, sinh động GameObject mới cho Text
                     GameObject textGo = new GameObject("StarText");
                     textGo.transform.SetParent(parentToUse, false);
-                    // Đặt ở tọa độ Y = 2.5f (trên đỉnh Capsule cao 2)
                     textGo.transform.localPosition = new Vector3(0f, 2.5f, 0f);
                     textGo.transform.localRotation = Quaternion.identity;
-
                     starText = textGo.AddComponent<TextMeshPro>();
                 }
-                
+
                 starText.alignment = TextAlignmentOptions.Center;
                 starText.fontSize = 4;
                 starText.color = Color.yellow;
             }
         }
 
-        /// <summary>
-        /// Làm mới văn bản sao và tỉ lệ phóng to của quân cờ.
-        /// </summary>
         public void RefreshVisual()
         {
-            if (starData == null) starData = GetComponent<UnitStarData>();
-            if (starData == null) return;
+            if (starData == null)
+            {
+                starData = GetComponent<UnitStarData>();
+            }
+
+            if (starData == null)
+            {
+                return;
+            }
 
             CaptureBaseScale();
 
             int star = starData.starLevel;
-
-            // 1. Cập nhật Text hiển thị theo định dạng phù hợp với sao vô hạn
-            if (starText != null)
+            if (starSprite != null)
             {
-                if (star == 1)
+                RefreshStarIcons(star);
+                if (starText != null)
                 {
-                    starText.text = "★";
+                    starText.gameObject.SetActive(false);
                 }
-                else if (star == 2)
+            }
+            else if (starText != null)
+            {
+                starText.gameObject.SetActive(true);
+                if (star <= 3)
                 {
-                    starText.text = "★★";
-                }
-                else if (star == 3)
-                {
-                    starText.text = "★★★";
+                    starText.text = new string('*', Mathf.Max(1, star));
                 }
                 else
                 {
-                    starText.text = $"★ x{star}";
+                    starText.text = $"* x{star}";
                 }
             }
 
-            // 2. Tăng nhẹ kích thước cờ theo cấp sao: tăng 10% mỗi cấp sao từ sao thứ 2
             float scaleMultiplier = 1f + 0.1f * (star - 1);
             transform.localScale = baseScale * scaleMultiplier;
         }
 
+        private void RefreshStarIcons(int star)
+        {
+            EnsureStarCanvas();
+            if (starCanvas == null)
+            {
+                return;
+            }
+
+            int iconCount = Mathf.Clamp(star, 1, 3);
+            for (int i = starImages.Count; i < iconCount; i++)
+            {
+                GameObject iconGo = new GameObject($"StarIcon_{i + 1}", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+                iconGo.transform.SetParent(starCanvas.transform, false);
+                Image image = iconGo.GetComponent<Image>();
+                image.raycastTarget = false;
+                image.preserveAspect = true;
+                starImages.Add(image);
+            }
+
+            float iconSize = 0.28f;
+            float spacing = 0.23f;
+            float startX = -spacing * (iconCount - 1) * 0.5f;
+
+            for (int i = 0; i < starImages.Count; i++)
+            {
+                Image image = starImages[i];
+                bool active = i < iconCount;
+                image.gameObject.SetActive(active);
+                if (!active)
+                {
+                    continue;
+                }
+
+                image.sprite = starSprite;
+                image.color = Color.white;
+
+                RectTransform rect = image.rectTransform;
+                rect.anchorMin = new Vector2(0.5f, 0.5f);
+                rect.anchorMax = new Vector2(0.5f, 0.5f);
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.sizeDelta = new Vector2(iconSize, iconSize);
+                rect.anchoredPosition = new Vector2(startX + i * spacing, 0f);
+                rect.localScale = Vector3.one;
+                rect.localRotation = Quaternion.identity;
+            }
+        }
+
+        private void EnsureStarCanvas()
+        {
+            if (starCanvas != null)
+            {
+                return;
+            }
+
+            Transform uiParent = transform.Find("UI");
+            Transform parentToUse = uiParent != null ? uiParent : transform;
+            Transform existingCanvas = parentToUse.Find("StarCanvas");
+
+            GameObject canvasGo;
+            if (existingCanvas != null)
+            {
+                canvasGo = existingCanvas.gameObject;
+                canvasGo.transform.localPosition = new Vector3(0f, 2.18f, 0f);
+                canvasGo.transform.localRotation = Quaternion.identity;
+                canvasGo.transform.localScale = Vector3.one;
+            }
+            else
+            {
+                canvasGo = new GameObject("StarCanvas", typeof(RectTransform), typeof(Canvas));
+                canvasGo.transform.SetParent(parentToUse, false);
+                canvasGo.transform.localPosition = new Vector3(0f, 2.18f, 0f);
+                canvasGo.transform.localRotation = Quaternion.identity;
+                canvasGo.transform.localScale = Vector3.one;
+            }
+
+            starCanvas = canvasGo.GetComponent<Canvas>();
+            if (starCanvas == null)
+            {
+                starCanvas = canvasGo.AddComponent<Canvas>();
+            }
+
+            starCanvas.renderMode = RenderMode.WorldSpace;
+            starCanvas.sortingOrder = 25;
+
+            RectTransform rect = canvasGo.GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                rect.sizeDelta = new Vector2(1f, 0.35f);
+                rect.localScale = Vector3.one;
+            }
+
+            starImages.Clear();
+            Image[] existingImages = canvasGo.GetComponentsInChildren<Image>(true);
+            foreach (Image image in existingImages)
+            {
+                starImages.Add(image);
+            }
+        }
+
         private void LateUpdate()
         {
-            // Billboard effect: Xoay text hướng thẳng về Camera chính để người chơi luôn nhìn thấy
             if (starText != null && Camera.main != null)
             {
                 starText.transform.rotation = Quaternion.LookRotation(starText.transform.position - Camera.main.transform.position);
+            }
+
+            if (starCanvas != null && Camera.main != null)
+            {
+                starCanvas.transform.rotation = Quaternion.LookRotation(starCanvas.transform.position - Camera.main.transform.position);
             }
         }
     }
