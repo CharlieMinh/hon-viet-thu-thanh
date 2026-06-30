@@ -41,6 +41,7 @@ namespace HonVietThuThanh.Dev5
 
         private PlaceableUnit placeableUnit;
         private Health health;
+        private TankVoiceFeedback voiceFeedback;
         private Vector3 baseLocalPosition;
         private Quaternion baseLocalRotation;
         private Vector3 baseLocalScale;
@@ -61,6 +62,7 @@ namespace HonVietThuThanh.Dev5
             propertyBlock = new MaterialPropertyBlock();
             placeableUnit = GetComponent<PlaceableUnit>();
             health = GetComponent<Health>();
+            voiceFeedback = GetComponent<TankVoiceFeedback>();
             ResolveReferences();
             CaptureBasePose();
             CaptureBaseColor();
@@ -120,6 +122,10 @@ namespace HonVietThuThanh.Dev5
             }
 
             attackTimer = attackOutDuration + attackReturnDuration;
+            if (voiceFeedback != null)
+            {
+                voiceFeedback.PlayAttackVoice();
+            }
         }
 
         private void ResolveReferences()
