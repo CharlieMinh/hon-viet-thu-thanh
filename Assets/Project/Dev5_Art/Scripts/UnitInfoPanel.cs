@@ -1,5 +1,9 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace HonVietThuThanh.Dev5
 {
@@ -27,6 +31,7 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
             Instance = this;
+            ApplyArtLayout();
 
             // Ẩn panel khi mới khởi động game
             Hide();
@@ -72,6 +77,7 @@ namespace HonVietThuThanh.Dev5
 
             if (panelParent != null)
             {
+                ApplyArtLayout();
                 panelParent.SetActive(true);
             }
 
@@ -161,6 +167,80 @@ namespace HonVietThuThanh.Dev5
             {
                 targetHealth.OnHealthChanged -= HandleHealthChanged;
             }
+        }
+
+        private void ApplyArtLayout()
+        {
+            GameObject root = panelParent != null ? panelParent : gameObject;
+
+            RectTransform panelRect = root.GetComponent<RectTransform>();
+            if (panelRect != null)
+            {
+                panelRect.sizeDelta = new Vector2(320f, 310f);
+            }
+
+            Image panelImage = root.GetComponent<Image>();
+            if (panelImage != null)
+            {
+                panelImage.color = Color.white;
+                panelImage.type = Image.Type.Simple;
+                panelImage.preserveAspect = false;
+#if UNITY_EDITOR
+                Sprite panelSprite = AssetDatabase.LoadAssetAtPath<Sprite>(
+                    "Assets/Project/Dev5_Art/UI/UI/Clean/Bang_Hien_TT_panel.png");
+                if (panelSprite != null)
+                {
+                    panelImage.sprite = panelSprite;
+                }
+#endif
+            }
+
+            ApplyTitleLayout(nameText);
+            ApplyStatsLayout(statsText);
+        }
+
+        private static void ApplyTitleLayout(TMP_Text text)
+        {
+            if (text == null)
+            {
+                return;
+            }
+
+            RectTransform rect = text.GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                rect.anchorMin = new Vector2(0f, 1f);
+                rect.anchorMax = new Vector2(1f, 1f);
+                rect.pivot = new Vector2(0.5f, 1f);
+                rect.anchoredPosition = new Vector2(0f, -34f);
+                rect.sizeDelta = new Vector2(-110f, 30f);
+            }
+
+            text.alignment = TextAlignmentOptions.Left;
+            text.fontSize = 16f;
+            text.enableWordWrapping = false;
+        }
+
+        private static void ApplyStatsLayout(TMP_Text text)
+        {
+            if (text == null)
+            {
+                return;
+            }
+
+            RectTransform rect = text.GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.anchoredPosition = new Vector2(8f, -20f);
+                rect.sizeDelta = new Vector2(-96f, -126f);
+            }
+
+            text.alignment = TextAlignmentOptions.TopLeft;
+            text.fontSize = 13f;
+            text.enableWordWrapping = false;
         }
     }
 }

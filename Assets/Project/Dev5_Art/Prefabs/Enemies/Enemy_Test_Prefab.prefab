@@ -188,3 +188,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.HealthBar
   health: {fileID: 8968807617466582123}
   fillImage: {fileID: 0}
+  frameSprite: {fileID: 21300000, guid: ab39b945a79795544a6e71c6d0abffcb, type: 3}
+  fillSprite: {fileID: 21300000, guid: aadabebc70a9c904da8b394824f5472f, type: 3}
