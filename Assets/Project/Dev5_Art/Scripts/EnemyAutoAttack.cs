@@ -12,6 +12,7 @@ namespace HonVietThuThanh.Dev5
     {
         private EnemyController enemyController;
         private EnemyCombatStats combatStats;
+        private EnemyAnimationController animationController;
         private Health myHealth;
         private EnemyRole enemyRole;
 
@@ -23,6 +24,7 @@ namespace HonVietThuThanh.Dev5
         {
             enemyController = GetComponent<EnemyController>();
             combatStats = GetComponent<EnemyCombatStats>();
+            animationController = GetComponent<EnemyAnimationController>();
             myHealth = GetComponent<Health>();
             enemyRole = GetComponent<EnemyRole>();
         }
@@ -109,6 +111,11 @@ namespace HonVietThuThanh.Dev5
         /// </summary>
         private void ExecuteAttack(PlaceableUnit targetUnit)
         {
+            if (animationController != null)
+            {
+                animationController.PlayAttack();
+            }
+
             Health targetHealth = targetUnit.GetComponent<Health>();
             if (targetHealth != null && !targetHealth.IsDead)
             {
