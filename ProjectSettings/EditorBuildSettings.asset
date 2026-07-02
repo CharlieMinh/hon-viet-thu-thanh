@@ -9,11 +9,14 @@ EditorBuildSettings:
     path: Assets/Project/Dev4_GameManager/Scenes/Scene_MainMenu.unity
     guid: 02bfe8b1cdf90ee498e7a2d2760eda6b
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Project/Dev4_GameManager/Scenes/Scene_Loading.unity
+    guid: 7d2f0f7ec4d84ee4b992dd3bc0b2a821
   - enabled: 1
     path: Assets/Project/Dev5_Art/Scenes/Scene_Dev5_Art.unity
     guid: 95e1714e4852dc74faf3f6e4c0118698
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
