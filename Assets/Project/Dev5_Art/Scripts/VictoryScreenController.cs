@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,6 +28,11 @@ namespace HonVietThuThanh.Dev5
 
         private CanvasGroup rootGroup;
         private GamePhaseManager subscribedPhaseManager;
+        private readonly List<Image> sunburstRayImages = new List<Image>();
+        private Image dimOverlay;
+        private TMP_Text resultText;
+        private TMP_Text subtitleText;
+        private TMP_Text restartButtonText;
 
         public static VictoryScreenController EnsureExists()
         {
@@ -94,7 +100,131 @@ namespace HonVietThuThanh.Dev5
 
         private void ApplyGameState(GameState state)
         {
-            SetVisible(state == GameState.Win);
+            bool isEndScreen = state == GameState.Win || state == GameState.Lose;
+            if (isEndScreen)
+            {
+                ApplyEndScreenContent(state);
+            }
+
+            SetVisible(isEndScreen);
+        }
+
+        private void ApplyEndScreenContent(GameState state)
+        {
+            if (state == GameState.Lose)
+            {
+                if (dimOverlay != null)
+                {
+                    dimOverlay.color = new Color(0.13f, 0.015f, 0.015f, 0.9f);
+                }
+
+                ApplyLoseBackgroundColors();
+
+                if (resultText != null)
+                {
+                    resultText.text = "Thành Đã\nThất Thủ!";
+                    resultText.color = new Color(1f, 0.74f, 0.62f, 1f);
+                    ConfigureLoseResultText();
+                }
+
+                if (subtitleText != null)
+                {
+                    subtitleText.text = "Tướng trên sàn đã bị đánh bại.";
+                }
+
+                if (restartButtonText != null)
+                {
+                    restartButtonText.text = "Thử Lại";
+                }
+
+                return;
+            }
+
+            if (dimOverlay != null)
+            {
+                dimOverlay.color = new Color(0.12f, 0.02f, 0.0f, 0.86f);
+            }
+
+            ApplyWinBackgroundColors();
+
+            if (resultText != null)
+            {
+                resultText.text = "Chiến\nThắng!";
+                resultText.color = MenuGold;
+                ConfigureWinResultText();
+            }
+
+            if (subtitleText != null)
+            {
+                subtitleText.text = "Bạn đã bảo vệ Dòng Chảy Linh Khí.";
+            }
+
+            if (restartButtonText != null)
+            {
+                restartButtonText.text = "Chơi Lại";
+            }
+        }
+
+        private void ConfigureLoseResultText()
+        {
+            if (resultText == null)
+            {
+                return;
+            }
+
+            resultText.enableAutoSizing = true;
+            resultText.fontSizeMax = 42f;
+            resultText.fontSizeMin = 28f;
+            resultText.lineSpacing = -7f;
+            resultText.textWrappingMode = TextWrappingModes.NoWrap;
+            resultText.outlineColor = new Color(0.18f, 0.015f, 0.015f, 1f);
+            resultText.outlineWidth = 0.34f;
+        }
+
+        private void ApplyLoseBackgroundColors()
+        {
+            for (int i = 0; i < sunburstRayImages.Count; i++)
+            {
+                if (sunburstRayImages[i] == null)
+                {
+                    continue;
+                }
+
+                sunburstRayImages[i].color = i % 2 == 0
+                    ? new Color(0.72f, 0.03f, 0.02f, 0.20f)
+                    : new Color(0.95f, 0.12f, 0.08f, 0.09f);
+            }
+        }
+
+        private void ApplyWinBackgroundColors()
+        {
+            for (int i = 0; i < sunburstRayImages.Count; i++)
+            {
+                if (sunburstRayImages[i] == null)
+                {
+                    continue;
+                }
+
+                sunburstRayImages[i].color = i % 2 == 0
+                    ? new Color(1f, 0.62f, 0.12f, 0.14f)
+                    : new Color(1f, 0.82f, 0.28f, 0.06f);
+            }
+        }
+
+        private void ConfigureWinResultText()
+        {
+            if (resultText == null)
+            {
+                return;
+            }
+
+            resultText.enableAutoSizing = true;
+            resultText.fontSizeMax = 46f;
+            resultText.fontSizeMin = 30f;
+            resultText.lineSpacing = -14f;
+            resultText.textWrappingMode = TextWrappingModes.NoWrap;
+            resultText.outlineColor = new Color(0.1f, 0.035f, 0f, 1f);
+            resultText.outlineWidth = 0.24f;
         }
 
         private void SetVisible(bool visible)
@@ -139,10 +269,11 @@ namespace HonVietThuThanh.Dev5
             RectTransform root = gameObject.GetComponent<RectTransform>();
             Stretch(root);
 
-            Image dim = CreateImage("DimOverlay", root, new Color(0.12f, 0.02f, 0.0f, 0.86f));
-            Stretch(dim.rectTransform);
+            dimOverlay = CreateImage("DimOverlay", root, new Color(0.12f, 0.02f, 0.0f, 0.86f));
+            Stretch(dimOverlay.rectTransform);
 
-            CreateSunburstRays(root);
+            sunburstRayImages.Clear();
+            CreateSunburstRays(root, sunburstRayImages);
 
             Image topShade = CreateImage("TopShade", root, new Color(0f, 0f, 0f, 0.22f));
             Stretch(topShade.rectTransform);
@@ -174,18 +305,19 @@ namespace HonVietThuThanh.Dev5
 
             CreateLogoImage(badge);
 
-            TMP_Text victory = CreateText("VictoryText", panel, "Chiến\nThắng!", 46f, FontStyles.Bold);
-            victory.color = MenuGold;
-            victory.alignment = TextAlignmentOptions.Center;
-            victory.lineSpacing = -14f;
-            ApplyReadableTextStyle(victory, new Color(0.1f, 0.035f, 0f, 1f), 0.24f);
-            SetRect(victory.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(260f, 118f), new Vector2(0f, -178f));
+            resultText = CreateText("ResultText", panel, "Chiến\nThắng!", 46f, FontStyles.Bold);
+            resultText.color = MenuGold;
+            resultText.alignment = TextAlignmentOptions.Center;
+            resultText.lineSpacing = -14f;
+            resultText.textWrappingMode = TextWrappingModes.NoWrap;
+            ApplyReadableTextStyle(resultText, new Color(0.1f, 0.035f, 0f, 1f), 0.24f);
+            SetRect(resultText.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(300f, 118f), new Vector2(0f, -178f));
 
-            TMP_Text subtitle = CreateText("VictorySubtitle", panel, "Bạn đã bảo vệ Dòng Chảy Linh Khí.", 14f, FontStyles.Normal);
-            subtitle.color = new Color(1f, 0.92f, 0.72f, 1f);
-            subtitle.alignment = TextAlignmentOptions.Center;
-            ApplyReadableTextStyle(subtitle, new Color(0.06f, 0.02f, 0f, 1f), 0.12f);
-            SetRect(subtitle.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(280f, 32f), new Vector2(0f, -286f));
+            subtitleText = CreateText("ResultSubtitle", panel, "Bạn đã bảo vệ Dòng Chảy Linh Khí.", 14f, FontStyles.Normal);
+            subtitleText.color = new Color(1f, 0.92f, 0.72f, 1f);
+            subtitleText.alignment = TextAlignmentOptions.Center;
+            ApplyReadableTextStyle(subtitleText, new Color(0.06f, 0.02f, 0f, 1f), 0.12f);
+            SetRect(subtitleText.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(280f, 32f), new Vector2(0f, -286f));
 
             Button restartButton = CreateButton(panel, "RestartButton", "Chơi Lại", new Vector2(0f, -332f));
             restartButton.onClick.AddListener(RestartGame);
@@ -223,6 +355,11 @@ namespace HonVietThuThanh.Dev5
             text.alignment = TextAlignmentOptions.Center;
             ApplyReadableTextStyle(text, Color.black, 0.16f);
             Stretch(text.rectTransform);
+
+            if (name == "RestartButton")
+            {
+                restartButtonText = text;
+            }
 
             return button;
         }
@@ -326,7 +463,7 @@ namespace HonVietThuThanh.Dev5
             return go.AddComponent<RectTransform>();
         }
 
-        private static void CreateSunburstRays(RectTransform parent)
+        private static void CreateSunburstRays(RectTransform parent, List<Image> rayImages)
         {
             RectTransform raysRoot = CreateRect("VictoryRays", parent);
             Stretch(raysRoot);
@@ -350,6 +487,7 @@ namespace HonVietThuThanh.Dev5
                     ? new Color(1f, 0.62f, 0.12f, 0.14f)
                     : new Color(1f, 0.82f, 0.28f, 0.06f);
                 image.raycastTarget = false;
+                rayImages.Add(image);
             }
         }
 
