@@ -45,6 +45,16 @@ namespace HonVietThuThanh.Dev5
                     Transform child = modelSlot.GetChild(i);
                     Debug.Log($"[VisualSlotDebug] Child {i}: {child.name}, ActiveSelf: {child.gameObject.activeSelf}, LocalPos: {child.localPosition}, LocalRot: {child.localEulerAngles}, LocalScale: {child.localScale}");
                     
+                    var animator = child.GetComponentInChildren<Animator>(true);
+                    if (animator != null)
+                    {
+                        Debug.Log($"[VisualSlotDebug] Animator found on '{animator.gameObject.name}': Enabled: {animator.enabled}, Controller: {(animator.runtimeAnimatorController != null ? animator.runtimeAnimatorController.name : "null")}, Avatar: {(animator.avatar != null ? animator.avatar.name : "null")}, HasTransformHierarchy: {animator.hasTransformHierarchy}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[VisualSlotDebug] Animator NOT found on child '{child.name}' or its children!");
+                    }
+                    
                     var renderers = child.GetComponentsInChildren<Renderer>(true);
                     Debug.Log($"[VisualSlotDebug] Found {renderers.Length} Renderers in model child.");
                     foreach (var r in renderers)

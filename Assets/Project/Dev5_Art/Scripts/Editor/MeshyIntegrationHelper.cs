@@ -67,6 +67,11 @@ namespace HonVietThuThanh.Dev5.EditorTools
 
         private void IntegrateModel()
         {
+            if (animatorController != null)
+            {
+                ConfigureAnimationLoops(AssetDatabase.GetAssetPath(animatorController));
+            }
+
             if (targetPrefab == null)
             {
                 EditorUtility.DisplayDialog("Lỗi", "Vui lòng kéo Target Prefab (ví dụ: Knight_Unit_Prefab) vào!", "OK");
@@ -191,14 +196,40 @@ namespace HonVietThuThanh.Dev5.EditorTools
                     animator.runtimeAnimatorController = animatorController;
                 }
 
+                // Tự động tìm và gán Avatar từ file FBX của model
+                Avatar modelAvatar = null;
+                var assets = AssetDatabase.LoadAllAssetsAtPath(fbxPath);
+                foreach (var asset in assets)
+                {
+                    if (asset is Avatar av)
+                    {
+                        modelAvatar = av;
+                        break;
+                    }
+                }
+                if (modelAvatar != null)
+                {
+                    animator.avatar = modelAvatar;
+                    Debug.Log($"[Meshy Integrator] Đã tìm thấy và gán Avatar '{modelAvatar.name}' cho Animator.");
+                }
+                else
+                {
+                    Debug.LogWarning("[Meshy Integrator] Không tìm thấy Avatar nào trong file FBX!");
+                }
+
                 // 5. Cập nhật CharacterAnimationController
                 if (animController != null)
                 {
                     animController.FindAnimator();
+                    EditorUtility.SetDirty(animController);
                 }
 
                 // 6. Ẩn/Hiện placeholder tự động
                 visualSlot.AutoFitModelIfNeeded();
+                EditorUtility.SetDirty(visualSlot);
+                EditorUtility.SetDirty(newModel);
+                if (animator != null) EditorUtility.SetDirty(animator);
+                EditorUtility.SetDirty(prefabRoot);
 
                 // Lưu thay đổi vào Prefab Asset
                 PrefabUtility.SaveAsPrefabAsset(prefabRoot, prefabPath);
@@ -210,6 +241,57 @@ namespace HonVietThuThanh.Dev5.EditorTools
             {
                 // Giải phóng bộ nhớ prefab
                 PrefabUtility.UnloadPrefabContents(prefabRoot);
+            }
+        }
+
+        private static void ConfigureAnimationLoops(string animatorControllerPath)
+        {
+            string animFolder = System.IO.Path.GetDirectoryName(animatorControllerPath);
+            if (string.IsNullOrEmpty(animFolder)) return;
+
+            string[] fbxFiles = System.IO.Directory.GetFiles(animFolder, "*.fbx", System.IO.SearchOption.TopDirectoryOnly);
+            foreach (var file in fbxFiles)
+            {
+                string relativePath = file.Replace("\\", "/");
+                int assetsIdx = relativePath.IndexOf("Assets/");
+                if (assetsIdx >= 0)
+                {
+                    relativePath = relativePath.Substring(assetsIdx);
+                }
+
+                ModelImporter importer = AssetImporter.GetAtPath(relativePath) as ModelImporter;
+                if (importer == null) continue;
+
+                bool modified = false;
+                ModelImporterClipAnimation[] clips = importer.clipAnimations;
+                
+                if (clips == null || clips.Length == 0)
+                {
+                    clips = importer.defaultClipAnimations;
+                }
+
+                if (clips != null && clips.Length > 0)
+                {
+                    foreach (var clip in clips)
+                    {
+                        string lowerName = clip.name.ToLower();
+                        if (lowerName.Contains("dance") || lowerName.Contains("groove") || lowerName.Contains("idle") || lowerName.Contains("walk") || lowerName.Contains("run"))
+                        {
+                            if (!clip.loopTime)
+                            {
+                                clip.loopTime = true;
+                                modified = true;
+                            }
+                        }
+                    }
+                }
+
+                if (modified)
+                {
+                    importer.clipAnimations = clips;
+                    importer.SaveAndReimport();
+                    Debug.Log($"[Meshy Integrator] Đã tự động cấu hình Loop Time = true cho các clip của '{importer.assetPath}'");
+                }
             }
         }
     }
