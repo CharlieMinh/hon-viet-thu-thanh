@@ -1,0 +1,392 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+namespace HonVietThuThanh.Dev5
+{
+    /// <summary>
+    /// Runtime victory overlay for the Dev5 combat flow.
+    /// It builds itself in code so the screen appears without scene wiring.
+    /// </summary>
+    public class VictoryScreenController : MonoBehaviour
+    {
+        private const string DefaultMainMenuSceneName = "Scene_MainMenu";
+        private const string Dev4LogoSpritePath = "Assets/Project/Dev4_GameManager/UI/MainMenu/logo_game_transparent.png";
+        private const string Dev4MenuFontPath = "Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset";
+
+        private static readonly Color MenuGold = new Color(1f, 0.82f, 0.38f, 1f);
+        private static readonly Color MenuDark = new Color(0.035f, 0.02f, 0.015f, 0.95f);
+        private static TMP_FontAsset cachedMenuFont;
+
+        [Header("Scenes")]
+        [SerializeField] private string mainMenuSceneName = DefaultMainMenuSceneName;
+
+        private CanvasGroup rootGroup;
+        private GamePhaseManager subscribedPhaseManager;
+
+        public static VictoryScreenController EnsureExists()
+        {
+            VictoryScreenController existing =
+                FindAnyObjectByType<VictoryScreenController>(FindObjectsInactive.Include);
+
+            if (existing != null)
+            {
+                return existing;
+            }
+
+            GameObject host = new GameObject("VictoryScreenController");
+            return host.AddComponent<VictoryScreenController>();
+        }
+
+        private void Awake()
+        {
+            BuildScreen();
+            SetVisible(false);
+        }
+
+        private void OnEnable()
+        {
+            SubscribeToPhaseManager();
+        }
+
+        private void Start()
+        {
+            SubscribeToPhaseManager();
+
+            if (GamePhaseManager.Instance != null)
+            {
+                ApplyGameState(GamePhaseManager.Instance.CurrentState);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (subscribedPhaseManager != null)
+            {
+                subscribedPhaseManager.OnGameStateChanged -= ApplyGameState;
+                subscribedPhaseManager = null;
+            }
+        }
+
+        private void SubscribeToPhaseManager()
+        {
+            if (subscribedPhaseManager == GamePhaseManager.Instance)
+            {
+                return;
+            }
+
+            if (subscribedPhaseManager != null)
+            {
+                subscribedPhaseManager.OnGameStateChanged -= ApplyGameState;
+            }
+
+            subscribedPhaseManager = GamePhaseManager.Instance;
+
+            if (subscribedPhaseManager != null)
+            {
+                subscribedPhaseManager.OnGameStateChanged += ApplyGameState;
+            }
+        }
+
+        private void ApplyGameState(GameState state)
+        {
+            SetVisible(state == GameState.Win);
+        }
+
+        private void SetVisible(bool visible)
+        {
+            if (rootGroup == null)
+            {
+                return;
+            }
+
+            rootGroup.alpha = visible ? 1f : 0f;
+            rootGroup.interactable = visible;
+            rootGroup.blocksRaycasts = visible;
+        }
+
+        private void RestartGame()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        private void BackToMainMenu()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(mainMenuSceneName);
+        }
+
+        private void BuildScreen()
+        {
+            Canvas canvas = gameObject.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 5000;
+
+            CanvasScaler scaler = gameObject.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(960f, 750f);
+            scaler.matchWidthOrHeight = 0.5f;
+
+            gameObject.AddComponent<GraphicRaycaster>();
+
+            rootGroup = gameObject.AddComponent<CanvasGroup>();
+
+            RectTransform root = gameObject.GetComponent<RectTransform>();
+            Stretch(root);
+
+            Image dim = CreateImage("DimOverlay", root, new Color(0.12f, 0.02f, 0.0f, 0.86f));
+            Stretch(dim.rectTransform);
+
+            CreateSunburstRays(root);
+
+            Image topShade = CreateImage("TopShade", root, new Color(0f, 0f, 0f, 0.22f));
+            Stretch(topShade.rectTransform);
+
+            RectTransform panel = CreateRect("VictoryPanel", root);
+            panel.anchorMin = new Vector2(0.5f, 0.5f);
+            panel.anchorMax = new Vector2(0.5f, 0.5f);
+            panel.pivot = new Vector2(0.5f, 0.5f);
+            panel.sizeDelta = new Vector2(300f, 430f);
+            panel.anchoredPosition = new Vector2(0f, 70f);
+
+            Image panelImage = panel.gameObject.AddComponent<Image>();
+            panelImage.color = new Color(0.12f, 0.09f, 0.08f, 0.48f);
+            Outline panelOutline = panel.gameObject.AddComponent<Outline>();
+            panelOutline.effectColor = new Color(1f, 0.82f, 0.32f, 0.18f);
+            panelOutline.effectDistance = new Vector2(1f, -1f);
+
+            CreateCornerPin(panel, new Vector2(-1f, 1f));
+            CreateCornerPin(panel, new Vector2(1f, 1f));
+            CreateCornerPin(panel, new Vector2(-1f, -1f));
+            CreateCornerPin(panel, new Vector2(1f, -1f));
+
+            RectTransform badge = CreateRect("VictoryBadge", panel);
+            badge.anchorMin = new Vector2(0.5f, 1f);
+            badge.anchorMax = new Vector2(0.5f, 1f);
+            badge.pivot = new Vector2(0.5f, 1f);
+            badge.sizeDelta = new Vector2(126f, 126f);
+            badge.anchoredPosition = new Vector2(0f, -34f);
+
+            CreateLogoImage(badge);
+
+            TMP_Text victory = CreateText("VictoryText", panel, "Chiến\nThắng!", 46f, FontStyles.Bold);
+            victory.color = MenuGold;
+            victory.alignment = TextAlignmentOptions.Center;
+            victory.lineSpacing = -14f;
+            ApplyReadableTextStyle(victory, new Color(0.1f, 0.035f, 0f, 1f), 0.24f);
+            SetRect(victory.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(260f, 118f), new Vector2(0f, -178f));
+
+            TMP_Text subtitle = CreateText("VictorySubtitle", panel, "Bạn đã bảo vệ Dòng Chảy Linh Khí.", 14f, FontStyles.Normal);
+            subtitle.color = new Color(1f, 0.92f, 0.72f, 1f);
+            subtitle.alignment = TextAlignmentOptions.Center;
+            ApplyReadableTextStyle(subtitle, new Color(0.06f, 0.02f, 0f, 1f), 0.12f);
+            SetRect(subtitle.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(280f, 32f), new Vector2(0f, -286f));
+
+            Button restartButton = CreateButton(panel, "RestartButton", "Chơi Lại", new Vector2(0f, -332f));
+            restartButton.onClick.AddListener(RestartGame);
+
+            Button menuButton = CreateButton(panel, "MainMenuButton", "Trở về Menu", new Vector2(0f, -384f));
+            menuButton.onClick.AddListener(BackToMainMenu);
+        }
+
+        private Button CreateButton(RectTransform parent, string name, string label, Vector2 anchoredPosition)
+        {
+            RectTransform rect = CreateRect(name, parent);
+            rect.anchorMin = new Vector2(0.5f, 1f);
+            rect.anchorMax = new Vector2(0.5f, 1f);
+            rect.pivot = new Vector2(0.5f, 1f);
+            rect.sizeDelta = new Vector2(255f, 44f);
+            rect.anchoredPosition = anchoredPosition;
+
+            Image image = rect.gameObject.AddComponent<Image>();
+            image.color = MenuDark;
+
+            Outline outline = rect.gameObject.AddComponent<Outline>();
+            outline.effectColor = new Color(1f, 0.72f, 0.26f, 0.9f);
+            outline.effectDistance = new Vector2(1f, -1f);
+
+            Button button = rect.gameObject.AddComponent<Button>();
+            ColorBlock colors = button.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(1f, 0.88f, 0.45f, 1f);
+            colors.pressedColor = new Color(0.8f, 0.58f, 0.18f, 1f);
+            colors.selectedColor = colors.highlightedColor;
+            button.colors = colors;
+
+            TMP_Text text = CreateText("Label", rect, label, 20f, FontStyles.Bold);
+            text.color = MenuGold;
+            text.alignment = TextAlignmentOptions.Center;
+            ApplyReadableTextStyle(text, Color.black, 0.16f);
+            Stretch(text.rectTransform);
+
+            return button;
+        }
+
+        private static void CreateLogoImage(RectTransform parent)
+        {
+            Sprite logoSprite = LoadDev4LogoSprite();
+            if (logoSprite == null)
+            {
+                TMP_Text fallbackText = CreateText("LogoFallback", parent, "HV", 34f, FontStyles.Bold);
+                fallbackText.color = MenuGold;
+                fallbackText.alignment = TextAlignmentOptions.Center;
+                ApplyReadableTextStyle(fallbackText, Color.black, 0.16f);
+                Stretch(fallbackText.rectTransform);
+                return;
+            }
+
+            RectTransform logoRect = CreateRect("Logo_Image", parent);
+            logoRect.anchorMin = new Vector2(0.5f, 0.5f);
+            logoRect.anchorMax = new Vector2(0.5f, 0.5f);
+            logoRect.pivot = new Vector2(0.5f, 0.5f);
+            logoRect.sizeDelta = new Vector2(118f, 118f);
+            logoRect.anchoredPosition = Vector2.zero;
+
+            Image logoImage = logoRect.gameObject.AddComponent<Image>();
+            logoImage.sprite = logoSprite;
+            logoImage.color = Color.white;
+            logoImage.preserveAspect = true;
+            logoImage.raycastTarget = false;
+        }
+
+        private static Sprite LoadDev4LogoSprite()
+        {
+#if UNITY_EDITOR
+            return AssetDatabase.LoadAssetAtPath<Sprite>(Dev4LogoSpritePath);
+#else
+            return null;
+#endif
+        }
+
+        private static TMP_FontAsset LoadDev4MenuFont()
+        {
+#if UNITY_EDITOR
+            if (cachedMenuFont == null)
+            {
+                cachedMenuFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(Dev4MenuFontPath);
+            }
+
+            return cachedMenuFont;
+#else
+            return null;
+#endif
+        }
+
+        private static TMP_Text CreateText(string name, RectTransform parent, string text, float size, FontStyles style)
+        {
+            GameObject go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+
+            TextMeshProUGUI tmp = go.AddComponent<TextMeshProUGUI>();
+            TMP_FontAsset menuFont = LoadDev4MenuFont();
+            if (menuFont != null)
+            {
+                tmp.font = menuFont;
+            }
+
+            tmp.text = text;
+            tmp.fontSize = size;
+            tmp.fontStyle = style;
+            tmp.enableAutoSizing = true;
+            tmp.fontSizeMin = Mathf.Max(8f, size * 0.6f);
+            tmp.fontSizeMax = size;
+            tmp.raycastTarget = false;
+
+            return tmp;
+        }
+
+        private static void ApplyReadableTextStyle(TMP_Text text, Color outlineColor, float outlineWidth)
+        {
+            text.outlineColor = outlineColor;
+            text.outlineWidth = outlineWidth;
+
+            Shadow shadow = text.gameObject.AddComponent<Shadow>();
+            shadow.effectColor = new Color(0f, 0f, 0f, 0.82f);
+            shadow.effectDistance = new Vector2(2f, -2f);
+            shadow.useGraphicAlpha = true;
+        }
+
+        private static Image CreateImage(string name, RectTransform parent, Color color)
+        {
+            RectTransform rect = CreateRect(name, parent);
+            Image image = rect.gameObject.AddComponent<Image>();
+            image.color = color;
+            return image;
+        }
+
+        private static RectTransform CreateRect(string name, RectTransform parent)
+        {
+            GameObject go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            return go.AddComponent<RectTransform>();
+        }
+
+        private static void CreateSunburstRays(RectTransform parent)
+        {
+            RectTransform raysRoot = CreateRect("VictoryRays", parent);
+            Stretch(raysRoot);
+
+            const int rayCount = 18;
+            const float startAngle = -86f;
+            const float angleStep = 10f;
+
+            for (int i = 0; i < rayCount; i++)
+            {
+                RectTransform ray = CreateRect("Ray", raysRoot);
+                ray.anchorMin = new Vector2(0.5f, 1f);
+                ray.anchorMax = new Vector2(0.5f, 1f);
+                ray.pivot = new Vector2(0.5f, 1f);
+                ray.sizeDelta = new Vector2(78f, 1200f);
+                ray.anchoredPosition = new Vector2(0f, 76f);
+                ray.localEulerAngles = new Vector3(0f, 0f, startAngle + angleStep * i);
+
+                Image image = ray.gameObject.AddComponent<Image>();
+                image.color = i % 2 == 0
+                    ? new Color(1f, 0.62f, 0.12f, 0.14f)
+                    : new Color(1f, 0.82f, 0.28f, 0.06f);
+                image.raycastTarget = false;
+            }
+        }
+
+        private static void CreateCornerPin(RectTransform parent, Vector2 corner)
+        {
+            RectTransform pin = CreateRect("CornerPin", parent);
+            pin.anchorMin = new Vector2(corner.x < 0f ? 0f : 1f, corner.y < 0f ? 0f : 1f);
+            pin.anchorMax = pin.anchorMin;
+            pin.pivot = new Vector2(0.5f, 0.5f);
+            pin.sizeDelta = new Vector2(10f, 10f);
+            pin.anchoredPosition = new Vector2(corner.x * 8f, corner.y * 8f);
+
+            Image image = pin.gameObject.AddComponent<Image>();
+            image.color = new Color(0.05f, 0.035f, 0.03f, 0.78f);
+
+            Outline outline = pin.gameObject.AddComponent<Outline>();
+            outline.effectColor = new Color(1f, 0.88f, 0.42f, 0.22f);
+            outline.effectDistance = new Vector2(1f, -1f);
+        }
+
+        private static void Stretch(RectTransform rect)
+        {
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+        }
+
+        private static void SetRect(RectTransform rect, Vector2 anchorMin, Vector2 anchorMax, Vector2 size, Vector2 anchoredPosition)
+        {
+            rect.anchorMin = anchorMin;
+            rect.anchorMax = anchorMax;
+            rect.pivot = new Vector2(0.5f, 1f);
+            rect.sizeDelta = size;
+            rect.anchoredPosition = anchoredPosition;
+        }
+    }
+
+}
