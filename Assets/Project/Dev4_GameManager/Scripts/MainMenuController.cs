@@ -11,6 +11,7 @@ namespace HonVietThuThanh.Dev4
     {
         [Header("Scene")]
         [SerializeField] private string gameplaySceneName = "Scene_Dev5_Art";
+        [SerializeField] private string loadingSceneName = "Scene_Loading";
 
         [Header("Panels")]
         [SerializeField] private GameObject howToPlayPanel;
@@ -30,7 +31,21 @@ namespace HonVietThuThanh.Dev4
                 return;
             }
 
-            SceneManager.LoadScene(gameplaySceneName);
+            Time.timeScale = 1f;
+            SceneLoadRequest.Configure(
+                gameplaySceneName,
+                string.Empty,
+                SceneLoadRequest.DefaultLoadingDescription,
+                SceneLoadRequest.DefaultLoadingTip);
+
+            if (string.IsNullOrWhiteSpace(loadingSceneName))
+            {
+                Debug.LogWarning("[MainMenuController] Loading scene name is empty. Loading gameplay scene directly.");
+                SceneManager.LoadScene(gameplaySceneName);
+                return;
+            }
+
+            SceneManager.LoadScene(loadingSceneName);
         }
 
         public void OpenHowToPlay()
