@@ -50,6 +50,8 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
             Instance = this;
+
+            VictoryScreenController.EnsureExists();
         }
 
         private void Start()
