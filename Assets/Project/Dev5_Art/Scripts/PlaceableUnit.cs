@@ -40,7 +40,21 @@ namespace HonVietThuThanh.Dev5
         // ---------------------------------------------------------------
         private void Awake()
         {
-            _renderer = GetComponentInChildren<MeshRenderer>();
+            // Tìm MeshRenderer ở Placeholder để tránh đổi màu Model thật dưới ModelSlot
+            Transform visualTrans = transform.Find("Visual");
+            if (visualTrans != null)
+            {
+                Transform placeholderTrans = visualTrans.Find("Placeholder");
+                if (placeholderTrans != null)
+                {
+                    _renderer = placeholderTrans.GetComponent<MeshRenderer>();
+                }
+            }
+
+            if (_renderer == null)
+            {
+                _renderer = GetComponentInChildren<MeshRenderer>();
+            }
             _propBlock = new MaterialPropertyBlock();
         }
 
