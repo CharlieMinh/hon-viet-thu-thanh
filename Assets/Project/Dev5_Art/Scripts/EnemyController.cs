@@ -19,11 +19,13 @@ namespace HonVietThuThanh.Dev5
         private bool rewardGranted = false;
 
         private Health health;
+        private EnemyAnimationController animationController;
         public Health Health => health;
 
         private void Awake()
         {
             health = GetComponent<Health>();
+            animationController = GetComponent<EnemyAnimationController>();
         }
 
         private void Start()
@@ -44,6 +46,11 @@ namespace HonVietThuThanh.Dev5
 
         private void HandleDeath()
         {
+               if (animationController != null)
+            {
+                animationController.PlayDeath();
+            }
+
             if (!rewardGranted)
             {
                 rewardGranted = true;

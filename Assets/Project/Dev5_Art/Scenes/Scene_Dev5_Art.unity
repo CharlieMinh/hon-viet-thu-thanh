@@ -8866,7 +8866,7 @@ MonoBehaviour:
   - waveName: Wave 1
     enemies:
     - enemyName: Goblin
-      enemyPrefab: {fileID: 8745474307276464570, guid: c8cbe08ccba72e142a3a5fec6736110d, type: 3}
+      enemyPrefab: {fileID: 8745474307276464570, guid: ae26e92326c8c65468a0ac0a5020c567, type: 3}
       count: 3
       spawnInterval: 1
       maxHealth: 30
@@ -8878,7 +8878,7 @@ MonoBehaviour:
   - waveName: Wave 2
     enemies:
     - enemyName: Goblin
-      enemyPrefab: {fileID: 8745474307276464570, guid: c8cbe08ccba72e142a3a5fec6736110d, type: 3}
+      enemyPrefab: {fileID: 8745474307276464570, guid: ae26e92326c8c65468a0ac0a5020c567, type: 3}
       count: 3
       spawnInterval: 1
       maxHealth: 30
@@ -8888,7 +8888,7 @@ MonoBehaviour:
       moveSpeed: 3
       killGoldReward: 2
     - enemyName: Orc
-      enemyPrefab: {fileID: 698683824051872785, guid: 94ba287052c08ed43a795bcbebda96dc, type: 3}
+      enemyPrefab: {fileID: 3583947444818027481, guid: 95df49584a2d4284e9cdb08973bfa557, type: 3}
       count: 2
       spawnInterval: 1.5
       maxHealth: 70
@@ -8900,7 +8900,7 @@ MonoBehaviour:
   - waveName: Wave 3
     enemies:
     - enemyName: Goblin
-      enemyPrefab: {fileID: 8745474307276464570, guid: c8cbe08ccba72e142a3a5fec6736110d, type: 3}
+      enemyPrefab: {fileID: 8745474307276464570, guid: ae26e92326c8c65468a0ac0a5020c567, type: 3}
       count: 4
       spawnInterval: 1
       maxHealth: 30
@@ -8910,7 +8910,7 @@ MonoBehaviour:
       moveSpeed: 3
       killGoldReward: 2
     - enemyName: Orc
-      enemyPrefab: {fileID: 698683824051872785, guid: 94ba287052c08ed43a795bcbebda96dc, type: 3}
+      enemyPrefab: {fileID: 3583947444818027481, guid: 95df49584a2d4284e9cdb08973bfa557, type: 3}
       count: 2
       spawnInterval: 1.5
       maxHealth: 70
@@ -8920,7 +8920,7 @@ MonoBehaviour:
       moveSpeed: 2.2
       killGoldReward: 4
     - enemyName: Enemy Archer
-      enemyPrefab: {fileID: 3233917839900333563, guid: 8a8dbd1771c458a4fb8050058624e94c, type: 3}
+      enemyPrefab: {fileID: 3233917839900333563, guid: d5aa124de903f864cb79b8ded9866cb3, type: 3}
       count: 1
       spawnInterval: 1.5
       maxHealth: 40
@@ -8932,7 +8932,7 @@ MonoBehaviour:
   - waveName: Wave 4
     enemies:
     - enemyName: Orc
-      enemyPrefab: {fileID: 698683824051872785, guid: 94ba287052c08ed43a795bcbebda96dc, type: 3}
+      enemyPrefab: {fileID: 3583947444818027481, guid: 95df49584a2d4284e9cdb08973bfa557, type: 3}
       count: 4
       spawnInterval: 1.5
       maxHealth: 70
@@ -8942,7 +8942,7 @@ MonoBehaviour:
       moveSpeed: 2.2
       killGoldReward: 4
     - enemyName: Enemy Archer
-      enemyPrefab: {fileID: 3233917839900333563, guid: 8a8dbd1771c458a4fb8050058624e94c, type: 3}
+      enemyPrefab: {fileID: 3233917839900333563, guid: d5aa124de903f864cb79b8ded9866cb3, type: 3}
       count: 3
       spawnInterval: 1.5
       maxHealth: 40

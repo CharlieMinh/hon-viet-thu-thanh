@@ -260,6 +260,10 @@ namespace HonVietThuThanh.Dev5
         private void ApplyColor(Color color)
         {
             if (_renderer == null) return;
+            // if (_propBlock == null)
+            // {
+            //     _propBlock = new MaterialPropertyBlock();
+            // }
             _renderer.GetPropertyBlock(_propBlock);
             _propBlock.SetColor(BaseColorID, color);
             _propBlock.SetColor(ColorID, color);

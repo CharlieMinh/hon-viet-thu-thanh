@@ -19,6 +19,7 @@ namespace HonVietThuThanh.Dev5
         private float cooldownTimer = 0f;
         private bool hasLoggedNoTargets = false;
         private PlaceableUnit target = null;
+        private const float RunSpeedThreshold = 2.5f;
 
         private void Awake()
         {
@@ -35,6 +36,7 @@ namespace HonVietThuThanh.Dev5
             if (myHealth != null && myHealth.IsDead)
             {
                 target = null;
+                PlayIdleAnimation();
                 return;
             }
 
@@ -42,6 +44,7 @@ namespace HonVietThuThanh.Dev5
             if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.IsCombatPhase)
             {
                 target = null;
+                PlayIdleAnimation();
                 return;
             }
 
@@ -95,10 +98,12 @@ namespace HonVietThuThanh.Dev5
             {
                 // Mục tiêu ngoài tầm đánh -> Di chuyển lại gần bằng Vector3.MoveTowards
                 transform.position = Vector3.MoveTowards(transform.position, targetPos, combatStats.moveSpeed * Time.deltaTime);
+                PlayMoveAnimation();
             }
             else
             {
                 // Mục tiêu đã vào tầm đánh -> Đứng yên và tấn công theo cooldown
+                PlayIdleAnimation();
                 if (cooldownTimer >= combatStats.attackCooldown)
                 {
                     ExecuteAttack(target);
@@ -159,6 +164,30 @@ namespace HonVietThuThanh.Dev5
         {
             if (PlayerUnitManager.Instance == null) return null;
             return PlayerUnitManager.Instance.GetPriorityTargetForEnemy(transform.position);
+        }
+
+        private void PlayIdleAnimation()
+        {
+            if (animationController != null)
+            {
+                animationController.PlayIdle();
+            }
+        }
+
+        private void PlayMoveAnimation()
+        {
+            if (animationController == null)
+            {
+                return;
+            }
+
+            if (combatStats != null && combatStats.moveSpeed >= RunSpeedThreshold)
+            {
+                animationController.PlayRun();
+                return;
+            }
+
+            animationController.PlayWalk();
         }
     }
 }
