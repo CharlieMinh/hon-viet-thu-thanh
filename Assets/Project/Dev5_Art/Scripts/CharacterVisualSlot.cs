@@ -21,6 +21,70 @@ namespace HonVietThuThanh.Dev5
         private void Start()
         {
             AutoFitModelIfNeeded();
+            DebugLogHierarchy();
+        }
+
+        private void DebugLogHierarchy()
+        {
+            Debug.Log($"[VisualSlotDebug] === {gameObject.name} ===");
+            if (visualRoot != null)
+            {
+                Debug.Log($"[VisualSlotDebug] VisualRoot active: {visualRoot.gameObject.activeInHierarchy}");
+            }
+            if (placeholder != null)
+            {
+                Debug.Log($"[VisualSlotDebug] Placeholder active: {placeholder.activeSelf}");
+                var mr = placeholder.GetComponent<MeshRenderer>();
+                if (mr != null) Debug.Log($"[VisualSlotDebug] Placeholder MeshRenderer enabled: {mr.enabled}");
+            }
+            if (modelSlot != null)
+            {
+                Debug.Log($"[VisualSlotDebug] ModelSlot child count: {modelSlot.childCount}");
+                for (int i = 0; i < modelSlot.childCount; i++)
+                {
+                    Transform child = modelSlot.GetChild(i);
+                    Debug.Log($"[VisualSlotDebug] Child {i}: {child.name}, ActiveSelf: {child.gameObject.activeSelf}, LocalPos: {child.localPosition}, LocalRot: {child.localEulerAngles}, LocalScale: {child.localScale}");
+                    
+                    var animator = child.GetComponentInChildren<Animator>(true);
+                    if (animator != null)
+                    {
+                        Debug.Log($"[VisualSlotDebug] Animator found on '{animator.gameObject.name}': Enabled: {animator.enabled}, Controller: {(animator.runtimeAnimatorController != null ? animator.runtimeAnimatorController.name : "null")}, Avatar: {(animator.avatar != null ? animator.avatar.name : "null")}, HasTransformHierarchy: {animator.hasTransformHierarchy}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[VisualSlotDebug] Animator NOT found on child '{child.name}' or its children!");
+                    }
+                    
+                    var renderers = child.GetComponentsInChildren<Renderer>(true);
+                    Debug.Log($"[VisualSlotDebug] Found {renderers.Length} Renderers in model child.");
+                    foreach (var r in renderers)
+                    {
+                        string meshInfo = "None";
+                        if (r is MeshRenderer)
+                        {
+                            var mf = r.GetComponent<MeshFilter>();
+                            if (mf != null && mf.sharedMesh != null)
+                            {
+                                meshInfo = $"Mesh: {mf.sharedMesh.name}, Verts: {mf.sharedMesh.vertexCount}";
+                            }
+                        }
+                        else if (r is SkinnedMeshRenderer smr)
+                        {
+                            if (smr.sharedMesh != null)
+                            {
+                                meshInfo = $"SkinnedMesh: {smr.sharedMesh.name}, Verts: {smr.sharedMesh.vertexCount}";
+                            }
+                        }
+
+                        Debug.Log($"[VisualSlotDebug] Renderer: {r.name}, Type: {r.GetType().Name}, Enabled: {r.enabled}, Bounds (Center: {r.bounds.center}, Size: {r.bounds.size}), Mesh: {meshInfo}, Materials: {r.sharedMaterials.Length}");
+                        for (int j = 0; j < r.sharedMaterials.Length; j++)
+                        {
+                            var mat = r.sharedMaterials[j];
+                            Debug.Log($"[VisualSlotDebug] Material {j}: {(mat != null ? mat.name : "null")} (Shader: {(mat != null ? mat.shader.name : "null")})");
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
