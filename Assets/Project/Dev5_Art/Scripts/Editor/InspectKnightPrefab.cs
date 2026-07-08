@@ -21,7 +21,7 @@ namespace HonVietThuThanh.Dev5Editor
         [MenuItem("Tools/Hon Viet Thu Thanh/Inspect Knight FBX Bones")]
         public static void InspectKnightFBX()
         {
-            InspectFBX("Assets/Project/Dev5_Art/Models/Ironbound_Warlord/Meshy_AI_Ironbound_Warlord_0701110034_texture.fbx", "KNIGHT FBX");
+            InspectFBX("Assets/Project/Dev5_Art/Models/Ironbound_Warlord/Meshy_AI_Ironbound_Warlord_biped_Character_output.fbx", "KNIGHT FBX");
         }
 
         [MenuItem("Tools/Hon Viet Thu Thanh/Inspect Archer FBX Bones")]
