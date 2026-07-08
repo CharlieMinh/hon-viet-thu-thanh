@@ -1,0 +1,22 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.4/staging' branch; Version is '6000.4.8f1 (f8b72d3d7343) revision 16299821'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ADMIN" at "2026-07-08T08:26:40.7357898Z"
+OS: 'Windows 11  (10.0.26200) CoreSingleLanguage' Language: 'en' Physical Memory: 16011 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-07-08T08:26:40Z
+
+COMMAND LINE ARGUMENTS:
+D:\Unity Hub\6000.4.8f1\Editor\Unity.exe
+-projectPath
+d:\SOURCE-CODE\PRU\hon-viet-thu-thanh
+-executeMethod
+HonVietThuThanh.Dev5Editor.Dev5Phase19AKnightAnimationSetupEditor.SetupPhase19AKnightAnimation
+-batchmode
+-quit
+-logFile
+unity_setup_phase19a_knight.log
+Successfully changed project path to: d:\SOURCE-CODE\PRU\hon-viet-thu-thanh
+D:/SOURCE-CODE/PRU/hon-viet-thu-thanh
+Exiting without the bug reporter. Application will terminate with return code 1
