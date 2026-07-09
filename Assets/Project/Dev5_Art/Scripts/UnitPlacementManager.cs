@@ -88,6 +88,7 @@ namespace HonVietThuThanh.Dev5
         {
             if (SelectedUnit == unit)
             {
+                SelectedUnit.SetSelected(false);
                 SelectedUnit = null;
             }
         }
@@ -148,4 +149,3 @@ namespace HonVietThuThanh.Dev5
         #endregion
     }
 }
-

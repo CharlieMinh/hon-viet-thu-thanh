@@ -33,6 +33,7 @@ namespace HonVietThuThanh.Dev5
         private MeshRenderer _renderer;
         private MaterialPropertyBlock _propBlock;
         private Health _health;
+        private SelectableUnitVisual _selectionVisual;
 
         private static readonly int BaseColorID = Shader.PropertyToID("_BaseColor");
         private static readonly int ColorID     = Shader.PropertyToID("_Color");
@@ -87,6 +88,7 @@ namespace HonVietThuThanh.Dev5
             {
                 PlayerUnitManager.Instance.UnregisterUnit(this);
             }
+            UnitPlacementManager.Instance?.ClearSelectionIfDestroyed(this);
         }
 
         private void HandleDeath()
@@ -109,6 +111,15 @@ namespace HonVietThuThanh.Dev5
         public void SetSelected(bool selected)
         {
             RefreshColor(selected);
+
+            if (selected)
+            {
+                GetSelectionVisual().ShowSelected(true);
+            }
+            else if (_selectionVisual != null)
+            {
+                _selectionVisual.ShowSelected(false);
+            }
         }
 
         /// <summary>
@@ -282,6 +293,20 @@ namespace HonVietThuThanh.Dev5
             _propBlock.SetColor(BaseColorID, color);
             _propBlock.SetColor(ColorID, color);
             _renderer.SetPropertyBlock(_propBlock);
+        }
+
+        private SelectableUnitVisual GetSelectionVisual()
+        {
+            if (_selectionVisual == null)
+            {
+                _selectionVisual = GetComponent<SelectableUnitVisual>();
+                if (_selectionVisual == null)
+                {
+                    _selectionVisual = gameObject.AddComponent<SelectableUnitVisual>();
+                }
+            }
+
+            return _selectionVisual;
         }
 
         #endregion
