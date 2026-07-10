@@ -16,9 +16,9 @@ namespace HonVietThuThanh.Dev5Editor
     {
         private const string SCENE_REQUIRED = "Scene_Dev5_Art";
         private const string BASE_ENEMY_PREFAB_PATH = "Assets/Project/Dev5_Art/Prefabs/Enemies/Enemy_Test_Prefab.prefab";
-        private const string GOBLIN_PREFAB_PATH = "Assets/Project/Dev5_Art/Prefabs/Enemies/Goblin_Enemy_Prefab.prefab";
-        private const string ORC_PREFAB_PATH = "Assets/Project/Dev5_Art/Prefabs/Enemies/Orc_Enemy_Prefab.prefab";
-        private const string ARCHER_PREFAB_PATH = "Assets/Project/Dev5_Art/Prefabs/Enemies/EnemyArcher_Prefab.prefab";
+        private const string GOBLIN_PREFAB_PATH = "Assets/Project/Dev5_Art/Prefabs/Enemies/Verdant_Enemy_Prefab.prefab";
+        private const string ORC_PREFAB_PATH = "Assets/Project/Dev5_Art/Prefabs/Enemies/Mutant_Enemy_Prefab.prefab";
+        private const string ARCHER_PREFAB_PATH = "Assets/Project/Dev5_Art/Prefabs/Enemies/Enemy_Archer_Prefab.prefab";
         
         private const string ENEMY_PROJ_PREFAB_PATH = "Assets/Project/Dev5_Art/Prefabs/Projectiles/EnemyProjectile_Prefab.prefab";
         private const string ENEMY_PROJ_MAT_PATH = "Assets/Project/Dev5_Art/Prefabs/Projectiles/EnemyProjectile_Material.mat";
@@ -63,14 +63,14 @@ namespace HonVietThuThanh.Dev5Editor
                 return;
             }
 
-            // 2. Tạo Goblin Prefab
-            GameObject goblinPrefab = CreateGoblinPrefab();
+            // 2. Load Goblin Prefab
+            GameObject goblinPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(GOBLIN_PREFAB_PATH);
 
-            // 3. Tạo Orc Prefab
-            GameObject orcPrefab = CreateOrcPrefab();
+            // 3. Load Orc Prefab
+            GameObject orcPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ORC_PREFAB_PATH);
 
-            // 4. Tạo Enemy Archer Prefab
-            GameObject archerPrefab = CreateEnemyArcherPrefab(enemyProjPrefab);
+            // 4. Load Enemy Archer Prefab
+            GameObject archerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ARCHER_PREFAB_PATH);
 
             // 5. Cấu hình WaveManager trong Scene
             ConfigureWaves(goblinPrefab, orcPrefab, archerPrefab);
@@ -410,8 +410,51 @@ namespace HonVietThuThanh.Dev5Editor
             w4.enemies.Add(e4_2);
             waveManager.waves.Add(w4);
 
+            // Wave 5: 5 Goblin, 5 Orc, 4 Archer
+            WaveData w5 = new WaveData();
+            w5.waveName = "Wave 5";
+            WaveEnemyEntry e5_1 = new WaveEnemyEntry();
+            e5_1.enemyName = "Goblin";
+            e5_1.enemyPrefab = goblin;
+            e5_1.count = 5;
+            e5_1.spawnInterval = 1.0f;
+            e5_1.maxHealth = 30;
+            e5_1.damage = 5;
+            e5_1.attackRange = 1.3f;
+            e5_1.attackCooldown = 1.5f;
+            e5_1.moveSpeed = 3.0f;
+            e5_1.killGoldReward = 2;
+            w5.enemies.Add(e5_1);
+
+            WaveEnemyEntry e5_2 = new WaveEnemyEntry();
+            e5_2.enemyName = "Orc";
+            e5_2.enemyPrefab = orc;
+            e5_2.count = 5;
+            e5_2.spawnInterval = 1.2f;
+            e5_2.maxHealth = 70;
+            e5_2.damage = 10;
+            e5_2.attackRange = 1.4f;
+            e5_2.attackCooldown = 1.8f;
+            e5_2.moveSpeed = 2.2f;
+            e5_2.killGoldReward = 4;
+            w5.enemies.Add(e5_2);
+
+            WaveEnemyEntry e5_3 = new WaveEnemyEntry();
+            e5_3.enemyName = "Enemy Archer";
+            e5_3.enemyPrefab = archer;
+            e5_3.count = 4;
+            e5_3.spawnInterval = 1.2f;
+            e5_3.maxHealth = 40;
+            e5_3.damage = 7;
+            e5_3.attackRange = 5.0f;
+            e5_3.attackCooldown = 1.4f;
+            e5_3.moveSpeed = 2.5f;
+            e5_3.killGoldReward = 3;
+            w5.enemies.Add(e5_3);
+            waveManager.waves.Add(w5);
+
             EditorUtility.SetDirty(waveManager);
-            Debug.Log("[Phase15Setup] Đã cấu hình Wave 1 - Wave 4 thành công cho WaveManager.");
+            Debug.Log("[Phase15Setup] Đã cấu hình Wave 1 - Wave 5 thành công cho WaveManager.");
         }
     }
 }
