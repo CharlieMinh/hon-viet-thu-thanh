@@ -18,6 +18,7 @@ namespace HonVietThuThanh.Dev5
         [SerializeField] private AudioClip[] deathClips;
 
         [Header("Playback")]
+        [SerializeField] private bool muteForTesting = false;
         [SerializeField, Range(0f, 1f)] private float masterVolume = 0.85f;
         [SerializeField] private Vector2 pitchRange = new Vector2(0.96f, 1.04f);
         [SerializeField] private float attackCooldown = 1.5f;
@@ -184,6 +185,10 @@ namespace HonVietThuThanh.Dev5
 
         private void PlayRandomClip(AudioClip[] clips, ref int lastIndex)
         {
+            if (muteForTesting)
+            {
+                return;
+            }
             if (clips == null || clips.Length == 0)
             {
                 return;

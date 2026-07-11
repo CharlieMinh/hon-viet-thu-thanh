@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -24,6 +25,11 @@ namespace HonVietThuThanh.Dev5Editor
         [MenuItem("Dev5/Setup Mutant Enemy Animation")]
         public static void SetupMutantEnemyAnimation()
         {
+            // Configure Animation Events on FBX clips before loading them
+            ConfigureAnimationEvents(WalkPath, "MutantWalking", (0.3f, "OnFootstep"), (0.8f, "OnFootstep"));
+            ConfigureAnimationEvents(RunPath, "MutantRun", (0.25f, "OnFootstep"), (0.65f, "OnFootstep"));
+            ConfigureAnimationEvents(AttackPath, "MutantActtackPunch", (0.4f, "OnAttackImpact"));
+
             AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath);
             if (controller == null)
             {
@@ -48,6 +54,74 @@ namespace HonVietThuThanh.Dev5Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             Debug.Log("[MutantSetup] Mutant enemy animation setup completed.");
+        }
+
+        private static void ConfigureAnimationEvents(string fbxPath, string clipName, params (float time, string functionName)[] events)
+        {
+            ModelImporter modelImporter = AssetImporter.GetAtPath(fbxPath) as ModelImporter;
+            if (modelImporter == null)
+            {
+                Debug.LogWarning($"[MutantSetup] ModelImporter not found for '{fbxPath}'");
+                return;
+            }
+
+            ModelImporterClipAnimation[] clips = modelImporter.clipAnimations;
+            if (clips == null || clips.Length == 0)
+            {
+                clips = modelImporter.defaultClipAnimations;
+            }
+
+            if (clips == null || clips.Length == 0)
+            {
+                Debug.LogWarning($"[MutantSetup] No clip animations found in '{fbxPath}'");
+                return;
+            }
+
+            bool changed = false;
+            for (int i = 0; i < clips.Length; i++)
+            {
+                if (clips[i].name == clipName || clips.Length == 1)
+                {
+                    List<AnimationEvent> existingEvents = clips[i].events != null ? 
+                        new List<AnimationEvent>(clips[i].events) : new List<AnimationEvent>();
+                    
+                    bool anyNew = false;
+                    foreach (var evt in events)
+                    {
+                        bool exists = false;
+                        foreach (var existing in existingEvents)
+                        {
+                            if (existing.functionName == evt.functionName && Mathf.Abs(existing.time - evt.time) < 0.05f)
+                            {
+                                exists = true;
+                                break;
+                            }
+                        }
+
+                        if (!exists)
+                        {
+                            AnimationEvent newEvent = new AnimationEvent();
+                            newEvent.functionName = evt.functionName;
+                            newEvent.time = evt.time;
+                            existingEvents.Add(newEvent);
+                            anyNew = true;
+                        }
+                    }
+
+                    if (anyNew)
+                    {
+                        clips[i].events = existingEvents.ToArray();
+                        changed = true;
+                    }
+                }
+            }
+
+            if (changed)
+            {
+                modelImporter.clipAnimations = clips;
+                modelImporter.SaveAndReimport();
+                Debug.Log($"[MutantSetup] Successfully injected animation events into FBX: {fbxPath}");
+            }
         }
 
         private static void SetupController(
