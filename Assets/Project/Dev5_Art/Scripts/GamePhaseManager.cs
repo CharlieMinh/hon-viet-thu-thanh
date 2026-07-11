@@ -52,6 +52,7 @@ namespace HonVietThuThanh.Dev5
             Instance = this;
 
             VictoryScreenController.EnsureExists();
+            RoundCompleteScreenController.EnsureExists();
         }
 
         private void Start()
@@ -113,6 +114,11 @@ namespace HonVietThuThanh.Dev5
 
             currentCombatRewardGranted = false;
 
+            if (WaveManager.Instance != null)
+            {
+                RoundResultTracker.BeginRound(WaveManager.Instance.currentWaveIndex);
+            }
+
             SetState(GameState.Combat);
 
             if (WaveManager.Instance != null)
@@ -151,7 +157,8 @@ namespace HonVietThuThanh.Dev5
                 currentCombatRewardGranted = true;
                 if (EconomyManager.Instance != null)
                 {
-                    EconomyManager.Instance.GrantInterestGold();
+                    int interestGold = EconomyManager.Instance.GrantInterestGold();
+                    RoundResultTracker.RecordInterestGold(interestGold);
                 }
             }
 
