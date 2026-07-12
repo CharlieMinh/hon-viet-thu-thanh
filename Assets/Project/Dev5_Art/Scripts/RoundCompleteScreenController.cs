@@ -2,9 +2,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace HonVietThuThanh.Dev5
 {
@@ -13,14 +10,10 @@ namespace HonVietThuThanh.Dev5
     /// </summary>
     public class RoundCompleteScreenController : MonoBehaviour
     {
-        private const string MenuFontPath = "Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset";
-        private const string BackgroundSpritePath = "Assets/Project/Dev5_Art/UI/UI/Clean/RoundComplete_Background.png";
-
         private static readonly Color Gold = new Color(1f, 0.82f, 0.38f, 1f);
         private static readonly Color DeepRed = new Color(0.43f, 0.13f, 0.06f, 1f);
         private static readonly Color Wood = new Color(0.27f, 0.13f, 0.07f, 0.96f);
         private static readonly Color Parchment = new Color(0.93f, 0.78f, 0.52f, 0.98f);
-        private static TMP_FontAsset cachedFont;
 
         private CanvasGroup rootGroup;
         private GamePhaseManager subscribedPhaseManager;
@@ -358,7 +351,7 @@ namespace HonVietThuThanh.Dev5
             Image background = CreateImage("Background", root, new Color(0.75f, 0.51f, 0.28f, 1f));
             Stretch(background.rectTransform);
 
-            Sprite bgSprite = LoadSprite(BackgroundSpritePath);
+            Sprite bgSprite = LoadSprite(Dev5RuntimeUIArt.RoundCompleteBackground);
             if (bgSprite != null)
             {
                 background.sprite = bgSprite;
@@ -558,25 +551,12 @@ namespace HonVietThuThanh.Dev5
 
         private static TMP_FontAsset LoadFont()
         {
-#if UNITY_EDITOR
-            if (cachedFont == null)
-            {
-                cachedFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(MenuFontPath);
-            }
-
-            return cachedFont;
-#else
-            return null;
-#endif
+            return Dev5RuntimeUIArt.LoadMenuFont();
         }
 
-        private static Sprite LoadSprite(string path)
+        private static Sprite LoadSprite(string resourcePath)
         {
-#if UNITY_EDITOR
-            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
-#else
-            return null;
-#endif
+            return Dev5RuntimeUIArt.LoadSprite(resourcePath);
         }
     }
 }

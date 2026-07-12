@@ -193,7 +193,7 @@ Transform:
   m_GameObject: {fileID: 2151458694166277999}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.355, z: 0}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -253,10 +253,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9d47dd9d9c537048bd74a62914292e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitCombatStats
-  damage: 6
+  damage: 5
   baseDamage: -1
   attackRange: 1.3
-  attackCooldown: 1.5
+  attackCooldown: 1.6
   goldPerHit: 1
   moveSpeed: 2
   rotationSpeed: 10
@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013eb2c588c9ee14693f9280e3a5954d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.Health
-  maxHealth: 200
+  maxHealth: 220
   baseMaxHealth: -1
 --- !u!114 &5527734997423901554
 MonoBehaviour:
@@ -601,7 +601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9033207303205954401, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.3335697
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9033207303205954401, guid: 9fa0f85969ffcdb48a1218c326ffbc1c, type: 3}
       propertyPath: m_LocalPosition.z

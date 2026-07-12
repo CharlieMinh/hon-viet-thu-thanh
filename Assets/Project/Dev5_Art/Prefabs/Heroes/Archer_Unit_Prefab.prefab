@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 980956221067377637}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -335,6 +335,7 @@ MonoBehaviour:
   normalColor: {r: 1, g: 0.8, b: 0.15, a: 1}
   selectedColor: {r: 1, g: 0.85, b: 0.1, a: 1}
   placedColor: {r: 1, g: 0.87, b: 0.4475, a: 1}
+  waitingAreaHeightOffset: 0
 --- !u!114 &4766329842313555317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,7 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9d47dd9d9c537048bd74a62914292e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitCombatStats
-  damage: 8
+  damage: 9
   baseDamage: -1
   attackRange: 5
   attackCooldown: 1.2
@@ -379,7 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013eb2c588c9ee14693f9280e3a5954d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.Health
-  maxHealth: 70
+  maxHealth: 75
   baseMaxHealth: -1
 --- !u!114 &3943032595747051439
 MonoBehaviour:
@@ -686,7 +687,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ea30aa6516d5ab4982c7e463f872278, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ea30aa6516d5ab4982c7e463f872278, type: 3}
       propertyPath: m_LocalPosition.z
