@@ -473,6 +473,7 @@ MonoBehaviour:
   deathLingerSeconds: 0.5
   deathFallbackDelay: 2
   animator: {fileID: 459751451887519269}
+  muteForTesting: 0
   attackAudioSource: {fileID: 3934395591228807979}
   deathAudioSource: {fileID: 815572677210250882}
   attackClip: {fileID: 8300000, guid: ad09fdd4237172a4b9fad1e6aa3797ad, type: 3}

@@ -29,6 +29,7 @@ namespace HonVietThuThanh.Dev5
         [SerializeField] private Animator animator;
 
         [Header("Audio Setup")]
+        [SerializeField] private bool muteForTesting = false;
         [SerializeField] private AudioSource attackAudioSource;
         [SerializeField] private AudioSource deathAudioSource;
         [SerializeField] private AudioClip attackClip;
@@ -70,8 +71,31 @@ namespace HonVietThuThanh.Dev5
             }
         }
 
+        private void OnEnable()
+        {
+            if (GamePhaseManager.Instance != null)
+            {
+                GamePhaseManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (GamePhaseManager.Instance != null)
+            {
+                GamePhaseManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
+            }
+            StopAllAudio();
+        }
+
         private void Start()
         {
+            if (GamePhaseManager.Instance != null)
+            {
+                GamePhaseManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
+                GamePhaseManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+            }
+
             if (health != null)
             {
                 health.OnDeath += PlayDeath;
@@ -81,9 +105,33 @@ namespace HonVietThuThanh.Dev5
 
         private void OnDestroy()
         {
+            if (GamePhaseManager.Instance != null)
+            {
+                GamePhaseManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
+            }
             if (health != null)
             {
                 health.OnDeath -= PlayDeath;
+            }
+        }
+
+        private void HandleGameStateChanged(GameState state)
+        {
+            if (state == GameState.WaveCompleted || state == GameState.Win || state == GameState.Lose || state == GameState.Preparation)
+            {
+                StopAllAudio();
+            }
+        }
+
+        private void StopAllAudio()
+        {
+            if (attackAudioSource != null && attackAudioSource.isPlaying)
+            {
+                attackAudioSource.Stop();
+            }
+            if (deathAudioSource != null && deathAudioSource.isPlaying)
+            {
+                deathAudioSource.Stop();
             }
         }
 
@@ -202,6 +250,8 @@ namespace HonVietThuThanh.Dev5
             if (isDying) return;
             TriggerAnimator("Attack");
 
+            if (muteForTesting) return;
+
             if (attackAudioSource != null && attackClip != null)
             {
                 attackAudioSource.Stop();
@@ -240,12 +290,17 @@ namespace HonVietThuThanh.Dev5
             UpdateAnimatorBool("IsMoving", false);
 
             StopAttackSound();
-            if (deathAudioSource != null && deathClip != null)
+
+            if (!muteForTesting && deathAudioSource != null && deathClip != null)
             {
                 deathAudioSource.Stop();
                 deathAudioSource.clip = deathClip;
                 deathAudioSource.Play();
                 Debug.Log($"[{gameObject.name}] PlayDeath: Playing death sound '{deathClip.name}' on {deathAudioSource.name}");
+            }
+            else if (muteForTesting)
+            {
+                Debug.Log($"[{gameObject.name}] PlayDeath: Sound muted for testing");
             }
             else
             {

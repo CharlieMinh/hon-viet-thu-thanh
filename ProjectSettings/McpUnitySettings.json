@@ -1,5 +1,5 @@
 {
-    "Port": 8,
+    "Port": 8090,
     "RequestTimeoutSeconds": 10,
     "AutoStartServer": false,
     "EnableInfoLogs": true,

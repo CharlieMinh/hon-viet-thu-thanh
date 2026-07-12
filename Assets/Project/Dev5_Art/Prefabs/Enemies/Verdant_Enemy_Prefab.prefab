@@ -1605,3 +1605,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.EnemyAnimationController
   animator: {fileID: 0}
+  useAnimationEventsForAudio: 1
+  audioSource: {fileID: 0}
+  moveClip: {fileID: 8300000, guid: 8a0dfba47dbf228419424aa9042750e6, type: 3}
+  attackClip: {fileID: 8300000, guid: bc287e6176ef18c4c80453ebc0756289, type: 3}
+  deathClip: {fileID: 8300000, guid: 4126f2c3489f0a646a8f68dd6566721c, type: 3}

@@ -54,6 +54,8 @@ namespace HonVietThuThanh.Dev5
             if (!rewardGranted)
             {
                 rewardGranted = true;
+                RoundResultTracker.RecordEnemyKill(killGoldReward);
+
                 if (EconomyManager.Instance != null)
                 {
                     EconomyManager.Instance.AddGold(killGoldReward);
