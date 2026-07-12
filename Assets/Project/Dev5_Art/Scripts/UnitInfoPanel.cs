@@ -99,20 +99,9 @@ namespace HonVietThuThanh.Dev5
             UnitCombatStats stats = targetUnit.GetComponent<UnitCombatStats>();
             Health hp = targetUnit.GetComponent<Health>();
 
-            // 1. Render Tên + Sao tương ứng (Hỗ trợ định dạng sao vô hạn)
-            string starString = "";
-            if (starData != null)
-            {
-                int star = starData.starLevel;
-                if (star == 1) starString = " ★";
-                else if (star == 2) starString = " ★★";
-                else if (star == 3) starString = " ★★★";
-                else starString = $" ★ x{star}";
-            }
-
             if (nameText != null)
             {
-                nameText.text = $"{targetUnit.unitName}{starString}";
+                nameText.text = BuildUnitTitle(targetUnit.unitName, starData);
             }
 
             // 2. Render chỉ số chiến đấu hiện tại
@@ -127,17 +116,45 @@ namespace HonVietThuThanh.Dev5
             UnitRole roleComp = targetUnit.GetComponent<UnitRole>();
             if (roleComp != null)
             {
-                roleText = $"Role: {roleComp.role}\nAttack: {roleComp.attackType}\n";
+                roleText = $"Vai trò: {GetUnitRoleText(roleComp.role)}\n" +
+                           $"Kiểu đánh: {GetAttackTypeText(roleComp.attackType)}\n";
             }
 
             if (statsText != null)
             {
                 statsText.text = roleText +
-                                 $"HP: {curHP} / {maxHP}\n" +
-                                 $"Damage: {dmg}\n" +
-                                 $"Range: {range:F1}\n" +
-                                 $"Cooldown: {cooldown:F1}s\n" +
-                                 $"Move Speed: {speed:F1}";
+                                 $"Sinh lực: {curHP} / {maxHP}\n" +
+                                 $"Sát thương: {dmg}\n" +
+                                 $"Tầm đánh: {range:F1}\n" +
+                                 $"Hồi chiêu: {cooldown:F1} giây\n" +
+                                 $"Tốc độ di chuyển: {speed:F1}";
+            }
+        }
+
+        private static string BuildUnitTitle(string unitName, UnitStarData starData)
+        {
+            int starLevel = starData != null ? Mathf.Max(1, starData.starLevel) : 1;
+            return $"{unitName} - {starLevel} Sao";
+        }
+
+        private static string GetUnitRoleText(UnitClassRole role)
+        {
+            switch (role)
+            {
+                case UnitClassRole.Knight: return "Kỵ sĩ";
+                case UnitClassRole.Archer: return "Xạ thủ";
+                case UnitClassRole.Tank: return "Đỡ đòn";
+                default: return "Không xác định";
+            }
+        }
+
+        private static string GetAttackTypeText(AttackType attackType)
+        {
+            switch (attackType)
+            {
+                case AttackType.Melee: return "Cận chiến";
+                case AttackType.RangedProjectile: return "Đánh xa";
+                default: return "Không xác định";
             }
         }
 
