@@ -17,6 +17,10 @@ namespace HonVietThuThanh.Dev5
         public Color selectedColor = new Color(1.0f, 0.8f, 0.1f, 1f); // Vàng
         public Color placedColor   = new Color(0.3f, 0.9f, 0.3f, 1f); // Xanh lá
 
+        [Header("Waiting Area")]
+        [Tooltip("Vertical lift applied only when this unit spawns on the Bench. Board placement uses BoardManager positioning.")]
+        [Min(0f)] public float waitingAreaHeightOffset = 0f;
+
         // ---- State ----
         /// <summary>Ô hiện tại đang chiếm (null nếu đang ở khu vực chờ).</summary>
         public BoardCell OccupiedCell { get; private set; }

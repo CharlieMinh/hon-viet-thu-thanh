@@ -240,6 +240,7 @@ MonoBehaviour:
   normalColor: {r: 0.55, g: 0.55, b: 0.55, a: 1}
   selectedColor: {r: 1, g: 0.85, b: 0.1, a: 1}
   placedColor: {r: 0.7075, g: 0.7075, b: 0.7075, a: 1}
+  waitingAreaHeightOffset: 0.405
 --- !u!114 &3019596766811274445
 MonoBehaviour:
   m_ObjectHideFlags: 0
