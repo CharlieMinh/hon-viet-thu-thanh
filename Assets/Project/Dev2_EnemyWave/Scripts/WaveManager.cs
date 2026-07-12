@@ -37,7 +37,7 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             }
         }
 
-        [SerializeField] private bool autoStartOnPlay = true;
+        [SerializeField] private bool autoStartOnPlay = false;
         [SerializeField] private bool autoAdvanceToNextWave = true;
         [SerializeField] private float nextWaveDelay = 2.5f;
         [SerializeField] private List<WaveDefinition> waves = new();
@@ -48,9 +48,18 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         private int currentWaveIndex = -1;
         private int activeWaveEnemyCount;
         private bool hasSpawnedAllForCurrentWave;
+        private bool hasCompletedCurrentWave;
 
         public bool IsWaveRunning => activeWaveRoutine != null;
+        public bool IsWaveActive => IsWaveRunning || (hasSpawnedAllForCurrentWave && activeWaveEnemyCount > 0);
         public int CurrentWaveIndex => currentWaveIndex;
+        public int TotalWaveCount => waves.Count;
+        public bool HasMoreWaves => GetNextWaveIndex() < waves.Count;
+        public bool CurrentWaveCompleted => currentWaveIndex >= 0 && hasCompletedCurrentWave;
+        public bool AllWavesCompleted => currentWaveIndex >= 0
+                                         && currentWaveIndex >= waves.Count - 1
+                                         && hasCompletedCurrentWave
+                                         && !IsWaveActive;
 
         private void Start()
         {
@@ -73,10 +82,12 @@ namespace HonVietThuThanh.Dev2_EnemyWave
         private void HandleWaveStartRequested()
         {
             Debug.Log("[WaveManager] Wave start requested via GameEvents.", this);
-            if (!IsWaveRunning)
+            if (IsWaveActive)
             {
-                StartNextWaveManually();
+                Debug.Log("[WaveManager] Ignoring wave start request: a wave is still active.", this);
+                return;
             }
+            StartNextWaveManually();
         }
 
         public void BindSpawner(EnemySpawner enemySpawner)
@@ -115,18 +126,25 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             currentWaveIndex = -1;
             activeWaveEnemyCount = 0;
             hasSpawnedAllForCurrentWave = false;
+            hasCompletedCurrentWave = false;
         }
 
         public void StartNextWaveManually()
         {
-            if (IsWaveRunning)
+            if (IsWaveActive)
             {
-                Debug.Log("[WaveManager] Cannot start next wave manually: A wave is already running or spawning.", this);
+                Debug.Log("[WaveManager] Cannot start next wave: A wave is still active (spawning or enemies alive).", this);
                 return;
             }
 
-            int nextWaveIndex = currentWaveIndex < 0 ? 0 : currentWaveIndex + 1;
-            Debug.Log($"[WaveManager] Manually requesting wave {nextWaveIndex}.", this);
+            if (!HasMoreWaves)
+            {
+                Debug.Log("[WaveManager] Cannot start next wave: no more waves remain. Reset/restart is still allowed.", this);
+                return;
+            }
+
+            int nextWaveIndex = GetNextWaveIndex();
+            Debug.Log($"[WaveManager] Requesting wave {nextWaveIndex}.", this);
             StartWave(nextWaveIndex);
         }
 
@@ -168,6 +186,7 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             currentWaveIndex = waveIndex;
             activeWaveEnemyCount = 0;
             hasSpawnedAllForCurrentWave = false;
+            hasCompletedCurrentWave = false;
             activeWaveRoutine = StartCoroutine(RunWaveRoutine(waves[waveIndex], waveIndex));
         }
 
@@ -193,12 +212,14 @@ namespace HonVietThuThanh.Dev2_EnemyWave
 
         private void TryCompleteWave()
         {
-            if (!hasSpawnedAllForCurrentWave || activeWaveEnemyCount > 0)
+            if (!hasSpawnedAllForCurrentWave || activeWaveEnemyCount > 0 || hasCompletedCurrentWave)
             {
                 return;
             }
 
             int completedWaveIndex = currentWaveIndex;
+            activeWaveRoutine = null;
+            hasCompletedCurrentWave = true;
             hasSpawnedAllForCurrentWave = false;
             GameEvents.RaiseWaveCompleted(completedWaveIndex);
 
@@ -217,6 +238,11 @@ namespace HonVietThuThanh.Dev2_EnemyWave
             {
                 StartWave(nextWaveIndex);
             }
+        }
+
+        private int GetNextWaveIndex()
+        {
+            return currentWaveIndex < 0 ? 0 : currentWaveIndex + 1;
         }
     }
 }

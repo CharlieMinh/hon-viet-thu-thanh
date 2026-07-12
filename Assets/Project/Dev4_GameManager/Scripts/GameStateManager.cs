@@ -37,6 +37,7 @@ namespace HonVietThuThanh.Dev4
         [SerializeField] private int totalWaves = 3;
 
         public GameState CurrentState { get; private set; } = GameState.Preparation;
+        private int lastStartedWaveIndex = -1;
 
         /// <summary>Phát mỗi khi trạng thái game thay đổi.</summary>
         public static event Action<GameState> OnGameStateChanged;
@@ -65,13 +66,14 @@ namespace HonVietThuThanh.Dev4
 
         private void HandleWaveStarted(int waveIndex)
         {
+            lastStartedWaveIndex = waveIndex;
             SetState(GameState.WaveInProgress);
         }
 
         private void HandleWaveCompleted(int waveIndex)
         {
-            // waveIndex 0-based: wave 1=0, wave 2=1, wave 3=2
-            bool isLastWave = (waveIndex >= totalWaves - 1);
+            int completedWaveIndex = ResolveCompletedWaveIndex(waveIndex);
+            bool isLastWave = (completedWaveIndex >= totalWaves - 1);
             SetState(isLastWave ? GameState.Win : GameState.WaveComplete);
         }
 
@@ -89,6 +91,26 @@ namespace HonVietThuThanh.Dev4
             CurrentState = newState;
             Debug.Log($"[GameStateManager] State → {newState}");
             OnGameStateChanged?.Invoke(newState);
+        }
+
+        private int ResolveCompletedWaveIndex(int reportedWaveValue)
+        {
+            if (reportedWaveValue == lastStartedWaveIndex)
+            {
+                return reportedWaveValue;
+            }
+
+            if (reportedWaveValue == lastStartedWaveIndex + 1)
+            {
+                return reportedWaveValue - 1;
+            }
+
+            if (reportedWaveValue >= totalWaves)
+            {
+                return reportedWaveValue - 1;
+            }
+
+            return reportedWaveValue;
         }
     }
 }

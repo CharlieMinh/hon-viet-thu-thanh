@@ -406,6 +406,7 @@ MonoBehaviour:
   deathLingerSeconds: 0
   deathFallbackDelay: 0.85
   animator: {fileID: 0}
+  muteForTesting: 0
   attackAudioSource: {fileID: 0}
   deathAudioSource: {fileID: 0}
   attackClip: {fileID: 0}
@@ -429,6 +430,7 @@ MonoBehaviour:
   hitClips: []
   deathClips:
   - {fileID: 8300000, guid: 868ff436a8d9b3d47a4d07c6236a01e6, type: 3}
+  muteForTesting: 0
   masterVolume: 0.85
   pitchRange: {x: 0.96, y: 1.04}
   attackCooldown: 6.8

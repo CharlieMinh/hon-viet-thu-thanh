@@ -133,9 +133,9 @@ namespace HonVietThuThanh.Dev5
             Debug.Log($"[{gameObject.name}] Đã chết!");
             OnDeath?.Invoke();
             
-            // Nếu có CharacterAnimationController, nó sẽ chịu trách nhiệm gọi DestroyAfterDelay sau khi animation kết thúc.
+            // Nếu có CharacterAnimationController hoặc EnemyAnimationController, nó sẽ chịu trách nhiệm gọi DestroyAfterDelay sau khi animation kết thúc.
             // Ngược lại (các đối tượng khác không có animation), huỷ đối tượng ngay lập tức.
-            if (GetComponent<CharacterAnimationController>() == null)
+            if (GetComponent<CharacterAnimationController>() == null && GetComponent<EnemyAnimationController>() == null)
             {
                 Destroy(gameObject);
             }
