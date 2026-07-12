@@ -2558,8 +2558,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -18}
-  m_SizeDelta: {x: 620, y: 300}
+  m_AnchoredPosition: {x: 0, y: -8}
+  m_SizeDelta: {x: 820, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &823016855
 MonoBehaviour:
@@ -2581,11 +2581,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u2022 Mua t\u01B0\u1EDBng trong c\u1EEDa h\xE0ng.\n\u2022 \u0110\u1EB7t
-    t\u01B0\u1EDBng l\xEAn \xF4 h\u1EE3p l\u1EC7.\n\u2022 B\u1EA5m Start Battle \u0111\u1EC3
-    b\u1EAFt \u0111\u1EA7u \u0111\u1EE3t qu\xE1i.\n\u2022 Tank ch\u1ED1ng ch\u1ECBu,
-    c\xE1c t\u01B0\u1EDBng kh\xE1c h\u1ED7 tr\u1EE3 g\xE2y s\xE1t th\u01B0\u01A1ng.\n\u2022
-    B\u1EA3o v\u1EC7 th\xE0nh kh\u1ECFi k\u1EBB \u0111\u1ECBch."
+  m_text: "<color=#EABF62><b>01  MUA TƯỚNG</b></color>  Dùng Vàng mua Kỵ Sĩ, Xạ Thủ hoặc Tank.\n<color=#EABF62><b>02  ĐẶT ĐỘI HÌNH</b></color>  Chọn tướng ở hàng chờ, rồi bấm một ô trống.\n<color=#EABF62><b>03  VAI TRÒ</b></color>  Tank tuyến trước; Kỵ Sĩ áp sát; Xạ Thủ yểm trợ.\n<color=#EABF62><b>04  BẮT ĐẦU TRẬN</b></color>  Nhấn Bắt Đầu Trận Chiến. Tướng tự chiến đấu.\n<color=#EABF62><b>05  BẢO VỆ THÀNH</b></color>  Hạ quái nhận Vàng. Thành hết HP là thua.\n<color=#EABF62><b>06  SANG ĐỢT MỚI</b></color>  Dọn sạch quái để vào đợt tiếp theo.\n<size=19><color=#D5B98A>Mẹo: Nhấn ESC trong trận để mở menu tạm dừng.</color></size>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -2612,8 +2608,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31
-  m_fontSizeBase: 31
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3910,8 +3906,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 68}
-  m_SizeDelta: {x: 260, y: 66}
+  m_AnchoredPosition: {x: 0, y: 140}
+  m_SizeDelta: {x: 230, y: 58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1116922545
 MonoBehaviour:
@@ -5486,7 +5482,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 760, y: 520}
+  m_SizeDelta: {x: 960, y: 540}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1648287543
 MonoBehaviour:
@@ -6105,8 +6101,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -66}
-  m_SizeDelta: {x: 650, y: 90}
+  m_AnchoredPosition: {x: 0, y: -58}
+  m_SizeDelta: {x: 740, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1937886474
 MonoBehaviour:
@@ -6128,7 +6124,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "H\u01B0\u1EDBng D\u1EABn"
+  m_text: "HƯỚNG DẪN CHIẾN ĐẤU"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -6155,8 +6151,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
-  m_fontSizeBase: 48
+  m_fontSize: 42
+  m_fontSizeBase: 42
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
