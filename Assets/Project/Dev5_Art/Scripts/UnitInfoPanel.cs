@@ -1,9 +1,6 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace HonVietThuThanh.Dev5
 {
@@ -202,14 +199,11 @@ namespace HonVietThuThanh.Dev5
                 panelImage.color = Color.white;
                 panelImage.type = Image.Type.Simple;
                 panelImage.preserveAspect = false;
-#if UNITY_EDITOR
-                Sprite panelSprite = AssetDatabase.LoadAssetAtPath<Sprite>(
-                    "Assets/Project/Dev5_Art/UI/UI/Clean/Bang_Hien_TT_panel.png");
+                Sprite panelSprite = Dev5RuntimeUIArt.LoadSprite(Dev5RuntimeUIArt.InfoPanel);
                 if (panelSprite != null)
                 {
                     panelImage.sprite = panelSprite;
                 }
-#endif
             }
 
             ApplyTitleLayout(nameText);

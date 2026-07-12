@@ -3,9 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace HonVietThuThanh.Dev5
 {
@@ -16,12 +13,9 @@ namespace HonVietThuThanh.Dev5
     public class VictoryScreenController : MonoBehaviour
     {
         private const string DefaultMainMenuSceneName = "Scene_MainMenu";
-        private const string Dev4LogoSpritePath = "Assets/Project/Dev4_GameManager/UI/MainMenu/logo_game_transparent.png";
-        private const string Dev4MenuFontPath = "Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset";
 
         private static readonly Color MenuGold = new Color(1f, 0.82f, 0.38f, 1f);
         private static readonly Color MenuDark = new Color(0.035f, 0.02f, 0.015f, 0.95f);
-        private static TMP_FontAsset cachedMenuFont;
 
         [Header("Scenes")]
         [SerializeField] private string mainMenuSceneName = DefaultMainMenuSceneName;
@@ -393,25 +387,12 @@ namespace HonVietThuThanh.Dev5
 
         private static Sprite LoadDev4LogoSprite()
         {
-#if UNITY_EDITOR
-            return AssetDatabase.LoadAssetAtPath<Sprite>(Dev4LogoSpritePath);
-#else
-            return null;
-#endif
+            return Dev5RuntimeUIArt.LoadSprite(Dev5RuntimeUIArt.GameLogo);
         }
 
         private static TMP_FontAsset LoadDev4MenuFont()
         {
-#if UNITY_EDITOR
-            if (cachedMenuFont == null)
-            {
-                cachedMenuFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(Dev4MenuFontPath);
-            }
-
-            return cachedMenuFont;
-#else
-            return null;
-#endif
+            return Dev5RuntimeUIArt.LoadMenuFont();
         }
 
         private static TMP_Text CreateText(string name, RectTransform parent, string text, float size, FontStyles style)
