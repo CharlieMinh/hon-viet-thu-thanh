@@ -142,6 +142,8 @@ namespace HonVietThuThanh.Dev5
                 PlaceableUnit pu = spawnedUnit.GetComponent<PlaceableUnit>();
                 if (pu != null)
                 {
+                    // Keep model pivots aligned to the Bench without changing board placement.
+                    spawnedUnit.transform.position = spawnPoint.position + Vector3.up * pu.waitingAreaHeightOffset;
                     pu.unitName = unitData.unitName;
                 }
 
