@@ -179,19 +179,9 @@ namespace HonVietThuThanh.Dev5
                 Health hp = targetUnit.GetComponent<Health>();
                 UnitRole roleComp = targetUnit.GetComponent<UnitRole>();
 
-                string starString = "";
-                if (starData != null)
-                {
-                    int star = starData.starLevel;
-                    if (star == 1) starString = " ★";
-                    else if (star == 2) starString = " ★★";
-                    else if (star == 3) starString = " ★★★";
-                    else starString = $" ★ x{star}";
-                }
-
                 if (titleText != null)
                 {
-                    titleText.text = $"{targetUnit.unitName}{starString}";
+                    titleText.text = BuildUnitTitle(targetUnit.unitName, starData);
                 }
 
                 int curHP = hp != null ? hp.CurrentHealth : 0;
@@ -201,25 +191,25 @@ namespace HonVietThuThanh.Dev5
                 float cooldown = stats != null ? stats.attackCooldown : 0f;
                 float speed = stats != null ? stats.moveSpeed : 0f;
 
-                string roleStr = roleComp != null ? roleComp.role.ToString() : "N/A";
-                string attackTypeStr = roleComp != null ? roleComp.attackType.ToString() : "N/A";
+                string roleStr = roleComp != null ? GetUnitRoleText(roleComp.role) : "Không xác định";
+                string attackTypeStr = roleComp != null ? GetAttackTypeText(roleComp.attackType) : "Không xác định";
                 
                 string tauntStr = "";
                 if (roleComp != null && roleComp.isTank)
                 {
-                    tauntStr = $"\nTaunt Radius: {roleComp.tauntRadius:F1}";
+                    tauntStr = $"\nBán kính khiêu khích: {roleComp.tauntRadius:F1}";
                 }
 
                 if (statsText != null)
                 {
-                    statsText.text = $"Type: Player Unit\n" +
-                                     $"Role: {roleStr}\n" +
-                                     $"Attack: {attackTypeStr}\n" +
-                                     $"HP: {curHP} / {maxHP}\n" +
-                                     $"Damage: {dmg}\n" +
-                                     $"Range: {range:F1}\n" +
-                                     $"Cooldown: {cooldown:F1}s\n" +
-                                     $"Move Speed: {speed:F1}" +
+                    statsText.text = $"Loại: Tướng người chơi\n" +
+                                     $"Vai trò: {roleStr}\n" +
+                                     $"Kiểu đánh: {attackTypeStr}\n" +
+                                     $"Sinh lực: {curHP} / {maxHP}\n" +
+                                     $"Sát thương: {dmg}\n" +
+                                     $"Tầm đánh: {range:F1}\n" +
+                                     $"Hồi chiêu: {cooldown:F1} giây\n" +
+                                     $"Tốc độ di chuyển: {speed:F1}" +
                                      tauntStr;
                 }
             }
@@ -242,21 +232,69 @@ namespace HonVietThuThanh.Dev5
                 float cooldown = stats != null ? stats.attackCooldown : 0f;
                 float speed = stats != null ? stats.moveSpeed : 0f;
 
-                string roleStr = roleComp != null ? roleComp.role.ToString() : "N/A";
-                string attackTypeStr = roleComp != null ? roleComp.attackType.ToString() : "N/A";
+                string roleStr = roleComp != null ? GetEnemyRoleText(roleComp.role) : "Không xác định";
+                string attackTypeStr = roleComp != null ? GetEnemyAttackTypeText(roleComp.attackType) : "Không xác định";
 
                 if (statsText != null)
                 {
-                    statsText.text = $"Type: Enemy\n" +
-                                     $"Role: {roleStr}\n" +
-                                     $"Attack: {attackTypeStr}\n" +
-                                     $"HP: {curHP} / {maxHP}\n" +
-                                     $"Damage: {dmg}\n" +
-                                     $"Range: {range:F1}\n" +
-                                     $"Cooldown: {cooldown:F1}s\n" +
-                                     $"Move Speed: {speed:F1}\n" +
-                                     $"Kill Reward: +{targetEnemy.killGoldReward}G";
+                    statsText.text = $"Loại: Kẻ địch\n" +
+                                     $"Vai trò: {roleStr}\n" +
+                                     $"Kiểu đánh: {attackTypeStr}\n" +
+                                     $"Sinh lực: {curHP} / {maxHP}\n" +
+                                     $"Sát thương: {dmg}\n" +
+                                     $"Tầm đánh: {range:F1}\n" +
+                                     $"Hồi chiêu: {cooldown:F1} giây\n" +
+                                     $"Tốc độ di chuyển: {speed:F1}\n" +
+                                     $"Thưởng hạ gục: +{targetEnemy.killGoldReward} Vàng";
                 }
+            }
+        }
+
+        private static string BuildUnitTitle(string unitName, UnitStarData starData)
+        {
+            int starLevel = starData != null ? Mathf.Max(1, starData.starLevel) : 1;
+            return $"{unitName} - {starLevel} Sao";
+        }
+
+        private static string GetUnitRoleText(UnitClassRole role)
+        {
+            switch (role)
+            {
+                case UnitClassRole.Knight: return "Kỵ sĩ";
+                case UnitClassRole.Archer: return "Xạ thủ";
+                case UnitClassRole.Tank: return "Đỡ đòn";
+                default: return "Không xác định";
+            }
+        }
+
+        private static string GetAttackTypeText(AttackType attackType)
+        {
+            switch (attackType)
+            {
+                case AttackType.Melee: return "Cận chiến";
+                case AttackType.RangedProjectile: return "Đánh xa";
+                default: return "Không xác định";
+            }
+        }
+
+        private static string GetEnemyRoleText(EnemyClassRole role)
+        {
+            switch (role)
+            {
+                case EnemyClassRole.Goblin: return "Yêu tinh";
+                case EnemyClassRole.Orc: return "Quái nhân";
+                case EnemyClassRole.Archer: return "Xạ thủ";
+                default: return "Không xác định";
+            }
+        }
+
+        private static string GetEnemyAttackTypeText(EnemyAttackType attackType)
+        {
+            switch (attackType)
+            {
+                case EnemyAttackType.Melee: return "Cận chiến";
+                case EnemyAttackType.RangedProjectile: return "Đánh xa";
+                default: return "Không xác định";
             }
         }
 
