@@ -20,6 +20,10 @@ namespace HonVietThuThanh.Dev5
         public TMP_Text statsText;
         public Button closeButton;
 
+        [Header("Default Display")]
+        [SerializeField] private string defaultTitle = "Thông tin tướng";
+        [SerializeField][TextArea(3, 6)] private string defaultStats = "Cung thủ : 4 tiền\nKỵ sĩ : 3 tiền\nĐỡ đòn : 5 tiền";
+
         // Đối tượng đang được inspect
         private PlaceableUnit targetUnit;
         private EnemyController targetEnemy;
@@ -35,9 +39,6 @@ namespace HonVietThuThanh.Dev5
             }
             Instance = this;
             ApplyArtLayout();
-            ShowDefaultInfo();
-            
-            // Ẩn panel lúc khởi động
             ShowDefaultInfo();
         }
 
@@ -156,14 +157,12 @@ namespace HonVietThuThanh.Dev5
 
             if (titleText != null)
             {
-                titleText.text = "Thông tin tướng";
+                titleText.text = defaultTitle;
             }
 
             if (statsText != null)
             {
-                statsText.text = "Cung thủ : 4 tiền\n" +
-                                 "Hiệp sĩ : 3 tiền\n" +
-                                 "Đỡ đòn : 5 tiền";
+                statsText.text = defaultStats;
             }
 
             if (panelParent != null)
@@ -335,18 +334,10 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            RectTransform rect = text.GetComponent<RectTransform>();
-            if (rect != null)
-            {
-                rect.anchorMin = new Vector2(0f, 1f);
-                rect.anchorMax = new Vector2(1f, 1f);
-                rect.pivot = new Vector2(0.5f, 1f);
-                rect.anchoredPosition = new Vector2(0f, -34f);
-                rect.sizeDelta = new Vector2(-110f, 30f);
-            }
-
-            text.alignment = TextAlignmentOptions.Left;
-            text.fontSize = 16f;
+            // Chỉ áp dụng format text, KHÔNG ghi đè RectTransform
+            // để vị trí có thể được set tự do từ Inspector / Prefab
+            text.alignment = TextAlignmentOptions.Center;
+            text.fontSize = 20f;
             text.enableWordWrapping = false;
         }
 
@@ -357,18 +348,10 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            RectTransform rect = text.GetComponent<RectTransform>();
-            if (rect != null)
-            {
-                rect.anchorMin = Vector2.zero;
-                rect.anchorMax = Vector2.one;
-                rect.pivot = new Vector2(0.5f, 0.5f);
-                rect.anchoredPosition = new Vector2(8f, -20f);
-                rect.sizeDelta = new Vector2(-96f, -126f);
-            }
-
+            // Chỉ áp dụng format text, KHÔNG ghi đè RectTransform
+            // để vị trí có thể được set tự do từ Inspector / Prefab
             text.alignment = TextAlignmentOptions.TopLeft;
-            text.fontSize = 13f;
+            text.fontSize = 17f;
             text.enableWordWrapping = false;
         }
     }
