@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System.Collections;
 
 namespace HonVietThuThanh.Dev5
 {
@@ -51,9 +50,6 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
             Instance = this;
-
-            // Bootstrap AnimationPendingTracker sớm để đảm bảo Instance không null
-            AnimationPendingTracker.EnsureExists();
 
             VictoryScreenController.EnsureExists();
             RoundCompleteScreenController.EnsureExists();
@@ -170,49 +166,40 @@ namespace HonVietThuThanh.Dev5
             {
                 if (WaveManager.Instance.HasMoreWaves())
                 {
+                    SetState(GameState.WaveCompleted);
                     Debug.Log("[GamePhaseManager] Wave Completed!");
-                    WaveManager.Instance.AdvanceToNextWave();
 
-                    // Đợi animation xong rồi mới reset unit về vị trí
-                    StartCoroutine(CompleteWaveAfterAnimations(GameState.WaveCompleted));
+                    // Trả cờ còn sống về vị trí gốc sau wave (Phase 10)
+                    if (BattleResetManager.Instance != null)
+                    {
+                        BattleResetManager.Instance.ReturnSurvivingUnitsToFormation();
+                    }
+
+                    WaveManager.Instance.AdvanceToNextWave();
                 }
                 else
                 {
+                    SetState(GameState.Win);
                     Debug.Log("[GamePhaseManager] All waves completed - Victory");
-                    StartCoroutine(CompleteWaveAfterAnimations(GameState.Win));
+
+                    // Trả cờ còn sống về vị trí gốc khi thắng game (Phase 10)
+                    if (BattleResetManager.Instance != null)
+                    {
+                        BattleResetManager.Instance.ReturnSurvivingUnitsToFormation();
+                    }
                 }
             }
             else
             {
+                SetState(GameState.WaveCompleted);
                 Debug.Log("[GamePhaseManager] Wave Completed!");
-                StartCoroutine(CompleteWaveAfterAnimations(GameState.WaveCompleted));
-            }
-        }
 
-        /// <summary>
-        /// Coroutine: đợi tất cả Death animation kết thúc rồi mới đất unit về vị trí và chuyển state.
-        /// </summary>
-        private IEnumerator CompleteWaveAfterAnimations(GameState nextState)
-        {
-            // Đợi animation đang dở (nếu có)
-            if (AnimationPendingTracker.Instance != null && AnimationPendingTracker.Instance.IsAnyPending)
-            {
-                Debug.Log($"[GamePhaseManager] Đang chờ {AnimationPendingTracker.Instance.PendingCount} animation(s) kết thúc trước khi chuyển round...");
-                while (AnimationPendingTracker.Instance != null && AnimationPendingTracker.Instance.IsAnyPending)
+                // Trả cờ còn sống về vị trí gốc sau wave (Phase 10)
+                if (BattleResetManager.Instance != null)
                 {
-                    yield return new WaitForSeconds(0.1f);
+                    BattleResetManager.Instance.ReturnSurvivingUnitsToFormation();
                 }
-                Debug.Log("[GamePhaseManager] Tất cả animation đã kết thúc.");
             }
-
-            // Đưa unit còn sống về vị trí gốc
-            if (BattleResetManager.Instance != null)
-            {
-                BattleResetManager.Instance.ReturnSurvivingUnitsToFormation();
-            }
-
-            // Chuyển sang state tiếp theo
-            SetState(nextState);
         }
 
         public void UpdateStateUI()

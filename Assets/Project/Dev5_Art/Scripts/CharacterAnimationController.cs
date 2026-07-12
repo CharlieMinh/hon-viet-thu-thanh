@@ -222,8 +222,6 @@ namespace HonVietThuThanh.Dev5
         public void SetMoving(bool moving)
         {
             if (isDying) return;
-            // Không cho animation mới chạy sau khi round đã kết thúc
-            if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.IsCombatPhase) return;
             isDirectControl = true; // Bật điều khiển trực tiếp
             if (isMoving != moving)
             {
@@ -250,8 +248,6 @@ namespace HonVietThuThanh.Dev5
         public void PlayAttack()
         {
             if (isDying) return;
-            // Không cho animation mới chạy sau khi round đã kết thúc
-            if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.IsCombatPhase) return;
             TriggerAnimator("Attack");
 
             if (muteForTesting) return;
@@ -288,9 +284,6 @@ namespace HonVietThuThanh.Dev5
         {
             if (isDying) return;
             isDying = true;
-
-            // Đăng ký với tracker để WaveManager biết còn animation đang chạy
-            AnimationPendingTracker.Instance?.Register();
 
             // Dừng di chuyển và đặt IsMoving = false
             isMoving = false;
@@ -351,9 +344,6 @@ namespace HonVietThuThanh.Dev5
             }
 
             yield return new WaitForSeconds(clipLength + deathLingerSeconds);
-
-            // Hủy đăng ký khỏi tracker — animation đã kết thúc
-            AnimationPendingTracker.Instance?.Unregister();
 
             // Gọi Destroy qua Health nếu còn tồn tại
             if (health != null && gameObject != null)

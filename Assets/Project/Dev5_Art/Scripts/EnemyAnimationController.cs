@@ -166,8 +166,6 @@ namespace HonVietThuThanh.Dev5
         public void PlayWalk()
         {
             if (isDying) return;
-            // Không cho animation mới chạy sau khi round đã kết thúc
-            if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.IsCombatPhase) return;
             if (!TryGetAnimator())
             {
                 return;
@@ -185,8 +183,6 @@ namespace HonVietThuThanh.Dev5
         public void PlayRun()
         {
             if (isDying) return;
-            // Không cho animation mới chạy sau khi round đã kết thúc
-            if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.IsCombatPhase) return;
             if (!TryGetAnimator())
             {
                 return;
@@ -204,8 +200,6 @@ namespace HonVietThuThanh.Dev5
         public void PlayAttack()
         {
             if (isDying) return;
-            // Không cho animation mới chạy sau khi round đã kết thúc
-            if (GamePhaseManager.Instance != null && !GamePhaseManager.Instance.IsCombatPhase) return;
             if (!TryGetAnimator())
             {
                 return;
@@ -249,12 +243,8 @@ namespace HonVietThuThanh.Dev5
             if (isDying) return;
             isDying = true;
 
-            // Đăng ký với tracker để WaveManager biết còn animation đang chạy
-            AnimationPendingTracker.Instance?.Register();
-
             if (!TryGetAnimator())
             {
-                AnimationPendingTracker.Instance?.Unregister();
                 Destroy(gameObject);
                 return;
             }
@@ -294,10 +284,6 @@ namespace HonVietThuThanh.Dev5
 
             Debug.Log($"[{gameObject.name}] DestroyAfterDeathAnimation: Waiting {clipLength + 0.5f:F2}s before destroying gameObject.");
             yield return new WaitForSeconds(clipLength + 0.5f);
-
-            // Hủy đăng ký khỏi tracker — animation đã kết thúc
-            AnimationPendingTracker.Instance?.Unregister();
-
             Destroy(gameObject);
         }
 
