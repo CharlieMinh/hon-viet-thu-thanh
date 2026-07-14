@@ -46,6 +46,8 @@ namespace HonVietThuThanh.Dev5Editor
 
             // ── STEP 1: Quét FBX animation ───────────────────────────────────
             string idleFbx   = null;
+            string alertFbx  = null;
+            string boomFbx   = null;
             string moveFbx   = null;
             string attackFbx = null;
             string deathFbx  = null;
@@ -56,22 +58,27 @@ namespace HonVietThuThanh.Dev5Editor
                 {
                     string norm  = file.Replace('\\', '/');
                     string lower = System.IO.Path.GetFileName(file).ToLower();
-                    if      (lower.Contains("boom_dance"))  idleFbx   = norm;
+                    if      (lower.Contains("alert"))       alertFbx  = norm;
+                    else if (lower.Contains("boom_dance"))  boomFbx   = norm;
                     else if (lower.Contains("you_groove"))  moveFbx   = norm;
                     else if (lower.Contains("attack"))      attackFbx = norm;
                     else if (lower.Contains("skill_01"))    deathFbx  = norm;
                 }
             }
 
+            // Alert is the real Knight idle. BoomDance remains a fallback only when
+            // the imported Alert FBX does not produce a valid animation clip.
+            idleFbx = alertFbx ?? boomFbx;
+
             Debug.Log($"[Phase19AKnightSetup] FBX mapping:\n" +
-                      $"  Idle  : {idleFbx   ?? "❌ MISSING"}\n" +
+                      $"  Idle  : {idleFbx   ?? "❌ MISSING"} (Alert preferred, BoomDance fallback)\n" +
                       $"  Move  : {moveFbx   ?? "❌ MISSING"}\n" +
                       $"  Attack: {attackFbx ?? "❌ MISSING"}\n" +
                       $"  Death : {deathFbx  ?? "❌ MISSING"}");
 
             if (idleFbx == null)
             {
-                Debug.LogError("[Phase19AKnightSetup] ❌ Không tìm thấy Boom Dance FBX. Dừng setup.");
+                Debug.LogError("[Phase19AKnightSetup] ❌ Không tìm thấy Alert hoặc BoomDance FBX. Dừng setup.");
                 Undo.CollapseUndoOperations(undoGroup);
                 return;
             }
@@ -457,7 +464,7 @@ namespace HonVietThuThanh.Dev5Editor
             Debug.Log(
                 "[Phase19AKnightSetup] ── CHECKLIST ──────────────────────────────────\n" +
                 "□ 1. Mua Knight → Model xuất hiện trên bàn (không còn invisible/chấm nhỏ).\n" +
-                "□ 2. Knight đứng yên → Idle animation (Boom Dance) chạy.\n" +
+                "□ 2. Knight đứng yên → Idle animation (Alert) chạy.\n" +
                 "□ 3. Knight di chuyển → Move animation (You Groove) chạy.\n" +
                 "□ 4. Tấn công → Attack animation play 1 lần rồi quay về Idle/Move.\n" +
                 "□ 5. Chết → Death animation (Skill 01) play rồi Destroy.\n" +
