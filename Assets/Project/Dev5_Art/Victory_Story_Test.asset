@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3687008d940a54e92e248ce158e51c, type: 3}
+  m_Name: Victory_Story_Test
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.StorySequence
+  sequenceId: victory_story
+  mode: 0
+  lines:
+  - speakerName: 
+    text: "Mũi tên từ Nỏ Thần xuyên qua lớp tà khí bảo vệ Orc Chúa."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: 
+    text: "Sức mạnh Tản Viên đánh vỡ mặt đất dưới chân hắn. Kết Giới Liên Hoa khóa chặt con đường dẫn đến trung tâm Linh Thành."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: 
+    text: "Orc Chúa Hắc Mộc gục xuống. Khe nứt trước cổng Linh Thành dần khép lại."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: 
+    text: "Những ký ức từng bị Hắc Mộc bóp méo được giải thoát và trở về với Dòng Chảy Lịch Sử."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: 
+    text: "An Dương Vương: Thành trì vẫn còn đứng vững."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: 
+    text: "Chử Đồng Tử: Linh Khí tồn tại bởi con người vẫn còn trân trọng quá khứ của mình."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: 
+    text: "Sơn Tinh: Núi sông vẫn còn đó. Khi Linh Thành cần, chúng ta sẽ một lần nữa trở lại."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: 
+    text: "Cuộc chiến chống lại sự lãng quên vẫn chưa kết thúc."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  unlockPortrait: {fileID: 0}
+  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockHeroName: 
+  unlockRole: 
+  unlockDescription: 

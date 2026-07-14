@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3687008d940a54e92e248ce158e51c, type: 3}
+  m_Name: Round3_Unlock_SonTinh_Test
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.StorySequence
+  sequenceId: round3_unlock_son_tinh
+  mode: 2
+  lines: []
+  unlockPortrait: {fileID: 0}
+  unlockTitle: "ĐÃ MỞ KHÓA LINH TƯỚNG"
+  unlockHeroName: "Sơn Tinh"
+  unlockRole: "Đấu sĩ"
+  unlockDescription: "Cận chiến và gây sát thương lên nhiều kẻ địch gần nhau. Phù hợp hỗ trợ tuyến trước."

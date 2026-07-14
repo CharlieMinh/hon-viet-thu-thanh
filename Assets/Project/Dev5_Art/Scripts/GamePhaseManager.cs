@@ -176,6 +176,11 @@ namespace HonVietThuThanh.Dev5
                     }
 
                     WaveManager.Instance.AdvanceToNextWave();
+                    ShopManager refreshedShop = Object.FindAnyObjectByType<ShopManager>();
+                    if (refreshedShop != null)
+                    {
+                        refreshedShop.RefreshShopUnlocksByWave();
+                    }
                 }
                 else
                 {
@@ -221,7 +226,7 @@ namespace HonVietThuThanh.Dev5
             {
                 if (WaveManager.Instance != null)
                 {
-                    waveStatus = $"Wave: {WaveManager.Instance.currentWaveIndex + 1} / {WaveManager.Instance.waves.Count}";
+                    waveStatus = $"Đợt {WaveManager.Instance.currentWaveIndex + 1} / {WaveManager.Instance.waves.Count}";
                 }
                 else
                 {
