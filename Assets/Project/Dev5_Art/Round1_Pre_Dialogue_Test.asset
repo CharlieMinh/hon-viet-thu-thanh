@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3687008d940a54e92e248ce158e51c, type: 3}
+  m_Name: Round1_Pre_Dialogue_Test
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.StorySequence
+  sequenceId: round1_pre_dialogue
+  mode: 1
+  lines:
+  - speakerName: "Người Giữ Thành"
+    text: "Quân Hắc Mộc mang trong mình tà khí từ những ký ức bị bóp méo."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Người Giữ Thành"
+    text: "Khi quái vật bị tiêu diệt, Linh Thành thanh tẩy tà khí ấy thành Linh Khí."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Thông báo"
+    text: "Tiêu diệt quái vật để nhận Linh Khí. Dùng Linh Khí để mua và triển khai Linh Tướng."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Thông báo"
+    text: "Hợp nhất các tướng giống nhau để nâng sao, tăng sức mạnh và hồi đầy sinh mệnh."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Người Giữ Thành"
+    text: "Khe nứt Hắc Mộc đã mở ra. Một đàn Goblin đang tràn vào Linh Thành để dò xét phòng tuyến."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Goblin thủ lĩnh"
+    text: "Kho báu... Linh Khí... tất cả sẽ thuộc về Hắc Mộc!"
+    portrait: {fileID: 0}
+    portraitSide: 2
+    audioClip: {fileID: 0}
+  - speakerName: "Người Giữ Thành"
+    text: "Trước sự xâm nhập ấy, Linh Ấn Nỏ Thần bắt đầu phát sáng. An Dương Vương đã thức tỉnh."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "An Dương Vương"
+    text: "Nỏ Thần đã thức tỉnh. Tà quân không được phép tiến thêm một bước trong Linh Thành!"
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  - speakerName: "Thông báo"
+    text: "Hãy dùng Linh Khí ban đầu để mua An Dương Vương trong cửa hàng."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  unlockPortrait: {fileID: 0}
+  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockHeroName: 
+  unlockRole: 
+  unlockDescription: 

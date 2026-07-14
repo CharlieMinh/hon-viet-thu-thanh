@@ -1,8 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace HonVietThuThanh.Dev5
 {
@@ -46,14 +43,11 @@ namespace HonVietThuThanh.Dev5
                 image.color = Color.white;
                 image.type = Image.Type.Simple;
                 image.preserveAspect = false;
-#if UNITY_EDITOR
-                Sprite startSprite = AssetDatabase.LoadAssetAtPath<Sprite>(
-                    "Assets/Project/Dev5_Art/UI/UI/Clean/start_button_ui.png");
+                Sprite startSprite = Dev5RuntimeUIArt.LoadSprite(Dev5RuntimeUIArt.StartButton);
                 if (startSprite != null)
                 {
                     image.sprite = startSprite;
                 }
-#endif
             }
         }
     }

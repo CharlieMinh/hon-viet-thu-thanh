@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3687008d940a54e92e248ce158e51c, type: 3}
+  m_Name: Test_StorySequence
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.StorySequence
+  sequenceId: 
+  mode: 0
+  lines:
+  - speakerName: "Ng\u01B0\u1EDDi D\u1EABn Truy\u1EC7n"
+    text: "T\u1EA1i n\u01A1i giao nhau gi\u1EEFa nh\u1EEFng d\xF2ng l\u1ECBch s\u1EED,
+      Linh Th\xE0nh v\u1EABn \u0111\u1EE9ng v\u1EEFng."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Ng\u01B0\u1EDDi D\u1EABn Truy\u1EC7n"
+    text: " H\u1EAFc M\u1ED9c \u0111\xE3 m\u1EDF khe n\u1EE9t tr\u01B0\u1EDBc c\u1ED5ng
+      th\xE0nh..."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  unlockPortrait: {fileID: 0}
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
+  unlockHeroName: 
+  unlockRole: 
+  unlockDescription: 

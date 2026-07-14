@@ -137,7 +137,7 @@ namespace HonVietThuThanh.Dev5
         {
             if (goldText != null)
             {
-                goldText.text = $"{currentGold} G";
+                goldText.text = $"Linh Khí: {currentGold}";
             }
         }
     }

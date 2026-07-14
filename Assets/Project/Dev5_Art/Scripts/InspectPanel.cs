@@ -1,9 +1,6 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace HonVietThuThanh.Dev5
 {
@@ -20,10 +17,6 @@ namespace HonVietThuThanh.Dev5
         public TMP_Text statsText;
         public Button closeButton;
 
-        [Header("Default Display")]
-        [SerializeField] private string defaultTitle = "Thông tin tướng";
-        [SerializeField][TextArea(3, 6)] private string defaultStats = "Cung thủ : 4 tiền\nKỵ sĩ : 3 tiền\nĐỡ đòn : 5 tiền";
-
         // Đối tượng đang được inspect
         private PlaceableUnit targetUnit;
         private EnemyController targetEnemy;
@@ -39,6 +32,9 @@ namespace HonVietThuThanh.Dev5
             }
             Instance = this;
             ApplyArtLayout();
+            ShowDefaultInfo();
+            
+            // Ẩn panel lúc khởi động
             ShowDefaultInfo();
         }
 
@@ -157,12 +153,14 @@ namespace HonVietThuThanh.Dev5
 
             if (titleText != null)
             {
-                titleText.text = defaultTitle;
+                titleText.text = "Thông tin tướng";
             }
 
             if (statsText != null)
             {
-                statsText.text = defaultStats;
+                statsText.text = "Sơn Tinh : 3 Linh Khí\n" +
+                                 "An Dương Vương : 4 Linh Khí\n" +
+                                 "Chử Đồng Tử : 5 Linh Khí";
             }
 
             if (panelParent != null)
@@ -181,19 +179,9 @@ namespace HonVietThuThanh.Dev5
                 Health hp = targetUnit.GetComponent<Health>();
                 UnitRole roleComp = targetUnit.GetComponent<UnitRole>();
 
-                string starString = "";
-                if (starData != null)
-                {
-                    int star = starData.starLevel;
-                    if (star == 1) starString = " ★";
-                    else if (star == 2) starString = " ★★";
-                    else if (star == 3) starString = " ★★★";
-                    else starString = $" ★ x{star}";
-                }
-
                 if (titleText != null)
                 {
-                    titleText.text = $"{targetUnit.unitName}{starString}";
+                    titleText.text = BuildUnitTitle(targetUnit.unitName, starData);
                 }
 
                 int curHP = hp != null ? hp.CurrentHealth : 0;
@@ -203,25 +191,25 @@ namespace HonVietThuThanh.Dev5
                 float cooldown = stats != null ? stats.attackCooldown : 0f;
                 float speed = stats != null ? stats.moveSpeed : 0f;
 
-                string roleStr = roleComp != null ? roleComp.role.ToString() : "N/A";
-                string attackTypeStr = roleComp != null ? roleComp.attackType.ToString() : "N/A";
+                string roleStr = roleComp != null ? GetUnitRoleText(roleComp.role) : "Không xác định";
+                string attackTypeStr = roleComp != null ? GetAttackTypeText(roleComp.attackType) : "Không xác định";
                 
                 string tauntStr = "";
                 if (roleComp != null && roleComp.isTank)
                 {
-                    tauntStr = $"\nTaunt Radius: {roleComp.tauntRadius:F1}";
+                    tauntStr = $"\nBán kính khiêu khích: {roleComp.tauntRadius:F1}";
                 }
 
                 if (statsText != null)
                 {
-                    statsText.text = $"Type: Player Unit\n" +
-                                     $"Role: {roleStr}\n" +
-                                     $"Attack: {attackTypeStr}\n" +
-                                     $"HP: {curHP} / {maxHP}\n" +
-                                     $"Damage: {dmg}\n" +
-                                     $"Range: {range:F1}\n" +
-                                     $"Cooldown: {cooldown:F1}s\n" +
-                                     $"Move Speed: {speed:F1}" +
+                    statsText.text = $"Loại: Tướng người chơi\n" +
+                                     $"Vai trò: {roleStr}\n" +
+                                     $"Kiểu đánh: {attackTypeStr}\n" +
+                                     $"Sinh lực: {curHP} / {maxHP}\n" +
+                                     $"Sát thương: {dmg}\n" +
+                                     $"Tầm đánh: {range:F1}\n" +
+                                     $"Hồi chiêu: {cooldown:F1} giây\n" +
+                                     $"Tốc độ di chuyển: {speed:F1}" +
                                      tauntStr;
                 }
             }
@@ -244,21 +232,80 @@ namespace HonVietThuThanh.Dev5
                 float cooldown = stats != null ? stats.attackCooldown : 0f;
                 float speed = stats != null ? stats.moveSpeed : 0f;
 
-                string roleStr = roleComp != null ? roleComp.role.ToString() : "N/A";
-                string attackTypeStr = roleComp != null ? roleComp.attackType.ToString() : "N/A";
+                string roleStr = roleComp != null ? GetEnemyRoleText(roleComp.role) : "Không xác định";
+                string attackTypeStr = roleComp != null ? GetEnemyAttackTypeText(roleComp.attackType) : "Không xác định";
 
                 if (statsText != null)
                 {
-                    statsText.text = $"Type: Enemy\n" +
-                                     $"Role: {roleStr}\n" +
-                                     $"Attack: {attackTypeStr}\n" +
-                                     $"HP: {curHP} / {maxHP}\n" +
-                                     $"Damage: {dmg}\n" +
-                                     $"Range: {range:F1}\n" +
-                                     $"Cooldown: {cooldown:F1}s\n" +
-                                     $"Move Speed: {speed:F1}\n" +
-                                     $"Kill Reward: +{targetEnemy.killGoldReward}G";
+                    statsText.text = $"Loại: Kẻ địch\n" +
+                                     $"Vai trò: {roleStr}\n" +
+                                     $"Kiểu đánh: {attackTypeStr}\n" +
+                                     $"Sinh lực: {curHP} / {maxHP}\n" +
+                                     $"Sát thương: {dmg}\n" +
+                                     $"Tầm đánh: {range:F1}\n" +
+                                     $"Hồi chiêu: {cooldown:F1} giây\n" +
+                                     $"Tốc độ di chuyển: {speed:F1}\n" +
+                                     $"Thưởng hạ gục: +{targetEnemy.killGoldReward} Vàng";
                 }
+            }
+        }
+
+        private static string BuildUnitTitle(string unitName, UnitStarData starData)
+        {
+            int starLevel = starData != null ? Mathf.Max(1, starData.starLevel) : 1;
+            return $"{GetDisplayUnitName(unitName)} - {starLevel} Sao";
+        }
+
+        private static string GetDisplayUnitName(string unitName)
+        {
+            switch (unitName)
+            {
+                case "Archer": return "An Dương Vương";
+                case "Tank": return "Chử Đồng Tử";
+                case "Knight": return "Sơn Tinh";
+                default: return unitName;
+            }
+        }
+
+        private static string GetUnitRoleText(UnitClassRole role)
+        {
+            switch (role)
+            {
+                case UnitClassRole.Knight: return "Đấu sĩ";
+                case UnitClassRole.Archer: return "Xạ thủ";
+                case UnitClassRole.Tank: return "Chống chịu";
+                default: return "Không xác định";
+            }
+        }
+
+        private static string GetAttackTypeText(AttackType attackType)
+        {
+            switch (attackType)
+            {
+                case AttackType.Melee: return "Cận chiến";
+                case AttackType.RangedProjectile: return "Đánh xa";
+                default: return "Không xác định";
+            }
+        }
+
+        private static string GetEnemyRoleText(EnemyClassRole role)
+        {
+            switch (role)
+            {
+                case EnemyClassRole.Goblin: return "Yêu tinh";
+                case EnemyClassRole.Orc: return "Quái nhân";
+                case EnemyClassRole.Archer: return "Xạ thủ";
+                default: return "Không xác định";
+            }
+        }
+
+        private static string GetEnemyAttackTypeText(EnemyAttackType attackType)
+        {
+            switch (attackType)
+            {
+                case EnemyAttackType.Melee: return "Cận chiến";
+                case EnemyAttackType.RangedProjectile: return "Đánh xa";
+                default: return "Không xác định";
             }
         }
 
@@ -313,14 +360,11 @@ namespace HonVietThuThanh.Dev5
                 panelImage.color = Color.white;
                 panelImage.type = Image.Type.Simple;
                 panelImage.preserveAspect = false;
-#if UNITY_EDITOR
-                Sprite panelSprite = AssetDatabase.LoadAssetAtPath<Sprite>(
-                    "Assets/Project/Dev5_Art/UI/UI/Clean/Bang_Hien_TT_panel.png");
+                Sprite panelSprite = Dev5RuntimeUIArt.LoadSprite(Dev5RuntimeUIArt.InfoPanel);
                 if (panelSprite != null)
                 {
                     panelImage.sprite = panelSprite;
                 }
-#endif
             }
 
             ApplyTitleLayout(titleText);
@@ -334,10 +378,18 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            // Chỉ áp dụng format text, KHÔNG ghi đè RectTransform
-            // để vị trí có thể được set tự do từ Inspector / Prefab
-            text.alignment = TextAlignmentOptions.Center;
-            text.fontSize = 20f;
+            RectTransform rect = text.GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                rect.anchorMin = new Vector2(0f, 1f);
+                rect.anchorMax = new Vector2(1f, 1f);
+                rect.pivot = new Vector2(0.5f, 1f);
+                rect.anchoredPosition = new Vector2(0f, -34f);
+                rect.sizeDelta = new Vector2(-110f, 30f);
+            }
+
+            text.alignment = TextAlignmentOptions.Left;
+            text.fontSize = 16f;
             text.enableWordWrapping = false;
         }
 
@@ -348,10 +400,18 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            // Chỉ áp dụng format text, KHÔNG ghi đè RectTransform
-            // để vị trí có thể được set tự do từ Inspector / Prefab
+            RectTransform rect = text.GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.anchoredPosition = new Vector2(8f, -20f);
+                rect.sizeDelta = new Vector2(-96f, -126f);
+            }
+
             text.alignment = TextAlignmentOptions.TopLeft;
-            text.fontSize = 17f;
+            text.fontSize = 13f;
             text.enableWordWrapping = false;
         }
     }

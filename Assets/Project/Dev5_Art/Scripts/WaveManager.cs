@@ -83,9 +83,6 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            // Reset tracker trước mỗi wave mới để xóa ref rác từ wave trước
-            AnimationPendingTracker.Instance?.ResetAll();
-
             StartCoroutine(SpawnWaveRoutine());
         }
 
@@ -193,33 +190,6 @@ namespace HonVietThuThanh.Dev5
         private void OnWaveCompleted()
         {
             Debug.Log($"[WaveManager] Đã hoàn thành đợt quái: {waves[currentWaveIndex].waveName}");
-
-            // Nếu còn animation Death đang chạy dở → đợi rồi mới chuyển round
-            if (AnimationPendingTracker.Instance != null && AnimationPendingTracker.Instance.IsAnyPending)
-            {
-                Debug.Log($"[WaveManager] Đang chờ {AnimationPendingTracker.Instance.PendingCount} animation(s) kết thúc trước khi chuyển round...");
-                StartCoroutine(WaitForAnimationsThenComplete());
-            }
-            else
-            {
-                if (GamePhaseManager.Instance != null)
-                {
-                    GamePhaseManager.Instance.CompleteWave();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Coroutine: đợi cho đến khi tất cả Death animation kết thúc rồi mới gọi CompleteWave().
-        /// </summary>
-        private IEnumerator WaitForAnimationsThenComplete()
-        {
-            while (AnimationPendingTracker.Instance != null && AnimationPendingTracker.Instance.IsAnyPending)
-            {
-                yield return new WaitForSeconds(0.1f);
-            }
-
-            Debug.Log("[WaveManager] Tất cả animation đã kết thúc. Chuyển round mới.");
             if (GamePhaseManager.Instance != null)
             {
                 GamePhaseManager.Instance.CompleteWave();
