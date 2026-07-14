@@ -271,7 +271,10 @@ namespace HonVietThuThanh.Dev5
         private void ConfigureFillImage(Image image)
         {
             image.sprite = fillSprite != null ? fillSprite : GetRuntimeSprite();
-            image.type = Image.Type.Simple;
+            image.type = Image.Type.Filled;
+            image.fillMethod = Image.FillMethod.Horizontal;
+            image.fillOrigin = (int)Image.OriginHorizontal.Left;
+            image.fillClockwise = true;
             image.color = fillSprite != null
                 ? Color.white
                 : (IsEnemyHealthBar() ? new Color(0.9f, 0.1f, 0.1f, 1f) : new Color(0.1f, 0.85f, 0.1f, 1f));
@@ -352,15 +355,16 @@ namespace HonVietThuThanh.Dev5
             RectTransform fillRect = fillImage.rectTransform;
             if (fillRect != null)
             {
-                Vector2 anchorMax = FillAnchorMax;
-                anchorMax.x = Mathf.Lerp(FillAnchorMin.x, FillAnchorMax.x, ratio);
                 fillRect.anchorMin = FillAnchorMin;
-                fillRect.anchorMax = anchorMax;
+                fillRect.anchorMax = FillAnchorMax;
                 fillRect.offsetMin = Vector2.zero;
                 fillRect.offsetMax = Vector2.zero;
             }
 
-            fillImage.fillAmount = 1f;
+            fillImage.type = Image.Type.Filled;
+            fillImage.fillMethod = Image.FillMethod.Horizontal;
+            fillImage.fillOrigin = (int)Image.OriginHorizontal.Left;
+            fillImage.fillAmount = ratio;
             lastCurrentHealth = current;
             lastMaxHealth = max;
         }
