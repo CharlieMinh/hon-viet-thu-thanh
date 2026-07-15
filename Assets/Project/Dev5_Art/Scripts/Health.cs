@@ -28,9 +28,22 @@ namespace HonVietThuThanh.Dev5
                 baseMaxHealth = maxHealth;
             }
 
-            float multiplier = Mathf.Pow(1.5f, starLevel - 1);
+            float multiplier = GetStarMultiplier(starLevel);
             int newMaxHealth = Mathf.RoundToInt(baseMaxHealth * multiplier);
             SetMaxHealth(newMaxHealth, true);
+        }
+
+        private static float GetStarMultiplier(int starLevel)
+        {
+            switch (Mathf.Clamp(starLevel, 1, UnitStarData.MaxStarLevel))
+            {
+                case 2:
+                    return 2.5f;
+                case 3:
+                    return 6f;
+                default:
+                    return 1f;
+            }
         }
 
         /// <summary>

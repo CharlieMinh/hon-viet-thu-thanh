@@ -16,57 +16,90 @@ MonoBehaviour:
   mode: 0
   lines:
   - speakerName: 
-    text: "Từ thuở dựng nước, những chiến công và ký ức của non sông chưa bao giờ thực sự biến mất."
+    text: "T\u1EEB thu\u1EDF d\u1EF1ng n\u01B0\u1EDBc, nh\u1EEFng chi\u1EBFn c\xF4ng
+      v\xE0 k\xFD \u1EE9c c\u1EE7a non s\xF4ng ch\u01B0a bao gi\u1EDD th\u1EF1c s\u1EF1
+      bi\u1EBFn m\u1EA5t."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 1
+    musicClip: {fileID: 8300000, guid: 4bf0e687a246f3941b81cac785d4331c, type: 3}
   - speakerName: 
-    text: "Chúng hội tụ thành Dòng Chảy Lịch Sử, nơi quá khứ nối liền với hiện tại."
+    text: "Ch\xFAng h\u1ED9i t\u1EE5 th\xE0nh D\xF2ng Ch\u1EA3y L\u1ECBch S\u1EED,
+      n\u01A1i qu\xE1 kh\u1EE9 n\u1ED1i li\u1EC1n v\u1EDBi hi\u1EC7n t\u1EA1i."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   - speakerName: 
-    text: "Tại nơi những dòng lịch sử giao nhau, Linh Thành đứng vững, lưu giữ Linh Ấn của các anh hùng bảo vệ non sông."
+    text: "T\u1EA1i n\u01A1i nh\u1EEFng d\xF2ng l\u1ECBch s\u1EED giao nhau, Linh
+      Th\xE0nh \u0111\u1EE9ng v\u1EEFng, l\u01B0u gi\u1EEF Linh \u1EA4n c\u1EE7a
+      c\xE1c anh h\xF9ng b\u1EA3o v\u1EC7 non s\xF4ng."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   - speakerName: 
-    text: "Nhưng từ những câu chuyện bị lãng quên, một thực thể tà ác đã sinh ra. Tên của nó là Hắc Mộc."
+    text: "Nh\u01B0ng t\u1EEB nh\u1EEFng c\xE2u chuy\u1EC7n b\u1ECB l\xE3ng qu\xEAn,
+      m\u1ED9t th\u1EF1c th\u1EC3 t\xE0 \xE1c \u0111\xE3 sinh ra. T\xEAn c\u1EE7a
+      n\xF3 l\xE0 H\u1EAFc M\u1ED9c."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   - speakerName: 
-    text: "Hắc Mộc: Những gì bị lãng quên rồi sẽ thuộc về ta."
+    text: "H\u1EAFc M\u1ED9c: Nh\u1EEFng g\xEC b\u1ECB l\xE3ng qu\xEAn r\u1ED3i s\u1EBD
+      thu\u1ED9c v\u1EC1 ta."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 1
+    musicClip: {fileID: 8300000, guid: 1a70baee597564f4898e57a0b34a0792, type: 3}
   - speakerName: 
-    text: "Hắc Mộc mở khe nứt trước cổng Linh Thành, biến ký ức méo mó thành Goblin, Orc và Pháp sư bóng tối."
+    text: "H\u1EAFc M\u1ED9c m\u1EDF khe n\u1EE9t tr\u01B0\u1EDBc c\u1ED5ng Linh
+      Th\xE0nh, bi\u1EBFn k\xFD \u1EE9c m\xE9o m\xF3 th\xE0nh Goblin, Orc v\xE0 Ph\xE1p
+      s\u01B0 b\xF3ng t\u1ED1i."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   - speakerName: 
-    text: "Trước nguy cơ ấy, một Người Giữ Thành mới được đánh thức."
+    text: "Tr\u01B0\u1EDBc nguy c\u01A1 \u1EA5y, m\u1ED9t Ng\u01B0\u1EDDi Gi\u1EEF
+      Th\xE0nh m\u1EDBi \u0111\u01B0\u1EE3c \u0111\xE1nh th\u1EE9c."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   - speakerName: 
-    text: "Hãy dùng Linh Khí để triệu hồi Linh Ảnh anh hùng, sắp xếp họ trên bàn cờ phòng thủ, và bảo vệ Linh Thành."
+    text: "H\xE3y d\xF9ng Linh Kh\xED \u0111\u1EC3 tri\u1EC7u h\u1ED3i Linh \u1EA2nh
+      anh h\xF9ng, s\u1EAFp x\u1EBFp h\u1ECD tr\xEAn b\xE0n c\u1EDD ph\xF2ng th\u1EE7,
+      v\xE0 b\u1EA3o v\u1EC7 Linh Th\xE0nh."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   - speakerName: 
-    text: "HỒN VIỆT THỦ THÀNH"
+    text: "H\u1ED2N VI\u1EC6T TH\u1EE6 TH\xC0NH"
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   - speakerName: 
-    text: "Hồn Việt còn - Lịch sử còn"
+    text: "H\u1ED3n Vi\u1EC7t c\xF2n - L\u1ECBch s\u1EED c\xF2n"
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   unlockPortrait: {fileID: 0}
-  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
   unlockHeroName: 
   unlockRole: 
   unlockDescription: 

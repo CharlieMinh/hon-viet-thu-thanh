@@ -348,7 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9d47dd9d9c537048bd74a62914292e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.UnitCombatStats
-  damage: 9
+  damage: 12
   baseDamage: -1
   attackRange: 5
   attackCooldown: 1.2
@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013eb2c588c9ee14693f9280e3a5954d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.Health
-  maxHealth: 75
+  maxHealth: 90
   baseMaxHealth: -1
 --- !u!114 &3943032595747051439
 MonoBehaviour:
