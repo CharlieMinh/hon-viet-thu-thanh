@@ -16,6 +16,7 @@ namespace HonVietThuThanh.Dev4
         private const string FullscreenKey = "Fullscreen";
         private const string ResolutionWidthKey = "ResolutionWidth";
         private const string ResolutionHeightKey = "ResolutionHeight";
+        private const float SFXOutputBoost = 1.35f;
 
         public static event Action<float> OnMusicVolumeChanged;
         public static event Action<float> OnSFXVolumeChanged;
@@ -37,6 +38,8 @@ namespace HonVietThuThanh.Dev4
                 OnSFXVolumeChanged?.Invoke(sfxVolume);
             }
         }
+
+        public static float SFXOutputVolume => Mathf.Clamp(SFXVolume * SFXOutputBoost, 0f, 1.5f);
 
         private static float musicVolume = -1f;
         public static float MusicVolume
