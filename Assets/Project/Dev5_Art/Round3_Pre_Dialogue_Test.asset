@@ -15,28 +15,33 @@ MonoBehaviour:
   sequenceId: round3_pre_dialogue
   mode: 1
   lines:
-  - speakerName: "Người Giữ Thành"
+  - speakerName: "Người dẫn chuyện"
     text: "Phòng tuyến vẫn đứng vững, nhưng tà thuật lạnh lẽo bắt đầu len qua khe nứt."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
-  - speakerName: "Pháp sư Hắc Mộc"
-    text: "Kết giới chỉ ngăn được đao kiếm. Nó không thể bảo vệ các ngươi khỏi tà thuật."
+  - speakerName: "Pháp Sư Hắc Mộc"
+    text: "Giáp trụ chỉ ngăn được đao kiếm. Nó không thể bảo vệ các ngươi khỏi tà thuật."
     portrait: {fileID: 0}
     portraitSide: 2
     audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Các Pháp sư Hắc Mộc xuất hiện phía sau đội quân Orc, phóng tà thuật vào các Linh Ảnh."
+  - speakerName: "Người dẫn chuyện"
+    text: "Các Pháp Sư Hắc Mộc xuất hiện phía sau đội quân Orc, phóng tà thuật vào các Chiến Vệ."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Mặt đất Linh Thành rung chuyển. Sức mạnh Tản Viên trỗi dậy. Sơn Tinh đã thức tỉnh."
+  - speakerName: "Người dẫn chuyện"
+    text: "Tiếng thiết kích vang lên trên chiến trường. Thiết Kích Chiến Vệ đã được triệu tập."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
-  - speakerName: "Sơn Tinh"
-    text: "Núi sông còn vững, tà vật không thể vượt qua. Kẻ nào xâm phạm Linh Thành sẽ bị sức mạnh Tản Viên nghiền nát!"
+  - speakerName: "Thiết Kích Chiến Vệ"
+    text: "Thiết kích trong tay, tà vật không thể vượt qua! Kẻ nào xâm phạm Linh Thành sẽ phải trả giá!"
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  - speakerName: "An Dương Vương"
+    text: "Thiết Kích Chiến Vệ, phá tan hàng ngũ của chúng! Không được để Pháp Sư tiếp tục thi triển tà thuật!"
     portrait: {fileID: 0}
     portraitSide: 1
     audioClip: {fileID: 0}
