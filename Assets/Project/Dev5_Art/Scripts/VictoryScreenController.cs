@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace HonVietThuThanh.Dev5
 {
@@ -20,6 +23,12 @@ namespace HonVietThuThanh.Dev5
         [Header("Scenes")]
         [SerializeField] private string mainMenuSceneName = DefaultMainMenuSceneName;
 
+        [Header("Story Before End Screen")]
+        [SerializeField] private bool playStoryBeforeEndScreen = true;
+        [SerializeField] private StoryPresenter storyPresenter;
+        [SerializeField] private StorySequence victoryStorySequence;
+        [SerializeField] private StorySequence defeatStorySequence;
+
         private CanvasGroup rootGroup;
         private GamePhaseManager subscribedPhaseManager;
         private readonly List<Image> sunburstRayImages = new List<Image>();
@@ -27,6 +36,10 @@ namespace HonVietThuThanh.Dev5
         private TMP_Text resultText;
         private TMP_Text subtitleText;
         private TMP_Text restartButtonText;
+        private bool victoryStoryPlayed;
+        private bool defeatStoryPlayed;
+        private bool endStoryPlaying;
+        private GameState pendingEndScreenState;
 
         public static VictoryScreenController EnsureExists()
         {
@@ -70,6 +83,11 @@ namespace HonVietThuThanh.Dev5
                 subscribedPhaseManager.OnGameStateChanged -= ApplyGameState;
                 subscribedPhaseManager = null;
             }
+
+            if (storyPresenter != null)
+            {
+                storyPresenter.SequenceCompleted -= HandleEndStoryCompleted;
+            }
         }
 
         private void SubscribeToPhaseManager()
@@ -95,12 +113,124 @@ namespace HonVietThuThanh.Dev5
         private void ApplyGameState(GameState state)
         {
             bool isEndScreen = state == GameState.Win || state == GameState.Lose;
+            if (isEndScreen && TryPlayEndStoryBeforePanel(state))
+            {
+                SetVisible(false);
+                return;
+            }
+
             if (isEndScreen)
             {
                 ApplyEndScreenContent(state);
             }
 
             SetVisible(isEndScreen);
+        }
+
+        private bool TryPlayEndStoryBeforePanel(GameState state)
+        {
+            if (!playStoryBeforeEndScreen || endStoryPlaying)
+            {
+                return false;
+            }
+
+            StorySequence sequence = GetEndStorySequence(state);
+            if (sequence == null)
+            {
+                return false;
+            }
+
+            if (state == GameState.Win && victoryStoryPlayed)
+            {
+                return false;
+            }
+
+            if (state == GameState.Lose && defeatStoryPlayed)
+            {
+                return false;
+            }
+
+            ResolveStoryPresenter();
+            if (storyPresenter == null)
+            {
+                Debug.LogWarning("[VictoryScreenController] Cannot play end story because StoryPresenter is missing.", this);
+                return false;
+            }
+
+            pendingEndScreenState = state;
+            endStoryPlaying = true;
+            if (state == GameState.Win)
+            {
+                victoryStoryPlayed = true;
+            }
+            else
+            {
+                defeatStoryPlayed = true;
+            }
+
+            storyPresenter.SequenceCompleted -= HandleEndStoryCompleted;
+            storyPresenter.SequenceCompleted += HandleEndStoryCompleted;
+            storyPresenter.Play(sequence);
+            return true;
+        }
+
+        private void HandleEndStoryCompleted(StorySequence completedSequence)
+        {
+            if (!endStoryPlaying)
+            {
+                return;
+            }
+
+            storyPresenter.SequenceCompleted -= HandleEndStoryCompleted;
+            endStoryPlaying = false;
+            ApplyEndScreenContent(pendingEndScreenState);
+            SetVisible(true);
+        }
+
+        private void ResolveStoryPresenter()
+        {
+            if (storyPresenter != null)
+            {
+                return;
+            }
+
+            storyPresenter = FindAnyObjectByType<StoryPresenter>(FindObjectsInactive.Include);
+        }
+
+        private StorySequence GetEndStorySequence(GameState state)
+        {
+            StorySequence sequence = state == GameState.Win ? victoryStorySequence : defeatStorySequence;
+            if (sequence != null)
+            {
+                return sequence;
+            }
+
+#if UNITY_EDITOR
+            string assetName = state == GameState.Win ? "Victory_Story_Test" : "Defeat_Story_Test";
+            string[] guids = AssetDatabase.FindAssets(assetName, new[] { "Assets/Project/Dev5_Art" });
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                StorySequence loadedSequence = AssetDatabase.LoadAssetAtPath<StorySequence>(path);
+                if (loadedSequence == null || loadedSequence.name != assetName)
+                {
+                    continue;
+                }
+
+                if (state == GameState.Win)
+                {
+                    victoryStorySequence = loadedSequence;
+                }
+                else
+                {
+                    defeatStorySequence = loadedSequence;
+                }
+
+                return loadedSequence;
+            }
+#endif
+
+            return null;
         }
 
         private void ApplyEndScreenContent(GameState state)

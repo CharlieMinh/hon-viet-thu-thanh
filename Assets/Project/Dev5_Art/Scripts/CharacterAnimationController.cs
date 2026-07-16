@@ -77,6 +77,8 @@ namespace HonVietThuThanh.Dev5
             {
                 GamePhaseManager.Instance.OnGameStateChanged += HandleGameStateChanged;
             }
+            HonVietThuThanh.Dev4.SettingsMenuController.OnSFXVolumeChanged += HandleSFXVolumeChanged;
+            UpdateSFXVolumes();
         }
 
         private void OnDisable()
@@ -85,7 +87,19 @@ namespace HonVietThuThanh.Dev5
             {
                 GamePhaseManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
             }
+            HonVietThuThanh.Dev4.SettingsMenuController.OnSFXVolumeChanged -= HandleSFXVolumeChanged;
             StopAllAudio();
+        }
+
+        private void HandleSFXVolumeChanged(float newVolume)
+        {
+            UpdateSFXVolumes();
+        }
+
+        private void UpdateSFXVolumes()
+        {
+            if (attackAudioSource != null) attackAudioSource.volume = 1f;
+            if (deathAudioSource != null) deathAudioSource.volume = 1f;
         }
 
         private void Start()
@@ -255,8 +269,7 @@ namespace HonVietThuThanh.Dev5
             if (attackAudioSource != null && attackClip != null)
             {
                 attackAudioSource.Stop();
-                attackAudioSource.clip = attackClip;
-                attackAudioSource.Play();
+                attackAudioSource.PlayOneShot(attackClip, HonVietThuThanh.Dev4.SettingsMenuController.SFXOutputVolume);
                 Debug.Log($"[{gameObject.name}] PlayAttack: Playing attack sound '{attackClip.name}' on {attackAudioSource.name}");
             }
             else
@@ -294,8 +307,7 @@ namespace HonVietThuThanh.Dev5
             if (!muteForTesting && deathAudioSource != null && deathClip != null)
             {
                 deathAudioSource.Stop();
-                deathAudioSource.clip = deathClip;
-                deathAudioSource.Play();
+                deathAudioSource.PlayOneShot(deathClip, HonVietThuThanh.Dev4.SettingsMenuController.SFXOutputVolume);
                 Debug.Log($"[{gameObject.name}] PlayDeath: Playing death sound '{deathClip.name}' on {deathAudioSource.name}");
             }
             else if (muteForTesting)

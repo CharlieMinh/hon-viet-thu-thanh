@@ -36,6 +36,8 @@ namespace HonVietThuThanh.Dev5
             {
                 GamePhaseManager.Instance.OnGameStateChanged += HandleGameStateChanged;
             }
+            HonVietThuThanh.Dev4.SettingsMenuController.OnSFXVolumeChanged += HandleSFXVolumeChanged;
+            UpdateSFXVolume();
         }
 
         private void OnDisable()
@@ -44,7 +46,21 @@ namespace HonVietThuThanh.Dev5
             {
                 GamePhaseManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
             }
+            HonVietThuThanh.Dev4.SettingsMenuController.OnSFXVolumeChanged -= HandleSFXVolumeChanged;
             StopMoveSound();
+        }
+
+        private void HandleSFXVolumeChanged(float newVolume)
+        {
+            UpdateSFXVolume();
+        }
+
+        private void UpdateSFXVolume()
+        {
+            if (audioSource != null)
+            {
+                audioSource.volume = 1f;
+            }
         }
 
         private void Start()
@@ -211,7 +227,7 @@ namespace HonVietThuThanh.Dev5
             {
                 if (audioSource != null && attackClip != null)
                 {
-                    audioSource.PlayOneShot(attackClip);
+                    audioSource.PlayOneShot(attackClip, HonVietThuThanh.Dev4.SettingsMenuController.SFXOutputVolume);
                     Debug.Log($"[{gameObject.name}] PlayAttack (Legacy): Played attack sound '{attackClip.name}'");
                 }
             }
@@ -223,7 +239,7 @@ namespace HonVietThuThanh.Dev5
             if (isDying) return;
             if (useAnimationEventsForAudio && audioSource != null && moveClip != null)
             {
-                audioSource.PlayOneShot(moveClip);
+                audioSource.PlayOneShot(moveClip, HonVietThuThanh.Dev4.SettingsMenuController.SFXOutputVolume);
                 Debug.Log($"[{gameObject.name}] TriggerFootstepSound: Played step sound '{moveClip.name}'");
             }
         }
@@ -233,7 +249,7 @@ namespace HonVietThuThanh.Dev5
             if (isDying) return;
             if (useAnimationEventsForAudio && audioSource != null && attackClip != null)
             {
-                audioSource.PlayOneShot(attackClip);
+                audioSource.PlayOneShot(attackClip, HonVietThuThanh.Dev4.SettingsMenuController.SFXOutputVolume);
                 Debug.Log($"[{gameObject.name}] TriggerAttackSound: Played attack sound '{attackClip.name}'");
             }
         }
@@ -254,7 +270,7 @@ namespace HonVietThuThanh.Dev5
             StopMoveSound();
             if (audioSource != null && deathClip != null)
             {
-                audioSource.PlayOneShot(deathClip);
+                audioSource.PlayOneShot(deathClip, HonVietThuThanh.Dev4.SettingsMenuController.SFXOutputVolume);
                 Debug.Log($"[{gameObject.name}] PlayDeath: Played death sound '{deathClip.name}'");
             }
 

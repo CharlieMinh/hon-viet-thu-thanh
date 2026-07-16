@@ -86,6 +86,12 @@ namespace HonVietThuThanh.Dev5
                 {
                     if (kvp.Value.Count >= 3)
                     {
+                        UnitStarData starData = kvp.Value[0].GetComponent<UnitStarData>();
+                        if (starData == null || starData.starLevel >= UnitStarData.MaxStarLevel)
+                        {
+                            continue;
+                        }
+
                         MergeThreeUnits(kvp.Value[0], kvp.Value[1], kvp.Value[2]);
                         upgradedThisStep = true;
                         break; // Thoát ra ngoài vòng foreach để reload danh sách mới, tiếp tục đệ quy nâng sao
@@ -99,6 +105,13 @@ namespace HonVietThuThanh.Dev5
         /// </summary>
         private void MergeThreeUnits(PlaceableUnit u1, PlaceableUnit u2, PlaceableUnit u3)
         {
+            UnitStarData sourceStarData = u1.GetComponent<UnitStarData>();
+            if (sourceStarData == null || sourceStarData.starLevel >= UnitStarData.MaxStarLevel)
+            {
+                Debug.Log($"[UnitStarUpgradeManager] Bỏ qua gộp sao vì '{u1.unitName}' đã đạt cấp sao tối đa.");
+                return;
+            }
+
             List<PlaceableUnit> candidates = new List<PlaceableUnit> { u1, u2, u3 };
 
             // Xác định quân cờ chính (main unit) để giữ lại dựa trên thứ tự ưu tiên:
@@ -128,7 +141,7 @@ namespace HonVietThuThanh.Dev5
             PlaceableUnit material1 = candidates[0];
             PlaceableUnit material2 = candidates[1];
 
-            int currentStar = u1.GetComponent<UnitStarData>().starLevel;
+            int currentStar = sourceStarData.starLevel;
             Debug.Log($"[UnitStarUpgradeManager] Gộp 3 quân cờ {u1.unitName} (Cấp sao hiện tại: {currentStar}). Giữ lại: {mainUnit.gameObject.name}");
 
             // Dọn dẹp lựa chọn trong UnitPlacementManager nếu quân cờ bị huỷ đang được chọn

@@ -40,6 +40,7 @@ namespace HonVietThuThanh.Dev5
         public float messageDuration = 3f;
 
         private Coroutine messageCoroutine;
+        private bool shopButtonsInteractableByPhase = true;
 
         private void Start()
         {
@@ -60,6 +61,8 @@ namespace HonVietThuThanh.Dev5
             {
                 messageText.text = "";
             }
+
+            RefreshShopUnlocksByWave();
         }
 
         /// <summary>
@@ -248,9 +251,25 @@ namespace HonVietThuThanh.Dev5
         /// </summary>
         public void SetShopButtonsInteractable(bool interactable)
         {
-            if (buyKnightButton != null) buyKnightButton.interactable = interactable;
-            if (buyArcherButton != null) buyArcherButton.interactable = interactable;
-            if (buyTankButton != null) buyTankButton.interactable = interactable;
+            shopButtonsInteractableByPhase = interactable;
+            RefreshShopUnlocksByWave();
+        }
+
+        public void RefreshShopUnlocksByWave()
+        {
+            int waveIndex = WaveManager.Instance != null ? WaveManager.Instance.currentWaveIndex : 0;
+
+            SetShopButtonUnlocked(buyArcherButton, true);
+            SetShopButtonUnlocked(buyTankButton, waveIndex >= 1);
+            SetShopButtonUnlocked(buyKnightButton, waveIndex >= 2);
+        }
+
+        private void SetShopButtonUnlocked(UnityEngine.UI.Button button, bool unlocked)
+        {
+            if (button == null) return;
+
+            button.gameObject.SetActive(unlocked);
+            button.interactable = unlocked && shopButtonsInteractableByPhase;
         }
     }
 }

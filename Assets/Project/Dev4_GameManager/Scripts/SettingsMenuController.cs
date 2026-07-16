@@ -11,10 +11,53 @@ namespace HonVietThuThanh.Dev4
     /// </summary>
     public class SettingsMenuController : MonoBehaviour
     {
-        private const string MasterVolumeKey = "MasterVolume";
+        private const string MusicVolumeKey = "MusicVolume";
+        private const string SFXVolumeKey = "SFXVolume";
         private const string FullscreenKey = "Fullscreen";
         private const string ResolutionWidthKey = "ResolutionWidth";
         private const string ResolutionHeightKey = "ResolutionHeight";
+        private const float SFXOutputBoost = 1.35f;
+
+        public static event Action<float> OnMusicVolumeChanged;
+        public static event Action<float> OnSFXVolumeChanged;
+
+        private static float sfxVolume = -1f;
+        public static float SFXVolume
+        {
+            get
+            {
+                if (sfxVolume < 0f)
+                {
+                    sfxVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(SFXVolumeKey, 0.75f));
+                }
+                return sfxVolume;
+            }
+            set
+            {
+                sfxVolume = Mathf.Clamp01(value);
+                OnSFXVolumeChanged?.Invoke(sfxVolume);
+            }
+        }
+
+        public static float SFXOutputVolume => Mathf.Clamp(SFXVolume * SFXOutputBoost, 0f, 1.5f);
+
+        private static float musicVolume = -1f;
+        public static float MusicVolume
+        {
+            get
+            {
+                if (musicVolume < 0f)
+                {
+                    musicVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(MusicVolumeKey, 0.75f));
+                }
+                return musicVolume;
+            }
+            set
+            {
+                musicVolume = Mathf.Clamp01(value);
+                OnMusicVolumeChanged?.Invoke(musicVolume);
+            }
+        }
 
         private static readonly ResolutionOption[] ResolutionOptions =
         {
@@ -28,8 +71,10 @@ namespace HonVietThuThanh.Dev4
         [SerializeField] private GameObject settingsPanel;
 
         [Header("Audio")]
-        [SerializeField] private Slider masterVolumeSlider;
-        [SerializeField] private TMP_Text masterVolumePercentText;
+        [SerializeField] private Slider musicVolumeSlider;
+        [SerializeField] private TMP_Text musicVolumePercentText;
+        [SerializeField] private Slider sfxVolumeSlider;
+        [SerializeField] private TMP_Text sfxVolumePercentText;
 
         [Header("Display")]
         [SerializeField] private Toggle fullscreenToggle;
@@ -54,9 +99,13 @@ namespace HonVietThuThanh.Dev4
 
         private void OnDestroy()
         {
-            if (masterVolumeSlider != null)
+            if (musicVolumeSlider != null)
             {
-                masterVolumeSlider.onValueChanged.RemoveListener(PreviewMasterVolume);
+                musicVolumeSlider.onValueChanged.RemoveListener(PreviewMusicVolume);
+            }
+            if (sfxVolumeSlider != null)
+            {
+                sfxVolumeSlider.onValueChanged.RemoveListener(PreviewSFXVolume);
             }
         }
 
@@ -74,14 +123,17 @@ namespace HonVietThuThanh.Dev4
 
         public void SaveSettings()
         {
-            float volume = masterVolumeSlider != null ? masterVolumeSlider.value : LoadSavedVolume();
+            float musicVol = musicVolumeSlider != null ? musicVolumeSlider.value : MusicVolume;
+            float sfxVol = sfxVolumeSlider != null ? sfxVolumeSlider.value : SFXVolume;
             bool fullscreen = fullscreenToggle != null ? fullscreenToggle.isOn : LoadSavedFullscreen();
             ResolutionOption selectedResolution = GetSelectedResolution();
 
-            AudioListener.volume = volume;
+            MusicVolume = musicVol;
+            SFXVolume = sfxVol;
             Screen.SetResolution(selectedResolution.Width, selectedResolution.Height, fullscreen);
 
-            PlayerPrefs.SetFloat(MasterVolumeKey, volume);
+            PlayerPrefs.SetFloat(MusicVolumeKey, musicVol);
+            PlayerPrefs.SetFloat(SFXVolumeKey, sfxVol);
             PlayerPrefs.SetInt(FullscreenKey, fullscreen ? 1 : 0);
             PlayerPrefs.SetInt(ResolutionWidthKey, selectedResolution.Width);
             PlayerPrefs.SetInt(ResolutionHeightKey, selectedResolution.Height);
@@ -95,13 +147,23 @@ namespace HonVietThuThanh.Dev4
         {
             initialized = true;
 
-            float savedVolume = LoadSavedVolume();
+            // Invalidate static cache to force reload from PlayerPrefs
+            sfxVolume = -1f;
+            musicVolume = -1f;
+
+            float savedMusicVolume = MusicVolume;
+            float savedSFXVolume = SFXVolume;
             bool savedFullscreen = LoadSavedFullscreen();
             int savedResolutionIndex = LoadSavedResolutionIndex();
 
-            if (masterVolumeSlider != null)
+            if (musicVolumeSlider != null)
             {
-                masterVolumeSlider.SetValueWithoutNotify(savedVolume);
+                musicVolumeSlider.SetValueWithoutNotify(savedMusicVolume);
+            }
+
+            if (sfxVolumeSlider != null)
+            {
+                sfxVolumeSlider.SetValueWithoutNotify(savedSFXVolume);
             }
 
             if (fullscreenToggle != null)
@@ -115,18 +177,28 @@ namespace HonVietThuThanh.Dev4
                 resolutionDropdown.RefreshShownValue();
             }
 
-            PreviewMasterVolume(savedVolume);
+            PreviewMusicVolume(savedMusicVolume);
+            PreviewSFXVolume(savedSFXVolume);
         }
 
         private void RegisterListeners()
         {
-            if (masterVolumeSlider != null)
+            if (musicVolumeSlider != null)
             {
-                masterVolumeSlider.minValue = 0f;
-                masterVolumeSlider.maxValue = 1f;
-                masterVolumeSlider.wholeNumbers = false;
-                masterVolumeSlider.onValueChanged.RemoveListener(PreviewMasterVolume);
-                masterVolumeSlider.onValueChanged.AddListener(PreviewMasterVolume);
+                musicVolumeSlider.minValue = 0f;
+                musicVolumeSlider.maxValue = 1f;
+                musicVolumeSlider.wholeNumbers = false;
+                musicVolumeSlider.onValueChanged.RemoveListener(PreviewMusicVolume);
+                musicVolumeSlider.onValueChanged.AddListener(PreviewMusicVolume);
+            }
+
+            if (sfxVolumeSlider != null)
+            {
+                sfxVolumeSlider.minValue = 0f;
+                sfxVolumeSlider.maxValue = 1f;
+                sfxVolumeSlider.wholeNumbers = false;
+                sfxVolumeSlider.onValueChanged.RemoveListener(PreviewSFXVolume);
+                sfxVolumeSlider.onValueChanged.AddListener(PreviewSFXVolume);
             }
         }
 
@@ -147,21 +219,38 @@ namespace HonVietThuThanh.Dev4
             resolutionDropdown.RefreshShownValue();
         }
 
-        private void PreviewMasterVolume(float value)
+        private void PreviewMusicVolume(float value)
         {
-            AudioListener.volume = Mathf.Clamp01(value);
-            UpdateVolumePercentText(value);
+            MusicVolume = value;
+            UpdateMusicVolumePercentText(value);
         }
 
-        private void UpdateVolumePercentText(float value)
+        private void PreviewSFXVolume(float value)
         {
-            if (masterVolumePercentText == null)
+            SFXVolume = value;
+            UpdateSFXVolumePercentText(value);
+        }
+
+        private void UpdateMusicVolumePercentText(float value)
+        {
+            if (musicVolumePercentText == null)
             {
                 return;
             }
 
             int percent = Mathf.RoundToInt(Mathf.Clamp01(value) * 100f);
-            masterVolumePercentText.text = $"{percent}%";
+            musicVolumePercentText.text = $"{percent}%";
+        }
+
+        private void UpdateSFXVolumePercentText(float value)
+        {
+            if (sfxVolumePercentText == null)
+            {
+                return;
+            }
+
+            int percent = Mathf.RoundToInt(Mathf.Clamp01(value) * 100f);
+            sfxVolumePercentText.text = $"{percent}%";
         }
 
         private ResolutionOption GetSelectedResolution()
@@ -169,11 +258,6 @@ namespace HonVietThuThanh.Dev4
             int index = resolutionDropdown != null ? resolutionDropdown.value : LoadSavedResolutionIndex();
             index = Mathf.Clamp(index, 0, ResolutionOptions.Length - 1);
             return ResolutionOptions[index];
-        }
-
-        private static float LoadSavedVolume()
-        {
-            return Mathf.Clamp01(PlayerPrefs.GetFloat(MasterVolumeKey, 0.75f));
         }
 
         private static bool LoadSavedFullscreen()

@@ -64,6 +64,8 @@ namespace HonVietThuThanh.Dev5
                 health.OnHealthChanged += HandleHealthChanged;
                 health.OnDeath += HandleDeath;
             }
+            HonVietThuThanh.Dev4.SettingsMenuController.OnSFXVolumeChanged += HandleSFXVolumeChanged;
+            ConfigureAudioSource();
         }
 
         private void OnDisable()
@@ -73,6 +75,12 @@ namespace HonVietThuThanh.Dev5
                 health.OnHealthChanged -= HandleHealthChanged;
                 health.OnDeath -= HandleDeath;
             }
+            HonVietThuThanh.Dev4.SettingsMenuController.OnSFXVolumeChanged -= HandleSFXVolumeChanged;
+        }
+
+        private void HandleSFXVolumeChanged(float newVolume)
+        {
+            ConfigureAudioSource();
         }
 
         private void OnValidate()
@@ -180,7 +188,7 @@ namespace HonVietThuThanh.Dev5
             audioSource.playOnAwake = false;
             audioSource.loop = false;
             audioSource.spatialBlend = 0f;
-            audioSource.volume = masterVolume;
+            audioSource.volume = 1f;
         }
 
         private void PlayRandomClip(AudioClip[] clips, ref int lastIndex)
@@ -211,7 +219,7 @@ namespace HonVietThuThanh.Dev5
             source.transform.position = transform.position;
             runtimeAudioDestroyTime = Mathf.Max(runtimeAudioDestroyTime, Time.time + clip.length);
             source.pitch = Random.Range(pitchRange.x, pitchRange.y);
-            source.PlayOneShot(clip, masterVolume);
+            source.PlayOneShot(clip, masterVolume * HonVietThuThanh.Dev4.SettingsMenuController.SFXOutputVolume);
         }
 
         private int PickClipIndex(AudioClip[] clips, int lastIndex)

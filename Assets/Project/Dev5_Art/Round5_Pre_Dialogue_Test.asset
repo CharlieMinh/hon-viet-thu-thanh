@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3687008d940a54e92e248ce158e51c, type: 3}
+  m_Name: Round5_Pre_Dialogue_Test
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.StorySequence
+  sequenceId: round5_pre_dialogue
+  mode: 1
+  lines:
+  - speakerName: "Người Giữ Thành"
+    text: "Đợt tổng công kích đã bị đẩy lui, nhưng tà khí còn sót lại đang hội tụ vào một Orc chỉ huy."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Người Giữ Thành"
+    text: "Cơ thể hắn trở nên khổng lồ. Lớp giáp chuyển thành màu tím đen. Orc Chúa Hắc Mộc đã xuất hiện."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Orc Chúa"
+    text: "Ta không còn là một chiến binh Orc. Ta là ý chí của Hắc Mộc."
+    portrait: {fileID: 0}
+    portraitSide: 2
+    audioClip: {fileID: 0}
+  - speakerName: "Orc Chúa"
+    text: "Ta sẽ tự tay bóp nát các Linh Ấn của các ngươi!"
+    portrait: {fileID: 0}
+    portraitSide: 2
+    audioClip: {fileID: 0}
+  - speakerName: "Thông báo"
+    text: "BOSS XUẤT HIỆN - Orc Chúa Hắc Mộc. Hãy dùng toàn bộ Linh Khí còn lại để hoàn thiện đội hình."
+    portrait: {fileID: 0}
+    portraitSide: 2
+    audioClip: {fileID: 0}
+  - speakerName: "An Dương Vương"
+    text: "Lớp tà khí ấy dù dày đến đâu cũng không thể chống lại Nỏ Thần mãi mãi."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  - speakerName: "Chử Đồng Tử"
+    text: "Ta sẽ giữ kết giới cho đến thời khắc cuối cùng."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  - speakerName: "Sơn Tinh"
+    text: "Hãy để ta đối đầu trực diện với hắn."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  unlockPortrait: {fileID: 0}
+  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockHeroName: 
+  unlockRole: 
+  unlockDescription: 

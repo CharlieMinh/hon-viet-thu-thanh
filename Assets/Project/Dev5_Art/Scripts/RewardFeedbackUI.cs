@@ -51,7 +51,7 @@ namespace HonVietThuThanh.Dev5
             string message = "";
             if (reason.Equals("Enemy Kill", System.StringComparison.OrdinalIgnoreCase))
             {
-                message = $"+{amount}G Enemy Kill";
+                message = $"+{amount} Enemy Kill";
                 rewardText.color = new Color(1.0f, 0.82f, 0f, 1f); // Màu vàng tươi sáng cho kill reward
             }
             else if (reason.Equals("Interest", System.StringComparison.OrdinalIgnoreCase))

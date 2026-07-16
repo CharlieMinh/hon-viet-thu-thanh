@@ -7,6 +7,8 @@ namespace HonVietThuThanh.Dev5
     /// </summary>
     public class UnitStarData : MonoBehaviour
     {
+        public const int MaxStarLevel = 3;
+
         [Header("Thông tin sao")]
         public string unitId;
         public int starLevel = 1;
@@ -29,7 +31,7 @@ namespace HonVietThuThanh.Dev5
         /// </summary>
         public void SetStarLevel(int newStarLevel)
         {
-            starLevel = Mathf.Max(1, newStarLevel);
+            starLevel = Mathf.Clamp(newStarLevel, 1, MaxStarLevel);
 
             // Cập nhật chỉ số chiến đấu
             UnitCombatStats stats = GetComponent<UnitCombatStats>();
