@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3687008d940a54e92e248ce158e51c, type: 3}
+  m_Name: Round4_Pre_Dialogue_Test
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.StorySequence
+  sequenceId: round4_pre_dialogue
+  mode: 1
+  lines:
+  - speakerName: "Người Giữ Thành"
+    text: "Cả ba Linh Ấn đã thức tỉnh, nhưng Hắc Mộc không còn thăm dò nữa."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Người Giữ Thành"
+    text: "Goblin, Orc và Pháp sư đồng loạt tràn qua khe nứt, chia thành nhiều hướng để kéo giãn phòng tuyến."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Hắc Mộc"
+    text: "Các Linh Ấn đã thức tỉnh càng khiến chiến thắng của ta có ý nghĩa. Hãy để toàn bộ Linh Thành chìm trong bóng tối."
+    portrait: {fileID: 0}
+    portraitSide: 2
+    audioClip: {fileID: 0}
+  - speakerName: "Người Giữ Thành"
+    text: "Không còn Linh Ấn mới để mở khóa. Hãy dùng Linh Khí để triệu hồi thêm Linh Ảnh và hợp nhất sức mạnh của họ."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "Hướng dẫn"
+    text: "Hợp nhất tướng giống nhau để nâng sao. Khi lên sao, Linh Tướng tăng chỉ số và hồi đầy sinh mệnh."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+  - speakerName: "An Dương Vương"
+    text: "Giữ quân địch trong tầm bắn của Nỏ Thần."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  - speakerName: "Chử Đồng Tử"
+    text: "Kết giới vẫn còn. Đừng để chúng chia cắt đội hình."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  - speakerName: "Sơn Tinh"
+    text: "Kẻ nào vượt qua tuyến trước sẽ phải đối mặt với ta."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  unlockPortrait: {fileID: 0}
+  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockHeroName: 
+  unlockRole: 
+  unlockDescription: 

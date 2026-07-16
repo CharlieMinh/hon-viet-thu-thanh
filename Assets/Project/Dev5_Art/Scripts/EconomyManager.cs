@@ -14,11 +14,6 @@ namespace HonVietThuThanh.Dev5
         [Tooltip("Số Gold ban đầu của người chơi")]
         public int startingGold = 10;
 
-        [Header("Lợi tức (Interest) - Phase 11")]
-        [SerializeField] private int goldPerTierAmount = 10;
-        [SerializeField] private int goldPerInterestTier = 5;
-        [SerializeField] private int maxInterestGold = -1;
-
         [Header("Tham chiếu UI")]
         [Tooltip("Text hiển thị số Gold hiện tại")]
         public TMP_Text goldText;
@@ -95,15 +90,7 @@ namespace HonVietThuThanh.Dev5
         /// </summary>
         public int CalculateInterestGold()
         {
-            int tiers = currentGold / goldPerTierAmount;
-            int interest = tiers * goldPerInterestTier;
-
-            if (maxInterestGold > 0)
-            {
-                interest = Mathf.Min(interest, maxInterestGold);
-            }
-
-            return interest;
+            return Mathf.Min(currentGold / 10, 2);
         }
 
         /// <summary>
@@ -137,7 +124,7 @@ namespace HonVietThuThanh.Dev5
         {
             if (goldText != null)
             {
-                goldText.text = $"{currentGold} G";
+                goldText.text = $"Linh Khí: {currentGold}";
             }
         }
     }

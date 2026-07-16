@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3687008d940a54e92e248ce158e51c, type: 3}
+  m_Name: Round3_Unlock_SonTinh_Test
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.StorySequence
+  sequenceId: round3_unlock_son_tinh
+  mode: 2
+  lines: []
+  unlockPortrait: {fileID: 21300000, guid: cdff54dd441667d408541938ffdcda93, type: 3}
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A LINH T\u01AF\u1EDANG"
+  unlockHeroName: "S\u01A1n Tinh"
+  unlockRole: "\u0110\u1EA5u s\u0129"
+  unlockDescription: "C\u1EADn chi\u1EBFn v\xE0 g\xE2y s\xE1t th\u01B0\u01A1ng l\xEAn
+    nhi\u1EC1u k\u1EBB \u0111\u1ECBch g\u1EA7n nhau. Ph\xF9 h\u1EE3p h\u1ED7 tr\u1EE3
+    tuy\u1EBFn tr\u01B0\u1EDBc."

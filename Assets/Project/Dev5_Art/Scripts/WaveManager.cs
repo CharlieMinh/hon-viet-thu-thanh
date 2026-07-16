@@ -159,6 +159,8 @@ namespace HonVietThuThanh.Dev5
                         enemyCtrl.killGoldReward = entry.killGoldReward;
                     }
 
+                    ConfigureBossRage(enemyGO, entry.enemyName);
+
                     spawnedCount++;
                     yield return new WaitForSeconds(entry.spawnInterval);
                 }
@@ -218,6 +220,28 @@ namespace HonVietThuThanh.Dev5
                     GamePhaseManager.Instance.UpdateStateUI();
                 }
             }
+        }
+
+        private static void ConfigureBossRage(GameObject enemyGO, string enemyName)
+        {
+            if (enemyGO == null || !IsBossEnemyName(enemyName))
+            {
+                return;
+            }
+
+            EnemyBossRage rage = enemyGO.GetComponent<EnemyBossRage>();
+            if (rage == null)
+            {
+                rage = enemyGO.AddComponent<EnemyBossRage>();
+            }
+
+            rage.Configure(0.5f, 35f / 30f, 0.8f, 1.15f);
+        }
+
+        private static bool IsBossEnemyName(string enemyName)
+        {
+            return string.Equals(enemyName, "Orc Chúa", System.StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(enemyName, "Orc Chua", System.StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 namespace HonVietThuThanh.Dev5
 {
@@ -151,8 +152,10 @@ namespace HonVietThuThanh.Dev5
                 return; // Tránh gọi trùng lặp nếu trạng thái không phải Combat
             }
 
-            // Cộng lợi tức Vàng sau combat nếu chưa được cộng (Phase 11)
-            if (!currentCombatRewardGranted)
+            bool shouldGrantInterest = WaveManager.Instance == null || WaveManager.Instance.HasMoreWaves();
+
+            // Cộng lợi tức Linh Khí sau combat nếu chưa được cộng và vẫn còn wave tiếp theo.
+            if (!currentCombatRewardGranted && shouldGrantInterest)
             {
                 currentCombatRewardGranted = true;
                 if (EconomyManager.Instance != null)
@@ -176,6 +179,11 @@ namespace HonVietThuThanh.Dev5
                     }
 
                     WaveManager.Instance.AdvanceToNextWave();
+                    ShopManager refreshedShop = Object.FindAnyObjectByType<ShopManager>();
+                    if (refreshedShop != null)
+                    {
+                        refreshedShop.RefreshShopUnlocksByWave();
+                    }
                 }
                 else
                 {
@@ -221,7 +229,7 @@ namespace HonVietThuThanh.Dev5
             {
                 if (WaveManager.Instance != null)
                 {
-                    waveStatus = $"Wave: {WaveManager.Instance.currentWaveIndex + 1} / {WaveManager.Instance.waves.Count}";
+                    waveStatus = BuildWaveStatusText();
                 }
                 else
                 {
@@ -244,6 +252,78 @@ namespace HonVietThuThanh.Dev5
                 {
                     stateText.text = $"State: {currentState}";
                 }
+            }
+        }
+
+        private string BuildWaveStatusText()
+        {
+            WaveManager waveManager = WaveManager.Instance;
+            string status = $"Đợt {waveManager.currentWaveIndex + 1} / {waveManager.waves.Count}";
+
+            if (waveManager.currentWaveIndex < 0 || waveManager.currentWaveIndex >= waveManager.waves.Count)
+            {
+                return status;
+            }
+
+            WaveData wave = waveManager.waves[waveManager.currentWaveIndex];
+            string enemySummary = BuildEnemySummary(wave);
+            if (string.IsNullOrEmpty(enemySummary))
+            {
+                return status;
+            }
+
+            return $"{status}\nQuái: {enemySummary}";
+        }
+
+        private static string BuildEnemySummary(WaveData wave)
+        {
+            if (wave == null || wave.enemies == null || wave.enemies.Count == 0)
+            {
+                return "";
+            }
+
+            List<string> displayOrder = new List<string>();
+
+            for (int i = 0; i < wave.enemies.Count; i++)
+            {
+                WaveEnemyEntry entry = wave.enemies[i];
+                if (entry == null || entry.count <= 0)
+                {
+                    continue;
+                }
+
+                string displayName = GetEnemyDisplayName(entry.enemyName);
+                if (!displayOrder.Contains(displayName))
+                {
+                    displayOrder.Add(displayName);
+                }
+            }
+
+            string result = "";
+            for (int i = 0; i < displayOrder.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(result))
+                {
+                    result += ", ";
+                }
+
+                result += displayOrder[i];
+            }
+
+            return result;
+        }
+
+        private static string GetEnemyDisplayName(string enemyName)
+        {
+            switch (enemyName)
+            {
+                case "Enemy Archer":
+                case "Archer":
+                    return "Pháp sư";
+                case "Orc Chua":
+                    return "Orc Chúa";
+                default:
+                    return enemyName;
             }
         }
     }

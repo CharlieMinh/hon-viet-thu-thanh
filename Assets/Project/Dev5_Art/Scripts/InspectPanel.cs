@@ -158,9 +158,9 @@ namespace HonVietThuThanh.Dev5
 
             if (statsText != null)
             {
-                statsText.text = "Kị Sĩ : 3 tiền\n" +
-                                 "Xạ Thủ : 4 tiền\n" +
-                                 "Đỡ Đòn : 5 tiền";
+                statsText.text = "Sơn Tinh : 3 Linh Khí\n" +
+                                 "An Dương Vương : 4 Linh Khí\n" +
+                                 "Chử Đồng Tử : 5 Linh Khí";
             }
 
             if (panelParent != null)
@@ -253,16 +253,27 @@ namespace HonVietThuThanh.Dev5
         private static string BuildUnitTitle(string unitName, UnitStarData starData)
         {
             int starLevel = starData != null ? Mathf.Max(1, starData.starLevel) : 1;
-            return $"{unitName} - {starLevel} Sao";
+            return $"{GetDisplayUnitName(unitName)} - {starLevel} Sao";
+        }
+
+        private static string GetDisplayUnitName(string unitName)
+        {
+            switch (unitName)
+            {
+                case "Archer": return "An Dương Vương";
+                case "Tank": return "Chử Đồng Tử";
+                case "Knight": return "Sơn Tinh";
+                default: return unitName;
+            }
         }
 
         private static string GetUnitRoleText(UnitClassRole role)
         {
             switch (role)
             {
-                case UnitClassRole.Knight: return "Kỵ sĩ";
+                case UnitClassRole.Knight: return "Đấu sĩ";
                 case UnitClassRole.Archer: return "Xạ thủ";
-                case UnitClassRole.Tank: return "Đỡ đòn";
+                case UnitClassRole.Tank: return "Chống chịu";
                 default: return "Không xác định";
             }
         }

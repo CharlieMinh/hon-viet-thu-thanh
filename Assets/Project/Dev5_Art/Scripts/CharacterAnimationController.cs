@@ -77,6 +77,8 @@ namespace HonVietThuThanh.Dev5
             {
                 GamePhaseManager.Instance.OnGameStateChanged += HandleGameStateChanged;
             }
+            HonVietThuThanh.Dev4.SettingsMenuController.OnSFXVolumeChanged += HandleSFXVolumeChanged;
+            UpdateSFXVolumes();
         }
 
         private void OnDisable()
@@ -85,7 +87,20 @@ namespace HonVietThuThanh.Dev5
             {
                 GamePhaseManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
             }
+            HonVietThuThanh.Dev4.SettingsMenuController.OnSFXVolumeChanged -= HandleSFXVolumeChanged;
             StopAllAudio();
+        }
+
+        private void HandleSFXVolumeChanged(float newVolume)
+        {
+            UpdateSFXVolumes();
+        }
+
+        private void UpdateSFXVolumes()
+        {
+            float vol = HonVietThuThanh.Dev4.SettingsMenuController.SFXVolume;
+            if (attackAudioSource != null) attackAudioSource.volume = vol;
+            if (deathAudioSource != null) deathAudioSource.volume = vol;
         }
 
         private void Start()

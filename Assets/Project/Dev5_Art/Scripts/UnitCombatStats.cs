@@ -24,13 +24,26 @@ namespace HonVietThuThanh.Dev5
                 baseDamage = damage;
             }
 
-            float multiplier = Mathf.Pow(1.5f, starLevel - 1);
+            float multiplier = GetStarMultiplier(starLevel);
             damage = Mathf.RoundToInt(baseDamage * multiplier);
 
             Health hp = GetComponent<Health>();
             if (hp != null)
             {
                 hp.ApplyStarMultiplier(starLevel);
+            }
+        }
+
+        private static float GetStarMultiplier(int starLevel)
+        {
+            switch (Mathf.Clamp(starLevel, 1, UnitStarData.MaxStarLevel))
+            {
+                case 2:
+                    return 2.5f;
+                case 3:
+                    return 6f;
+                default:
+                    return 1f;
             }
         }
 

@@ -42,6 +42,7 @@ namespace HonVietThuThanh.Dev5
         private PlaceableUnit placeableUnit;
         private Health health;
         private TankVoiceFeedback voiceFeedback;
+        private Animator animator;
         private Vector3 baseLocalPosition;
         private Quaternion baseLocalRotation;
         private Vector3 baseLocalScale;
@@ -53,6 +54,7 @@ namespace HonVietThuThanh.Dev5
         private float attackTimer;
         private float hitFlashTimer;
         private Coroutine deathRoutine;
+        private bool usesRiggedAnimator;
 
         private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
         private static readonly int ColorId = Shader.PropertyToID("_Color");
@@ -64,6 +66,7 @@ namespace HonVietThuThanh.Dev5
             health = GetComponent<Health>();
             voiceFeedback = GetComponent<TankVoiceFeedback>();
             ResolveReferences();
+            usesRiggedAnimator = HasValidAnimator();
             CaptureBasePose();
             CaptureBaseColor();
         }
@@ -105,7 +108,11 @@ namespace HonVietThuThanh.Dev5
                 hitFlashTimer = Mathf.Max(0f, hitFlashTimer - deltaTime);
             }
 
-            ApplyPose();
+            if (!usesRiggedAnimator)
+            {
+                ApplyPose();
+            }
+
             ApplyHitFlash();
         }
 
@@ -121,7 +128,11 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            attackTimer = attackOutDuration + attackReturnDuration;
+            if (!usesRiggedAnimator)
+            {
+                attackTimer = attackOutDuration + attackReturnDuration;
+            }
+
             if (voiceFeedback != null)
             {
                 voiceFeedback.PlayAttackVoice();
@@ -130,12 +141,28 @@ namespace HonVietThuThanh.Dev5
 
         private void ResolveReferences()
         {
+            Transform modelSlot = transform.Find("Visual/ModelSlot");
+            if (modelSlot != null)
+            {
+                animator = modelSlot.GetComponentInChildren<Animator>(true);
+            }
+
             if (visualRoot == null)
             {
-                Transform model = transform.Find("Visual/ModelSlot/PF_Tank_Visual/VisualRoot/Tank_Model");
+                Transform model = transform.Find(
+                    "Visual/ModelSlot/PF_ChuDongTu_Rigged_Visual/VisualRoot/ChuDongTu_Model");
+                if (model == null)
+                {
+                    model = transform.Find("Visual/ModelSlot/PF_Tank_Visual/VisualRoot/Tank_Model");
+                }
+
                 if (model != null)
                 {
                     visualRoot = model;
+                }
+                else if (animator != null)
+                {
+                    visualRoot = animator.transform;
                 }
             }
 
@@ -143,6 +170,14 @@ namespace HonVietThuThanh.Dev5
             {
                 bodyRenderer = visualRoot.GetComponentInChildren<Renderer>(true);
             }
+        }
+
+        private bool HasValidAnimator()
+        {
+            return animator != null &&
+                   animator.runtimeAnimatorController != null &&
+                   animator.avatar != null &&
+                   animator.avatar.isValid;
         }
 
         private void CaptureBasePose()
@@ -256,6 +291,11 @@ namespace HonVietThuThanh.Dev5
             }
 
             isDead = true;
+            if (usesRiggedAnimator)
+            {
+                return;
+            }
+
             if (deathRoutine != null)
             {
                 StopCoroutine(deathRoutine);

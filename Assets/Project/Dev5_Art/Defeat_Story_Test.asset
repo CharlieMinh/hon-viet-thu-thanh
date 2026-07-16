@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3687008d940a54e92e248ce158e51c, type: 3}
+  m_Name: Defeat_Story_Test
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.StorySequence
+  sequenceId: defeat_story
+  mode: 0
+  lines:
+  - speakerName: 
+    text: "Ph\xF2ng tuy\u1EBFn \u0111\xE3 b\u1ECB ph\xE1 v\u1EE1. Qu\xE2n H\u1EAFc
+      M\u1ED9c ti\u1EBFn \u0111\u1EBFn trung t\xE2m Linh Th\xE0nh v\xE0 b\xF3ng t\u1ED1i
+      b\u1EAFt \u0111\u1EA7u bao ph\u1EE7 c\xE1c Linh \u1EA4n."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 1
+    musicClip: {fileID: 8300000, guid: 59992d2c02014614aa5fe0f69411f57a, type: 3}
+  - speakerName: 
+    text: "H\u1EAFc M\u1ED9c: C\xE1c ng\u01B0\u01A1i kh\xF4ng th\u1EC3 b\u1EA3o v\u1EC7
+      nh\u1EEFng g\xEC ch\xEDnh m\xECnh \u0111\xE3 l\xE3ng qu\xEAn."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "\xC1nh s\xE1ng trong Linh Th\xE0nh d\u1EA7n t\u1EAFt. Nh\u01B0ng th\u1EDDi
+      gian v\u1EABn ch\u01B0a ho\xE0n to\xE0n kh\xE9p l\u1EA1i."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "Ng\u01B0\u1EDDi Gi\u1EEF Th\xE0nh v\u1EABn c\xF2n c\u01A1 h\u1ED9i quay
+      l\u1EA1i tr\u01B0\u1EDBc cu\u1ED9c t\u1EA5n c\xF4ng, thay \u0111\u1ED5i \u0111\u1ED9i
+      h\xECnh v\xE0 vi\u1EBFt l\u1EA1i k\u1EBFt c\u1EE5c."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  unlockPortrait: {fileID: 0}
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
+  unlockHeroName: 
+  unlockRole: 
+  unlockDescription: 

@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3687008d940a54e92e248ce158e51c, type: 3}
+  m_Name: Victory_Story_Test
+  m_EditorClassIdentifier: Assembly-CSharp::HonVietThuThanh.Dev5.StorySequence
+  sequenceId: victory_story
+  mode: 0
+  lines:
+  - speakerName: 
+    text: "M\u0169i t\xEAn t\u1EEB N\u1ECF Th\u1EA7n xuy\xEAn qua l\u1EDBp t\xE0
+      kh\xED b\u1EA3o v\u1EC7 Orc Ch\xFAa."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 1
+    musicClip: {fileID: 8300000, guid: d19cb1b8231fc5b43bcb6a76ab79a31f, type: 3}
+  - speakerName: 
+    text: "S\u1EE9c m\u1EA1nh T\u1EA3n Vi\xEAn \u0111\xE1nh v\u1EE1 m\u1EB7t \u0111\u1EA5t
+      d\u01B0\u1EDBi ch\xE2n h\u1EAFn. K\u1EBFt Gi\u1EDBi Li\xEAn Hoa kh\xF3a ch\u1EB7t
+      con \u0111\u01B0\u1EDDng d\u1EABn \u0111\u1EBFn trung t\xE2m Linh Th\xE0nh."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "Orc Ch\xFAa H\u1EAFc M\u1ED9c g\u1EE5c xu\u1ED1ng. Khe n\u1EE9t tr\u01B0\u1EDBc
+      c\u1ED5ng Linh Th\xE0nh d\u1EA7n kh\xE9p l\u1EA1i."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "Nh\u1EEFng k\xFD \u1EE9c t\u1EEBng b\u1ECB H\u1EAFc M\u1ED9c b\xF3p m\xE9o
+      \u0111\u01B0\u1EE3c gi\u1EA3i tho\xE1t v\xE0 tr\u1EDF v\u1EC1 v\u1EDBi D\xF2ng
+      Ch\u1EA3y L\u1ECBch S\u1EED."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "An D\u01B0\u01A1ng V\u01B0\u01A1ng: Th\xE0nh tr\xEC v\u1EABn c\xF2n \u0111\u1EE9ng
+      v\u1EEFng."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "Ch\u1EED \u0110\u1ED3ng T\u1EED: Linh Kh\xED t\u1ED3n t\u1EA1i b\u1EDFi
+      con ng\u01B0\u1EDDi v\u1EABn c\xF2n tr\xE2n tr\u1ECDng qu\xE1 kh\u1EE9 c\u1EE7a
+      m\xECnh."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "S\u01A1n Tinh: N\xFAi s\xF4ng v\u1EABn c\xF2n \u0111\xF3. Khi Linh Th\xE0nh
+      c\u1EA7n, ch\xFAng ta s\u1EBD m\u1ED9t l\u1EA7n n\u1EEFa tr\u1EDF l\u1EA1i."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "Cu\u1ED9c chi\u1EBFn ch\u1ED1ng l\u1EA1i s\u1EF1 l\xE3ng qu\xEAn v\u1EABn
+      ch\u01B0a k\u1EBFt th\xFAc."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  unlockPortrait: {fileID: 0}
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
+  unlockHeroName: 
+  unlockRole: 
+  unlockDescription: 
