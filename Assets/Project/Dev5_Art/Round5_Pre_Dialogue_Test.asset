@@ -15,12 +15,12 @@ MonoBehaviour:
   sequenceId: round5_pre_dialogue
   mode: 1
   lines:
-  - speakerName: "Người Giữ Thành"
+  - speakerName: "Người dẫn chuyện"
     text: "Đợt tổng công kích đã bị đẩy lui, nhưng tà khí còn sót lại đang hội tụ vào một Orc chỉ huy."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
+  - speakerName: "Người dẫn chuyện"
     text: "Cơ thể hắn trở nên khổng lồ. Lớp giáp chuyển thành màu tím đen. Orc Chúa Hắc Mộc đã xuất hiện."
     portrait: {fileID: 0}
     portraitSide: 0
@@ -31,27 +31,37 @@ MonoBehaviour:
     portraitSide: 2
     audioClip: {fileID: 0}
   - speakerName: "Orc Chúa"
-    text: "Ta sẽ tự tay bóp nát các Linh Ấn của các ngươi!"
+    text: "Ta sẽ tự tay bóp nát Linh Ấn Cổ Loa!"
     portrait: {fileID: 0}
     portraitSide: 2
     audioClip: {fileID: 0}
   - speakerName: "Thông báo"
-    text: "BOSS XUẤT HIỆN - Orc Chúa Hắc Mộc. Hãy dùng toàn bộ Linh Khí còn lại để hoàn thiện đội hình."
+    text: "BOSS XUẤT HIỆN — ORC CHÚA HẮC MỘC"
+    portrait: {fileID: 0}
+    portraitSide: 2
+    audioClip: {fileID: 0}
+  - speakerName: "Thông báo"
+    text: "Hãy dùng toàn bộ Linh Khí còn lại để hoàn thiện đội hình."
     portrait: {fileID: 0}
     portraitSide: 2
     audioClip: {fileID: 0}
   - speakerName: "An Dương Vương"
-    text: "Lớp tà khí ấy dù dày đến đâu cũng không thể chống lại Nỏ Thần mãi mãi."
+    text: "Toàn quân nghe lệnh! Giữ vững phòng tuyến và tập trung sức mạnh tiêu diệt Orc Chúa!"
     portrait: {fileID: 0}
     portraitSide: 1
     audioClip: {fileID: 0}
-  - speakerName: "Chử Đồng Tử"
-    text: "Ta sẽ giữ kết giới cho đến thời khắc cuối cùng."
+  - speakerName: "Liên Châu Xạ Vệ"
+    text: "Lớp tà khí ấy dù dày đến đâu cũng không thể chống lại những loạt tên mãi mãi."
     portrait: {fileID: 0}
     portraitSide: 1
     audioClip: {fileID: 0}
-  - speakerName: "Sơn Tinh"
-    text: "Hãy để ta đối đầu trực diện với hắn."
+  - speakerName: "Huyền Giáp Hộ Vệ"
+    text: "Chúng ta sẽ giữ phòng tuyến cho đến thời khắc cuối cùng."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  - speakerName: "Thiết Kích Chiến Vệ"
+    text: "Hãy để ta đối đầu trực diện với hắn!"
     portrait: {fileID: 0}
     portraitSide: 1
     audioClip: {fileID: 0}

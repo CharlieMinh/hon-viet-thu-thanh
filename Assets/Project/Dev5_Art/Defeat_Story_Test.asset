@@ -15,42 +15,50 @@ MonoBehaviour:
   sequenceId: defeat_story
   mode: 0
   lines:
-  - speakerName: 
-    text: "Ph\xF2ng tuy\u1EBFn \u0111\xE3 b\u1ECB ph\xE1 v\u1EE1. Qu\xE2n H\u1EAFc
-      M\u1ED9c ti\u1EBFn \u0111\u1EBFn trung t\xE2m Linh Th\xE0nh v\xE0 b\xF3ng t\u1ED1i
-      b\u1EAFt \u0111\u1EA7u bao ph\u1EE7 c\xE1c Linh \u1EA4n."
+  - speakerName:
+    text: "Phòng tuyến đã bị phá vỡ."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
     changeMusic: 1
     musicClip: {fileID: 8300000, guid: 59992d2c02014614aa5fe0f69411f57a, type: 3}
-  - speakerName: 
-    text: "H\u1EAFc M\u1ED9c: C\xE1c ng\u01B0\u01A1i kh\xF4ng th\u1EC3 b\u1EA3o v\u1EC7
-      nh\u1EEFng g\xEC ch\xEDnh m\xECnh \u0111\xE3 l\xE3ng qu\xEAn."
+  - speakerName:
+    text: "Quân Hắc Mộc tiến đến trung tâm Linh Thành. Linh Ấn Cổ Loa bị bóng tối bao phủ."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: 
-    text: "\xC1nh s\xE1ng trong Linh Th\xE0nh d\u1EA7n t\u1EAFt. Nh\u01B0ng th\u1EDDi
-      gian v\u1EABn ch\u01B0a ho\xE0n to\xE0n kh\xE9p l\u1EA1i."
+  - speakerName:
+    text: "Hắc Mộc: Các ngươi không thể bảo vệ những gì chính mình đã lãng quên."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: 
-    text: "Ng\u01B0\u1EDDi Gi\u1EEF Th\xE0nh v\u1EABn c\xF2n c\u01A1 h\u1ED9i quay
-      l\u1EA1i tr\u01B0\u1EDBc cu\u1ED9c t\u1EA5n c\xF4ng, thay \u0111\u1ED5i \u0111\u1ED9i
-      h\xECnh v\xE0 vi\u1EBFt l\u1EA1i k\u1EBFt c\u1EE5c."
+  - speakerName:
+    text: "Ánh sáng trong Linh Thành dần tắt. Nhưng thời gian vẫn chưa hoàn toàn khép lại."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName:
+    text: "An Dương Vương: Trận chiến vẫn chưa kết thúc. Ta sẽ điều chỉnh đội hình và giữ vững từng lớp phòng tuyến!"
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 0}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName:
+    text: "Dòng Chảy Lịch Sử vẫn còn một cơ hội. An Dương Vương có thể trở lại trước cuộc tấn công, điều chỉnh đội hình và bảo vệ Linh Ấn Cổ Loa."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
     changeMusic: 0
     musicClip: {fileID: 0}
   unlockPortrait: {fileID: 0}
-  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
+  unlockTitle: "ĐÃ MỞ KHÓA"
   unlockHeroName: 
   unlockRole: 
   unlockDescription: 

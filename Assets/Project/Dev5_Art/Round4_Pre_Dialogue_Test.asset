@@ -15,43 +15,53 @@ MonoBehaviour:
   sequenceId: round4_pre_dialogue
   mode: 1
   lines:
-  - speakerName: "Người Giữ Thành"
-    text: "Cả ba Linh Ấn đã thức tỉnh, nhưng Hắc Mộc không còn thăm dò nữa."
+  - speakerName: "Người dẫn chuyện"
+    text: "Cả ba đội Chiến Vệ đã được triệu tập, nhưng Hắc Mộc không còn thăm dò nữa."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Goblin, Orc và Pháp sư đồng loạt tràn qua khe nứt, chia thành nhiều hướng để kéo giãn phòng tuyến."
+  - speakerName: "Người dẫn chuyện"
+    text: "Goblin, Orc và Pháp Sư đồng loạt tràn qua khe nứt, chia thành nhiều hướng để kéo giãn phòng tuyến."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
   - speakerName: "Hắc Mộc"
-    text: "Các Linh Ấn đã thức tỉnh càng khiến chiến thắng của ta có ý nghĩa. Hãy để toàn bộ Linh Thành chìm trong bóng tối."
+    text: "Đội quân của các ngươi đã tập kết. Điều đó chỉ càng khiến chiến thắng của ta có ý nghĩa."
     portrait: {fileID: 0}
     portraitSide: 2
     audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Không còn Linh Ấn mới để mở khóa. Hãy dùng Linh Khí để triệu hồi thêm Linh Ảnh và hợp nhất sức mạnh của họ."
+  - speakerName: "Hắc Mộc"
+    text: "Hãy để toàn bộ Linh Thành chìm trong bóng tối!"
+    portrait: {fileID: 0}
+    portraitSide: 2
+    audioClip: {fileID: 0}
+  - speakerName: "Người dẫn chuyện"
+    text: "Không còn binh chủng mới để mở khóa. Hãy dùng Linh Khí để triệu hồi thêm Chiến Vệ và hợp nhất sức mạnh của họ."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
-  - speakerName: "Hướng dẫn"
-    text: "Hợp nhất tướng giống nhau để nâng sao. Khi lên sao, Linh Tướng tăng chỉ số và hồi đầy sinh mệnh."
+  - speakerName: "Thông báo"
+    text: "Hợp nhất các Chiến Vệ giống nhau để nâng sao. Khi lên sao, Chiến Vệ tăng chỉ số và hồi đầy sinh mệnh."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
   - speakerName: "An Dương Vương"
-    text: "Giữ quân địch trong tầm bắn của Nỏ Thần."
+    text: "Giữ quân địch trong tầm bắn của Liên Châu Xạ Vệ. Không được để chúng chia cắt đội hình!"
     portrait: {fileID: 0}
     portraitSide: 1
     audioClip: {fileID: 0}
-  - speakerName: "Chử Đồng Tử"
-    text: "Kết giới vẫn còn. Đừng để chúng chia cắt đội hình."
+  - speakerName: "Liên Châu Xạ Vệ"
+    text: "Cung nỏ đã sẵn sàng. Kẻ địch bước vào tầm bắn sẽ không thể tiến thêm!"
     portrait: {fileID: 0}
     portraitSide: 1
     audioClip: {fileID: 0}
-  - speakerName: "Sơn Tinh"
-    text: "Kẻ nào vượt qua tuyến trước sẽ phải đối mặt với ta."
+  - speakerName: "Huyền Giáp Hộ Vệ"
+    text: "Phòng tuyến vẫn còn. Chúng ta sẽ không lùi bước!"
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  - speakerName: "Thiết Kích Chiến Vệ"
+    text: "Kẻ nào vượt qua tuyến trước sẽ phải đối mặt với thiết kích của ta!"
     portrait: {fileID: 0}
     portraitSide: 1
     audioClip: {fileID: 0}

@@ -15,7 +15,7 @@ MonoBehaviour:
   sequenceId: round2_pre_dialogue
   mode: 1
   lines:
-  - speakerName: "Người Giữ Thành"
+  - speakerName: "Người dẫn chuyện"
     text: "Đội quân dò đường của Hắc Mộc đã bị đánh bại, nhưng những tiếng bước chân nặng nề đang đến gần."
     portrait: {fileID: 0}
     portraitSide: 0
@@ -25,23 +25,28 @@ MonoBehaviour:
     portrait: {fileID: 0}
     portraitSide: 2
     audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
+  - speakerName: "Người dẫn chuyện"
     text: "Orc Hắc Mộc tiến vào trận. Chúng chậm hơn Goblin, nhưng có sức mạnh và sinh mệnh vượt trội."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Trước sức ép ấy, ánh sáng Liên Hoa lan tỏa khắp Linh Thành. Chử Đồng Tử đã thức tỉnh."
+  - speakerName: "Người dẫn chuyện"
+    text: "Trước sức ép ấy, những tấm huyền giáp đồng loạt dựng lên trước phòng tuyến. Huyền Giáp Hộ Vệ đã được triệu tập."
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
-  - speakerName: "Chử Đồng Tử"
-    text: "Liên hoa kết giới, bảo hộ Linh Thành. Chừng nào kết giới còn tồn tại, tà quân không thể chạm tới Linh Ấn."
+  - speakerName: "Huyền Giáp Hộ Vệ"
+    text: "Huyền giáp dựng trận, bảo hộ Linh Thành! Chừng nào phòng tuyến còn tồn tại, tà quân không thể chạm tới Linh Ấn!"
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 0}
+  - speakerName: "An Dương Vương"
+    text: "Hãy để Huyền Giáp Hộ Vệ giữ tuyến trước. Không được để quân địch tiếp cận Liên Châu Xạ Vệ!"
     portrait: {fileID: 0}
     portraitSide: 1
     audioClip: {fileID: 0}
   - speakerName: "Thông báo"
-    text: "Đặt Chử Đồng Tử ở tuyến trước để bảo vệ An Dương Vương."
+    text: "Đặt Huyền Giáp Hộ Vệ ở tuyến trước để bảo vệ Liên Châu Xạ Vệ."
     portrait: {fileID: 0}
     portraitSide: 1
     audioClip: {fileID: 0}
