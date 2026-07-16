@@ -191,7 +191,10 @@ namespace HonVietThuThanh.Dev5
         private void CreateUnitRow(RectTransform parent, PlaceableUnit unit)
         {
             RectTransform row = CreateRect("UnitHealthRow", parent);
-            row.sizeDelta = new Vector2(0f, 42f);
+            ApplyLayoutSize(row.gameObject, 0f, 20f);
+            LayoutElement rowLayoutElement = row.GetComponent<LayoutElement>();
+            rowLayoutElement.minHeight = 20f;
+            rowLayoutElement.flexibleHeight = 0f;
 
             Image rowImage = row.gameObject.AddComponent<Image>();
             rowImage.color = new Color(0.18f, 0.08f, 0.035f, 0.88f);
@@ -201,16 +204,18 @@ namespace HonVietThuThanh.Dev5
             rowOutline.effectDistance = new Vector2(1f, -1f);
 
             HorizontalLayoutGroup layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.padding = new RectOffset(14, 14, 6, 6);
-            layout.spacing = 10f;
+            layout.padding = new RectOffset(14, 14, 2, 2);
+            layout.spacing = 12f;
             layout.childAlignment = TextAnchor.MiddleCenter;
             layout.childControlWidth = true;
+            layout.childControlHeight = false;
             layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = false;
 
-            TMP_Text nameText = CreateText("UnitName", row, unit != null ? unit.unitName : "Tướng", 16f, FontStyles.Bold);
+            TMP_Text nameText = CreateText("UnitName", row, GetHeroDisplayName(unit), 12f, FontStyles.Bold);
             nameText.color = Gold;
             nameText.alignment = TextAlignmentOptions.MidlineLeft;
-            ApplyLayoutSize(nameText.gameObject, 170f, 30f);
+            ApplyLayoutSize(nameText.gameObject, 170f, 18f);
             ApplyReadableTextStyle(nameText, Color.black, 0.12f);
 
             Health health = unit != null ? unit.GetComponent<Health>() : null;
@@ -219,7 +224,11 @@ namespace HonVietThuThanh.Dev5
             float healthPercent = maxHealth > 0 ? Mathf.Clamp01((float)currentHealth / maxHealth) : 0f;
 
             RectTransform bar = CreateRect("HealthBar", row);
-            ApplyLayoutSize(bar.gameObject, 210f, 18f);
+            bar.sizeDelta = new Vector2(0f, 14f);
+            ApplyLayoutSize(bar.gameObject, 0f, 14f);
+            LayoutElement barLayoutElement = bar.GetComponent<LayoutElement>();
+            barLayoutElement.minHeight = 14f;
+            barLayoutElement.flexibleHeight = 0f;
 
             Image barBack = bar.gameObject.AddComponent<Image>();
             barBack.color = new Color(0.08f, 0.03f, 0.02f, 1f);
@@ -233,11 +242,31 @@ namespace HonVietThuThanh.Dev5
             Image fillImage = fill.gameObject.AddComponent<Image>();
             fillImage.color = Color.Lerp(new Color(0.78f, 0.12f, 0.08f, 1f), new Color(0.22f, 0.78f, 0.22f, 1f), healthPercent);
 
-            TMP_Text hpText = CreateText("HealthText", row, $"{currentHealth}/{maxHealth}", 15f, FontStyles.Bold);
+            TMP_Text hpText = CreateText("HealthText", bar, $"{currentHealth}/{maxHealth}", 12f, FontStyles.Bold);
             hpText.color = Color.white;
-            hpText.alignment = TextAlignmentOptions.MidlineRight;
-            ApplyLayoutSize(hpText.gameObject, 90f, 30f);
+            hpText.alignment = TextAlignmentOptions.Center;
+            Stretch(hpText.rectTransform);
             ApplyReadableTextStyle(hpText, Color.black, 0.14f);
+        }
+
+        private static string GetHeroDisplayName(PlaceableUnit unit)
+        {
+            if (unit == null || string.IsNullOrWhiteSpace(unit.unitName))
+            {
+                return "Tướng";
+            }
+
+            switch (unit.unitName)
+            {
+                case "Archer":
+                    return "An Dương Vương";
+                case "Tank":
+                    return "Chử Đồng Tử";
+                case "Knight":
+                    return "Sơn Tinh";
+                default:
+                    return unit.unitName;
+            }
         }
 
         private void ContinueToPreparation()
@@ -295,7 +324,7 @@ namespace HonVietThuThanh.Dev5
             ApplyReadableTextStyle(roundText, Color.black, 0.12f);
             Stretch(roundText.rectTransform);
 
-            RectTransform mainPanel = CreatePanel("RoundSummaryPanel", root, Wood, new Vector2(680f, 270f), new Vector2(0f, 8f));
+            RectTransform mainPanel = CreatePanel("RoundSummaryPanel", root, Wood, new Vector2(680f, 320f), new Vector2(0f, -8f));
             VerticalLayoutGroup panelLayout = mainPanel.gameObject.AddComponent<VerticalLayoutGroup>();
             panelLayout.padding = new RectOffset(22, 22, 18, 18);
             panelLayout.spacing = 14f;
@@ -314,11 +343,11 @@ namespace HonVietThuThanh.Dev5
 
             TMP_Text ignoredDetailText;
             CreateStatCard(statsRow, "Kẻ địch hạ gục", out defeatedValueText, out ignoredDetailText, "0");
-            CreateStatCard(statsRow, "Vàng kiếm được", out goldValueText, out goldDetailText, "+0");
+            CreateStatCard(statsRow, "Linh khí thu thập được", out goldValueText, out goldDetailText, "+0");
             CreateStatCard(statsRow, "Tướng còn lại", out unitCountValueText, out unitCountDetailText, "0");
 
             RectTransform listPanel = CreateRect("UnitListPanel", mainPanel);
-            ApplyLayoutSize(listPanel.gameObject, 0f, 128f);
+            ApplyLayoutSize(listPanel.gameObject, 0f, 170f);
             Image listImage = listPanel.gameObject.AddComponent<Image>();
             listImage.color = Parchment;
 
@@ -335,9 +364,9 @@ namespace HonVietThuThanh.Dev5
             ApplyLayoutSize(unitListTitleText.gameObject, 0f, 24f);
 
             unitListRoot = CreateRect("UnitRows", listPanel);
-            ApplyLayoutSize(unitListRoot.gameObject, 0f, 82f);
+            ApplyLayoutSize(unitListRoot.gameObject, 0f, 112f);
             VerticalLayoutGroup rowsLayout = unitListRoot.gameObject.AddComponent<VerticalLayoutGroup>();
-            rowsLayout.spacing = 6f;
+            rowsLayout.spacing = 3f;
             rowsLayout.childControlWidth = true;
             rowsLayout.childForceExpandWidth = true;
             rowsLayout.childForceExpandHeight = false;

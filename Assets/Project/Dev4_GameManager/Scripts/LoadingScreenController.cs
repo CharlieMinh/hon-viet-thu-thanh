@@ -16,6 +16,9 @@ namespace HonVietThuThanh.Dev4
     {
         private const string FallbackTargetSceneName = SceneLoadRequest.DefaultTargetSceneName;
         private const string CanvasName = "Canvas_Loading";
+        private const string VietnameseFontResourcePath = "Fonts & Materials/LiberationSans SDF - Fallback";
+
+        private static TMP_FontAsset vietnameseFontAsset;
 
         [Header("Progress")]
         [SerializeField] private Slider progressSlider;
@@ -319,6 +322,12 @@ namespace HonVietThuThanh.Dev4
             textObject.transform.SetParent(parent, false);
 
             TMP_Text text = textObject.GetComponent<TMP_Text>();
+            TMP_FontAsset fontAsset = GetVietnameseFontAsset();
+            if (fontAsset != null)
+            {
+                text.font = fontAsset;
+            }
+
             text.text = value;
             text.fontSize = fontSize;
             text.fontStyle = style;
@@ -328,6 +337,16 @@ namespace HonVietThuThanh.Dev4
             text.fontSizeMax = fontSize;
             text.alignment = TextAlignmentOptions.Center;
             return text;
+        }
+
+        private static TMP_FontAsset GetVietnameseFontAsset()
+        {
+            if (vietnameseFontAsset == null)
+            {
+                vietnameseFontAsset = Resources.Load<TMP_FontAsset>(VietnameseFontResourcePath);
+            }
+
+            return vietnameseFontAsset;
         }
 
         private static void Stretch(RectTransform rectTransform)
