@@ -15,38 +15,71 @@ MonoBehaviour:
   sequenceId: round2_pre_dialogue
   mode: 1
   lines:
-  - speakerName: "Người Giữ Thành"
-    text: "Đội quân dò đường của Hắc Mộc đã bị đánh bại, nhưng những tiếng bước chân nặng nề đang đến gần."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "\u0110\u1ED9i qu\xE2n d\xF2 \u0111\u01B0\u1EDDng c\u1EE7a H\u1EAFc M\u1ED9c
+      \u0111\xE3 b\u1ECB \u0111\xE1nh b\u1EA1i, nh\u01B0ng nh\u1EEFng ti\u1EBFng
+      b\u01B0\u1EDBc ch\xE2n n\u1EB7ng n\u1EC1 \u0111ang \u0111\u1EBFn g\u1EA7n."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Hắc Mộc"
-    text: "Các ngươi đã đánh bại những kẻ yếu nhất. Hãy xem phòng tuyến ấy đứng vững được bao lâu."
+    audioClip: {fileID: 8300000, guid: 644e2475e4c596c478149b6524b4efb3, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "H\u1EAFc M\u1ED9c"
+    text: "C\xE1c ng\u01B0\u01A1i \u0111\xE3 \u0111\xE1nh b\u1EA1i nh\u1EEFng k\u1EBB
+      y\u1EBFu nh\u1EA5t. H\xE3y xem ph\xF2ng tuy\u1EBFn \u1EA5y \u0111\u1EE9ng v\u1EEFng
+      \u0111\u01B0\u1EE3c bao l\xE2u."
     portrait: {fileID: 0}
     portraitSide: 2
-    audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Orc Hắc Mộc tiến vào trận. Chúng chậm hơn Goblin, nhưng có sức mạnh và sinh mệnh vượt trội."
+    audioClip: {fileID: 8300000, guid: 8b4233390a6f8614b9e2d3c73a16b9c9, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Orc H\u1EAFc M\u1ED9c ti\u1EBFn v\xE0o tr\u1EADn. Ch\xFAng ch\u1EADm h\u01A1n
+      Goblin, nh\u01B0ng c\xF3 s\u1EE9c m\u1EA1nh v\xE0 sinh m\u1EC7nh v\u01B0\u1EE3t
+      tr\u1ED9i."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Trước sức ép ấy, ánh sáng Liên Hoa lan tỏa khắp Linh Thành. Chử Đồng Tử đã thức tỉnh."
+    audioClip: {fileID: 8300000, guid: 713de43474c0dbd47831be5196cc9bd7, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Tr\u01B0\u1EDBc s\u1EE9c \xE9p \u1EA5y, nh\u1EEFng t\u1EA5m huy\u1EC1n
+      gi\xE1p \u0111\u1ED3ng lo\u1EA1t d\u1EF1ng l\xEAn tr\u01B0\u1EDBc ph\xF2ng
+      tuy\u1EBFn. Huy\u1EC1n Gi\xE1p H\u1ED9 V\u1EC7 \u0111\xE3 \u0111\u01B0\u1EE3c
+      tri\u1EC7u t\u1EADp."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Chử Đồng Tử"
-    text: "Liên hoa kết giới, bảo hộ Linh Thành. Chừng nào kết giới còn tồn tại, tà quân không thể chạm tới Linh Ấn."
+    audioClip: {fileID: 8300000, guid: 22d0274f44249ea4fbe07fd249cf02f6, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Huy\u1EC1n Gi\xE1p H\u1ED9 V\u1EC7"
+    text: "Huy\u1EC1n gi\xE1p d\u1EF1ng tr\u1EADn, b\u1EA3o h\u1ED9 Linh Th\xE0nh!
+      Ch\u1EEBng n\xE0o ph\xF2ng tuy\u1EBFn c\xF2n t\u1ED3n t\u1EA1i, t\xE0 qu\xE2n
+      kh\xF4ng th\u1EC3 ch\u1EA1m t\u1EDBi Linh \u1EA4n!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
-  - speakerName: "Thông báo"
-    text: "Đặt Chử Đồng Tử ở tuyến trước để bảo vệ An Dương Vương."
+    audioClip: {fileID: 8300000, guid: 8bb5adb3827a3b14b9792bf8e2b628a2, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "An D\u01B0\u01A1ng V\u01B0\u01A1ng"
+    text: "H\xE3y \u0111\u1EC3 Huy\u1EC1n Gi\xE1p H\u1ED9 V\u1EC7 gi\u1EEF tuy\u1EBFn
+      tr\u01B0\u1EDBc. Kh\xF4ng \u0111\u01B0\u1EE3c \u0111\u1EC3 qu\xE2n \u0111\u1ECBch
+      ti\u1EBFp c\u1EADn Li\xEAn Ch\xE2u X\u1EA1 V\u1EC7!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 18e66dc4d165f3f469ae6da5118472ba, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Th\xF4ng b\xE1o"
+    text: "\u0110\u1EB7t Huy\u1EC1n Gi\xE1p H\u1ED9 V\u1EC7 \u1EDF tuy\u1EBFn tr\u01B0\u1EDBc
+      \u0111\u1EC3 b\u1EA3o v\u1EC7 Li\xEAn Ch\xE2u X\u1EA1 V\u1EC7."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 8300000, guid: 5104ed7b101a4114b8bdeab8502ab9a0, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   unlockPortrait: {fileID: 0}
-  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
   unlockHeroName: 
   unlockRole: 
   unlockDescription: 

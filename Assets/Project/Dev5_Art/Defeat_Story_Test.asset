@@ -16,20 +16,26 @@ MonoBehaviour:
   mode: 0
   lines:
   - speakerName: 
-    text: "Ph\xF2ng tuy\u1EBFn \u0111\xE3 b\u1ECB ph\xE1 v\u1EE1. Qu\xE2n H\u1EAFc
-      M\u1ED9c ti\u1EBFn \u0111\u1EBFn trung t\xE2m Linh Th\xE0nh v\xE0 b\xF3ng t\u1ED1i
-      b\u1EAFt \u0111\u1EA7u bao ph\u1EE7 c\xE1c Linh \u1EA4n."
+    text: "Ph\xF2ng tuy\u1EBFn \u0111\xE3 b\u1ECB ph\xE1 v\u1EE1."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 46adc8d288a1df34f93e4c89afdb48ee, type: 3}
     changeMusic: 1
     musicClip: {fileID: 8300000, guid: 59992d2c02014614aa5fe0f69411f57a, type: 3}
+  - speakerName: 
+    text: "Qu\xE2n H\u1EAFc M\u1ED9c ti\u1EBFn \u0111\u1EBFn trung t\xE2m Linh Th\xE0nh.
+      Linh \u1EA4n C\u1ED5 Loa b\u1ECB b\xF3ng t\u1ED1i bao ph\u1EE7."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 8300000, guid: 5449e09a60875ce4b86504834b5bd3b7, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   - speakerName: 
     text: "H\u1EAFc M\u1ED9c: C\xE1c ng\u01B0\u01A1i kh\xF4ng th\u1EC3 b\u1EA3o v\u1EC7
       nh\u1EEFng g\xEC ch\xEDnh m\xECnh \u0111\xE3 l\xE3ng qu\xEAn."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 43f5782b1d7991744a5803d93d8fc06e, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
   - speakerName: 
@@ -37,16 +43,26 @@ MonoBehaviour:
       gian v\u1EABn ch\u01B0a ho\xE0n to\xE0n kh\xE9p l\u1EA1i."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: b8d72b41535a0164f85e7c37c6040d79, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
   - speakerName: 
-    text: "Ng\u01B0\u1EDDi Gi\u1EEF Th\xE0nh v\u1EABn c\xF2n c\u01A1 h\u1ED9i quay
-      l\u1EA1i tr\u01B0\u1EDBc cu\u1ED9c t\u1EA5n c\xF4ng, thay \u0111\u1ED5i \u0111\u1ED9i
-      h\xECnh v\xE0 vi\u1EBFt l\u1EA1i k\u1EBFt c\u1EE5c."
+    text: "An D\u01B0\u01A1ng V\u01B0\u01A1ng: Tr\u1EADn chi\u1EBFn v\u1EABn ch\u01B0a
+      k\u1EBFt th\xFAc. Ta s\u1EBD \u0111i\u1EC1u ch\u1EC9nh \u0111\u1ED9i h\xECnh
+      v\xE0 gi\u1EEF v\u1EEFng t\u1EEBng l\u1EDBp ph\xF2ng tuy\u1EBFn!"
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: df0707266f2983f439cbf7e2ccf89521, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "D\xF2ng Ch\u1EA3y L\u1ECBch S\u1EED v\u1EABn c\xF2n m\u1ED9t c\u01A1 h\u1ED9i.
+      An D\u01B0\u01A1ng V\u01B0\u01A1ng c\xF3 th\u1EC3 tr\u1EDF l\u1EA1i tr\u01B0\u1EDBc
+      cu\u1ED9c t\u1EA5n c\xF4ng, \u0111i\u1EC1u ch\u1EC9nh \u0111\u1ED9i h\xECnh
+      v\xE0 b\u1EA3o v\u1EC7 Linh \u1EA4n C\u1ED5 Loa."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 8300000, guid: bb861ab371d10a043b93f7fc2f24a1a3, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
   unlockPortrait: {fileID: 0}

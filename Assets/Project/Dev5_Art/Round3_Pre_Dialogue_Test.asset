@@ -15,38 +15,69 @@ MonoBehaviour:
   sequenceId: round3_pre_dialogue
   mode: 1
   lines:
-  - speakerName: "Người Giữ Thành"
-    text: "Phòng tuyến vẫn đứng vững, nhưng tà thuật lạnh lẽo bắt đầu len qua khe nứt."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Ph\xF2ng tuy\u1EBFn v\u1EABn \u0111\u1EE9ng v\u1EEFng, nh\u01B0ng t\xE0
+      thu\u1EADt l\u1EA1nh l\u1EBDo b\u1EAFt \u0111\u1EA7u len qua khe n\u1EE9t."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Pháp sư Hắc Mộc"
-    text: "Kết giới chỉ ngăn được đao kiếm. Nó không thể bảo vệ các ngươi khỏi tà thuật."
+    audioClip: {fileID: 8300000, guid: 06b13c2b846b282458f0d2c8a83571b6, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Ph\xE1p S\u01B0 H\u1EAFc M\u1ED9c"
+    text: "Gi\xE1p tr\u1EE5 ch\u1EC9 ng\u0103n \u0111\u01B0\u1EE3c \u0111ao ki\u1EBFm.
+      N\xF3 kh\xF4ng th\u1EC3 b\u1EA3o v\u1EC7 c\xE1c ng\u01B0\u01A1i kh\u1ECFi t\xE0
+      thu\u1EADt."
     portrait: {fileID: 0}
     portraitSide: 2
-    audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Các Pháp sư Hắc Mộc xuất hiện phía sau đội quân Orc, phóng tà thuật vào các Linh Ảnh."
+    audioClip: {fileID: 8300000, guid: 671026ba937259049a994307545d525d, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "C\xE1c Ph\xE1p S\u01B0 H\u1EAFc M\u1ED9c xu\u1EA5t hi\u1EC7n ph\xEDa sau
+      \u0111\u1ED9i qu\xE2n Orc, ph\xF3ng t\xE0 thu\u1EADt v\xE0o c\xE1c Chi\u1EBFn
+      V\u1EC7."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Mặt đất Linh Thành rung chuyển. Sức mạnh Tản Viên trỗi dậy. Sơn Tinh đã thức tỉnh."
+    audioClip: {fileID: 8300000, guid: 27d7351da3983534ca7387a3739ecaa6, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Ti\u1EBFng thi\u1EBFt k\xEDch vang l\xEAn tr\xEAn chi\u1EBFn tr\u01B0\u1EDDng.
+      Thi\u1EBFt K\xEDch Chi\u1EBFn V\u1EC7 \u0111\xE3 \u0111\u01B0\u1EE3c tri\u1EC7u
+      t\u1EADp."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Sơn Tinh"
-    text: "Núi sông còn vững, tà vật không thể vượt qua. Kẻ nào xâm phạm Linh Thành sẽ bị sức mạnh Tản Viên nghiền nát!"
+    audioClip: {fileID: 8300000, guid: 05c3f611025bb8e48ac0ddf416c4b57c, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Thi\u1EBFt K\xEDch Chi\u1EBFn V\u1EC7"
+    text: "Thi\u1EBFt k\xEDch trong tay, t\xE0 v\u1EADt kh\xF4ng th\u1EC3 v\u01B0\u1EE3t
+      qua! K\u1EBB n\xE0o x\xE2m ph\u1EA1m Linh Th\xE0nh s\u1EBD ph\u1EA3i tr\u1EA3
+      gi\xE1!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
-  - speakerName: "Thông báo"
-    text: "Đội hình hoàn chỉnh đã được mở khóa."
+    audioClip: {fileID: 8300000, guid: 06ac3b363b74a0d448d735e2bb4132d0, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "An D\u01B0\u01A1ng V\u01B0\u01A1ng"
+    text: "Thi\u1EBFt K\xEDch Chi\u1EBFn V\u1EC7, ph\xE1 tan h\xE0ng ng\u0169 c\u1EE7a
+      ch\xFAng! Kh\xF4ng \u0111\u01B0\u1EE3c \u0111\u1EC3 Ph\xE1p S\u01B0 ti\u1EBFp
+      t\u1EE5c thi tri\u1EC3n t\xE0 thu\u1EADt!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 4c9f3720249ffe64a938743abc654646, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Th\xF4ng b\xE1o"
+    text: "\u0110\u1ED9i h\xECnh ho\xE0n ch\u1EC9nh \u0111\xE3 \u0111\u01B0\u1EE3c
+      m\u1EDF kh\xF3a."
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 8300000, guid: 528b4a2c9848326458a88fc6aca65d08, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   unlockPortrait: {fileID: 0}
-  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
   unlockHeroName: 
   unlockRole: 
   unlockDescription: 

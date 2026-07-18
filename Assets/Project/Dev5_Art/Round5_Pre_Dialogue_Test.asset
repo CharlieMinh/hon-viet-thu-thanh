@@ -15,48 +15,88 @@ MonoBehaviour:
   sequenceId: round5_pre_dialogue
   mode: 1
   lines:
-  - speakerName: "Người Giữ Thành"
-    text: "Đợt tổng công kích đã bị đẩy lui, nhưng tà khí còn sót lại đang hội tụ vào một Orc chỉ huy."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "\u0110\u1EE3t t\u1ED5ng c\xF4ng k\xEDch \u0111\xE3 b\u1ECB \u0111\u1EA9y
+      lui, nh\u01B0ng t\xE0 kh\xED c\xF2n s\xF3t l\u1EA1i \u0111ang h\u1ED9i t\u1EE5
+      v\xE0o m\u1ED9t Orc ch\u1EC9 huy."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Người Giữ Thành"
-    text: "Cơ thể hắn trở nên khổng lồ. Lớp giáp chuyển thành màu tím đen. Orc Chúa Hắc Mộc đã xuất hiện."
+    audioClip: {fileID: 8300000, guid: e2994d3b4596bcd478fe93ddfb2867dc, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "C\u01A1 th\u1EC3 h\u1EAFn tr\u1EDF n\xEAn kh\u1ED5ng l\u1ED3. L\u1EDBp
+      gi\xE1p chuy\u1EC3n th\xE0nh m\xE0u t\xEDm \u0111en. Orc Ch\xFAa H\u1EAFc M\u1ED9c
+      \u0111\xE3 xu\u1EA5t hi\u1EC7n."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Orc Chúa"
-    text: "Ta không còn là một chiến binh Orc. Ta là ý chí của Hắc Mộc."
+    audioClip: {fileID: 8300000, guid: 128fdadc9442ae1468dd8a9bb2f881b7, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Orc Ch\xFAa"
+    text: "Ta kh\xF4ng c\xF2n l\xE0 m\u1ED9t chi\u1EBFn binh Orc. Ta l\xE0 \xFD ch\xED
+      c\u1EE7a H\u1EAFc M\u1ED9c."
     portrait: {fileID: 0}
     portraitSide: 2
-    audioClip: {fileID: 0}
-  - speakerName: "Orc Chúa"
-    text: "Ta sẽ tự tay bóp nát các Linh Ấn của các ngươi!"
+    audioClip: {fileID: 8300000, guid: 02b760403812c7a4cbf946ebcbc8030b, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Orc Ch\xFAa"
+    text: "Ta s\u1EBD t\u1EF1 tay b\xF3p n\xE1t Linh \u1EA4n C\u1ED5 Loa!"
     portrait: {fileID: 0}
     portraitSide: 2
-    audioClip: {fileID: 0}
-  - speakerName: "Thông báo"
-    text: "BOSS XUẤT HIỆN - Orc Chúa Hắc Mộc. Hãy dùng toàn bộ Linh Khí còn lại để hoàn thiện đội hình."
+    audioClip: {fileID: 8300000, guid: e0876570fec60f246b74c5e6d3d36eae, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Th\xF4ng b\xE1o"
+    text: "BOSS XU\u1EA4T HI\u1EC6N \u2014 ORC CH\xDAA H\u1EAEC M\u1ED8C"
     portrait: {fileID: 0}
     portraitSide: 2
-    audioClip: {fileID: 0}
-  - speakerName: "An Dương Vương"
-    text: "Lớp tà khí ấy dù dày đến đâu cũng không thể chống lại Nỏ Thần mãi mãi."
+    audioClip: {fileID: 8300000, guid: 64abad3ba4fe5d144bc53325cd14390c, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Th\xF4ng b\xE1o"
+    text: "H\xE3y d\xF9ng to\xE0n b\u1ED9 Linh Kh\xED c\xF2n l\u1EA1i \u0111\u1EC3
+      ho\xE0n thi\u1EC7n \u0111\u1ED9i h\xECnh."
+    portrait: {fileID: 0}
+    portraitSide: 2
+    audioClip: {fileID: 8300000, guid: 82bcd0bbe211dcd4db88ebfb702eb756, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "An D\u01B0\u01A1ng V\u01B0\u01A1ng"
+    text: "To\xE0n qu\xE2n nghe l\u1EC7nh! Gi\u1EEF v\u1EEFng ph\xF2ng tuy\u1EBFn
+      v\xE0 t\u1EADp trung s\u1EE9c m\u1EA1nh ti\xEAu di\u1EC7t Orc Ch\xFAa!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
-  - speakerName: "Chử Đồng Tử"
-    text: "Ta sẽ giữ kết giới cho đến thời khắc cuối cùng."
+    audioClip: {fileID: 8300000, guid: e6878ebdc6a83784ab66fa42cf958563, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Li\xEAn Ch\xE2u X\u1EA1 V\u1EC7"
+    text: "L\u1EDBp t\xE0 kh\xED \u1EA5y d\xF9 d\xE0y \u0111\u1EBFn \u0111\xE2u c\u0169ng
+      kh\xF4ng th\u1EC3 ch\u1ED1ng l\u1EA1i nh\u1EEFng lo\u1EA1t t\xEAn m\xE3i m\xE3i."
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
-  - speakerName: "Sơn Tinh"
-    text: "Hãy để ta đối đầu trực diện với hắn."
+    audioClip: {fileID: 8300000, guid: b8918b43ac9e9f04eac03aeaf8d5dc83, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Huy\u1EC1n Gi\xE1p H\u1ED9 V\u1EC7"
+    text: "Ch\xFAng ta s\u1EBD gi\u1EEF ph\xF2ng tuy\u1EBFn cho \u0111\u1EBFn th\u1EDDi
+      kh\u1EAFc cu\u1ED1i c\xF9ng."
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 49bb0c900056c6a49bd3b12c443a92e4, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Thi\u1EBFt K\xEDch Chi\u1EBFn V\u1EC7"
+    text: "H\xE3y \u0111\u1EC3 ta \u0111\u1ED1i \u0111\u1EA7u tr\u1EF1c di\u1EC7n
+      v\u1EDBi h\u1EAFn!"
+    portrait: {fileID: 0}
+    portraitSide: 1
+    audioClip: {fileID: 8300000, guid: 6075fc125ca191b479ef202dd151c1a5, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   unlockPortrait: {fileID: 0}
-  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
   unlockHeroName: 
   unlockRole: 
   unlockDescription: 
