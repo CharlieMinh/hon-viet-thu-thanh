@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 540a6ec0a73b117419aa35af1c6770cd
+guid: f38767c7e1df28a40ac69f762446f61d
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Alert_frame_rate_25.fbx
-      takeName: Alert_frame_rate_25.fbx
-      internalID: -1276358313774073904
+      name: Alert
+      takeName: Alert
+      internalID: -3745917278484660868
       firstFrame: 0
-      lastFrame: 100
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -60,11 +60,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Dead_frame_rate_25.fbx
-      takeName: Dead_frame_rate_25.fbx
-      internalID: 5866133388868310346
+      name: Attack
+      takeName: Attack
+      internalID: 6720303635017113406
       firstFrame: 0
-      lastFrame: 74
+      lastFrame: 84
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -89,40 +89,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Running_frame_rate_25.fbx
-      takeName: Running_frame_rate_25.fbx
-      internalID: 5230414720929868664
+      name: Dead
+      takeName: Dead
+      internalID: 8273325049105940540
       firstFrame: 0
-      lastFrame: 15
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Skill_03_frame_rate_25.fbx
-      takeName: Skill_03_frame_rate_25.fbx
-      internalID: -1476685925739072077
-      firstFrame: 0
-      lastFrame: 41
+      lastFrame: 89
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -147,11 +118,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Triple_Combo_Attack_frame_rate_25.fbx
-      takeName: Triple_Combo_Attack_frame_rate_25.fbx
-      internalID: -6151206334761141033
+      name: Run_03
+      takeName: Run_03
+      internalID: 953830296706369949
       firstFrame: 0
-      lastFrame: 108
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -176,11 +147,40 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Walking_frame_rate_25.fbx
-      takeName: Walking_frame_rate_25.fbx
-      internalID: -193975997249974880
+      name: Running
+      takeName: Running
+      internalID: -9121621101649706817
       firstFrame: 0
-      lastFrame: 25
+      lastFrame: 19
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Walking
+      takeName: Walking
+      internalID: -1610863427237328480
+      firstFrame: 0
+      lastFrame: 31
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

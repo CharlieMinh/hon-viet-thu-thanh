@@ -791,7 +791,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -1476685925739072077, guid: 540a6ec0a73b117419aa35af1c6770cd, type: 3}
+  m_Motion: {fileID: 6720303635017113406, guid: f38767c7e1df28a40ac69f762446f61d, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1830,7 +1830,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 5866133388868310346, guid: 540a6ec0a73b117419aa35af1c6770cd, type: 3}
+  m_Motion: {fileID: 8273325049105940540, guid: f38767c7e1df28a40ac69f762446f61d, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2677,7 +2677,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Linh_Khien_AnimatorController
+  m_Name: Linh_AnimatorController
   serializedVersion: 6
   m_AnimatorParameters:
   - m_Name: IsMoving
@@ -2983,7 +2983,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -1276358313774073904, guid: 540a6ec0a73b117419aa35af1c6770cd, type: 3}
+  m_Motion: {fileID: -3745917278484660868, guid: f38767c7e1df28a40ac69f762446f61d, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -3382,7 +3382,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -193975997249974880, guid: 540a6ec0a73b117419aa35af1c6770cd, type: 3}
+  m_Motion: {fileID: -1610863427237328480, guid: f38767c7e1df28a40ac69f762446f61d, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
