@@ -15,92 +15,111 @@ MonoBehaviour:
   sequenceId: intro_opening
   mode: 0
   lines:
-  - speakerName:
-    text: "Từ thuở dựng nước, những chiến công và ký ức của non sông chưa bao giờ thực sự biến mất."
+  - speakerName: 
+    text: "T\u1EEB thu\u1EDF d\u1EF1ng n\u01B0\u1EDBc, nh\u1EEFng chi\u1EBFn c\xF4ng
+      v\xE0 k\xFD \u1EE9c c\u1EE7a non s\xF4ng ch\u01B0a bao gi\u1EDD th\u1EF1c s\u1EF1
+      bi\u1EBFn m\u1EA5t."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: f5dd63188915c6f4092601a3563131bf, type: 3}
     changeMusic: 1
     musicClip: {fileID: 8300000, guid: 4bf0e687a246f3941b81cac785d4331c, type: 3}
-  - speakerName:
-    text: "Chúng hội tụ thành Dòng Chảy Lịch Sử, nơi quá khứ nối liền với hiện tại."
+  - speakerName: 
+    text: "Ch\xFAng h\u1ED9i t\u1EE5 th\xE0nh D\xF2ng Ch\u1EA3y L\u1ECBch S\u1EED,
+      n\u01A1i qu\xE1 kh\u1EE9 n\u1ED1i li\u1EC1n v\u1EDBi hi\u1EC7n t\u1EA1i."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 30e059624c7df61458aea5f619dd69b6, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName:
-    text: "Tại nơi những dòng lịch sử giao nhau, Linh Thành đứng vững, lưu giữ Linh Ấn Cổ Loa và ký ức về những người đã bảo vệ non sông."
+  - speakerName: 
+    text: "T\u1EA1i n\u01A1i nh\u1EEFng d\xF2ng l\u1ECBch s\u1EED giao nhau, Linh
+      Th\xE0nh \u0111\u1EE9ng v\u1EEFng, l\u01B0u gi\u1EEF Linh \u1EA4n C\u1ED5 Loa
+      v\xE0 k\xFD \u1EE9c v\u1EC1 nh\u1EEFng ng\u01B0\u1EDDi \u0111\xE3 b\u1EA3o
+      v\u1EC7 non s\xF4ng."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 113e599bcb7a4fc4aa28f460bb1da022, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName:
-    text: "Nhưng từ những câu chuyện bị lãng quên, một thực thể tà ác đã sinh ra. Tên của nó là Hắc Mộc."
+  - speakerName: 
+    text: "Nh\u01B0ng t\u1EEB nh\u1EEFng c\xE2u chuy\u1EC7n b\u1ECB l\xE3ng qu\xEAn,
+      m\u1ED9t th\u1EF1c th\u1EC3 t\xE0 \xE1c \u0111\xE3 sinh ra. T\xEAn c\u1EE7a
+      n\xF3 l\xE0 H\u1EAFc M\u1ED9c."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: b17883dd33dd69946912073fa8711dd9, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName:
-    text: "Hắc Mộc: Những gì bị lãng quên rồi sẽ thuộc về ta."
+  - speakerName: 
+    text: "H\u1EAFc M\u1ED9c: Nh\u1EEFng g\xEC b\u1ECB l\xE3ng qu\xEAn r\u1ED3i s\u1EBD
+      thu\u1ED9c v\u1EC1 ta."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 59e1c8e739927274bada3af989385d60, type: 3}
     changeMusic: 1
     musicClip: {fileID: 8300000, guid: 1a70baee597564f4898e57a0b34a0792, type: 3}
-  - speakerName:
-    text: "Hắc Mộc mở khe nứt trước cổng Linh Thành, biến những ký ức chiến tranh bị bóp méo thành Goblin, Orc và Pháp Sư bóng tối."
+  - speakerName: 
+    text: "H\u1EAFc M\u1ED9c m\u1EDF khe n\u1EE9t tr\u01B0\u1EDBc c\u1ED5ng Linh
+      Th\xE0nh, bi\u1EBFn nh\u1EEFng k\xFD \u1EE9c chi\u1EBFn tranh b\u1ECB b\xF3p
+      m\xE9o th\xE0nh Goblin, Orc v\xE0 Ph\xE1p S\u01B0 b\xF3ng t\u1ED1i."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 8300000, guid: d8aa85499854acc46aea9739fd9e4cd4, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "Tr\u01B0\u1EDBc nguy c\u01A1 \u1EA5y, V\u01B0\u01A1ng Linh An D\u01B0\u01A1ng
+      V\u01B0\u01A1ng \u0111\u01B0\u1EE3c \u0111\xE1nh th\u1EE9c t\u1EA1i \u0111\xE0i
+      ch\u1EC9 huy."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 8300000, guid: 046a595b19845e649b643564ffa69931, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "Ng\u01B0\u1EDDi kh\xF4ng tr\u1EF1c ti\u1EBFp xu\u1EA5t tr\u1EADn, m\xE0
+      tri\u1EC7u t\u1EADp nh\u1EEFng Chi\u1EBFn V\u1EC7 trung th\xE0nh c\u1EE7a \xC2u
+      L\u1EA1c \u0111\u1EC3 b\u1EA3o v\u1EC7 Linh Th\xE0nh."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 8300000, guid: 65fc3f732cb589942ae96b4c99766e8e, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "H\xE3y d\xF9ng Linh Kh\xED \u0111\u1EC3 tri\u1EC7u h\u1ED3i c\xE1c Chi\u1EBFn
+      V\u1EC7, s\u1EAFp x\u1EBFp h\u1ECD tr\xEAn b\xE0n c\u1EDD ph\xF2ng th\u1EE7
+      v\xE0 th\u1EF1c hi\u1EC7n m\u1EC7nh l\u1EC7nh c\u1EE7a An D\u01B0\u01A1ng V\u01B0\u01A1ng."
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 8300000, guid: f3d57904d6305b642afad7fcc58d027e, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "An D\u01B0\u01A1ng V\u01B0\u01A1ng: To\xE0n qu\xE2n nghe l\u1EC7nh! Gi\u1EEF
+      v\u1EEFng ph\xF2ng tuy\u1EBFn, kh\xF4ng \u0111\u01B0\u1EE3c \u0111\u1EC3 t\xE0
+      qu\xE2n ch\u1EA1m t\u1EDBi Linh \u1EA4n C\u1ED5 Loa!"
+    portrait: {fileID: 0}
+    portraitSide: 0
+    audioClip: {fileID: 8300000, guid: f4ef08543f688f641b7767c4b185d883, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: 
+    text: "H\u1ED2N VI\u1EC6T TH\u1EE6 TH\xC0NH"
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName:
-    text: "Trước nguy cơ ấy, Vương Linh An Dương Vương được đánh thức tại đài chỉ huy."
-    portrait: {fileID: 0}
-    portraitSide: 0
-    audioClip: {fileID: 0}
-    changeMusic: 0
-    musicClip: {fileID: 0}
-  - speakerName:
-    text: "Người không trực tiếp xuất trận, mà triệu tập những Chiến Vệ trung thành của Âu Lạc để bảo vệ Linh Thành."
-    portrait: {fileID: 0}
-    portraitSide: 0
-    audioClip: {fileID: 0}
-    changeMusic: 0
-    musicClip: {fileID: 0}
-  - speakerName:
-    text: "Hãy dùng Linh Khí để triệu hồi các Chiến Vệ, sắp xếp họ trên bàn cờ phòng thủ và thực hiện mệnh lệnh của An Dương Vương."
-    portrait: {fileID: 0}
-    portraitSide: 0
-    audioClip: {fileID: 0}
-    changeMusic: 0
-    musicClip: {fileID: 0}
-  - speakerName:
-    text: "An Dương Vương: Toàn quân nghe lệnh! Giữ vững phòng tuyến, không được để tà quân chạm tới Linh Ấn Cổ Loa!"
-    portrait: {fileID: 0}
-    portraitSide: 0
-    audioClip: {fileID: 0}
-    changeMusic: 0
-    musicClip: {fileID: 0}
-  - speakerName:
-    text: "HỒN VIỆT THỦ THÀNH"
-    portrait: {fileID: 0}
-    portraitSide: 0
-    audioClip: {fileID: 0}
-    changeMusic: 0
-    musicClip: {fileID: 0}
-  - speakerName:
-    text: "Hồn Việt còn — Lịch sử còn"
+  - speakerName: 
+    text: "H\u1ED3n Vi\u1EC7t c\xF2n \u2014 L\u1ECBch s\u1EED c\xF2n"
     portrait: {fileID: 0}
     portraitSide: 0
     audioClip: {fileID: 0}
     changeMusic: 0
     musicClip: {fileID: 0}
   unlockPortrait: {fileID: 0}
-  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
   unlockHeroName: 
   unlockRole: 
   unlockDescription: 

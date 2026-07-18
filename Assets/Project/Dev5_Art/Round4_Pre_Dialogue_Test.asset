@@ -15,58 +15,94 @@ MonoBehaviour:
   sequenceId: round4_pre_dialogue
   mode: 1
   lines:
-  - speakerName: "Người dẫn chuyện"
-    text: "Cả ba đội Chiến Vệ đã được triệu tập, nhưng Hắc Mộc không còn thăm dò nữa."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "C\u1EA3 ba \u0111\u1ED9i Chi\u1EBFn V\u1EC7 \u0111\xE3 \u0111\u01B0\u1EE3c
+      tri\u1EC7u t\u1EADp, nh\u01B0ng H\u1EAFc M\u1ED9c kh\xF4ng c\xF2n th\u0103m
+      d\xF2 n\u1EEFa."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Người dẫn chuyện"
-    text: "Goblin, Orc và Pháp Sư đồng loạt tràn qua khe nứt, chia thành nhiều hướng để kéo giãn phòng tuyến."
+    audioClip: {fileID: 8300000, guid: 4ce8880f2ec6738419b18343f66b78ce, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Goblin, Orc v\xE0 Ph\xE1p S\u01B0 \u0111\u1ED3ng lo\u1EA1t tr\xE0n qua
+      khe n\u1EE9t, chia th\xE0nh nhi\u1EC1u h\u01B0\u1EDBng \u0111\u1EC3 k\xE9o
+      gi\xE3n ph\xF2ng tuy\u1EBFn."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Hắc Mộc"
-    text: "Đội quân của các ngươi đã tập kết. Điều đó chỉ càng khiến chiến thắng của ta có ý nghĩa."
+    audioClip: {fileID: 8300000, guid: a06c0ecbc9e44c942965547409f918b2, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "H\u1EAFc M\u1ED9c"
+    text: "\u0110\u1ED9i qu\xE2n c\u1EE7a c\xE1c ng\u01B0\u01A1i \u0111\xE3 t\u1EADp
+      k\u1EBFt. \u0110i\u1EC1u \u0111\xF3 ch\u1EC9 c\xE0ng khi\u1EBFn chi\u1EBFn
+      th\u1EAFng c\u1EE7a ta c\xF3 \xFD ngh\u0129a."
     portrait: {fileID: 0}
     portraitSide: 2
-    audioClip: {fileID: 0}
-  - speakerName: "Hắc Mộc"
-    text: "Hãy để toàn bộ Linh Thành chìm trong bóng tối!"
+    audioClip: {fileID: 8300000, guid: 14f7b303f11ac0240bb57b6bc5b64bcc, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "H\u1EAFc M\u1ED9c"
+    text: "H\xE3y \u0111\u1EC3 to\xE0n b\u1ED9 Linh Th\xE0nh ch\xECm trong b\xF3ng
+      t\u1ED1i!"
     portrait: {fileID: 0}
     portraitSide: 2
-    audioClip: {fileID: 0}
-  - speakerName: "Người dẫn chuyện"
-    text: "Không còn binh chủng mới để mở khóa. Hãy dùng Linh Khí để triệu hồi thêm Chiến Vệ và hợp nhất sức mạnh của họ."
+    audioClip: {fileID: 8300000, guid: 1a91662aa995737449d2b817db69a6b8, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Kh\xF4ng c\xF2n binh ch\u1EE7ng m\u1EDBi \u0111\u1EC3 m\u1EDF kh\xF3a.
+      H\xE3y d\xF9ng Linh Kh\xED \u0111\u1EC3 tri\u1EC7u h\u1ED3i th\xEAm Chi\u1EBFn
+      V\u1EC7 v\xE0 h\u1EE3p nh\u1EA5t s\u1EE9c m\u1EA1nh c\u1EE7a h\u1ECD."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "Thông báo"
-    text: "Hợp nhất các Chiến Vệ giống nhau để nâng sao. Khi lên sao, Chiến Vệ tăng chỉ số và hồi đầy sinh mệnh."
+    audioClip: {fileID: 8300000, guid: 9fcd12ab5bc1f5844b5a527c85d36418, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Th\xF4ng b\xE1o"
+    text: "H\u1EE3p nh\u1EA5t c\xE1c Chi\u1EBFn V\u1EC7 gi\u1ED1ng nhau \u0111\u1EC3
+      n\xE2ng sao. Khi l\xEAn sao, Chi\u1EBFn V\u1EC7 t\u0103ng ch\u1EC9 s\u1ED1
+      v\xE0 h\u1ED3i \u0111\u1EA7y sinh m\u1EC7nh."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
-  - speakerName: "An Dương Vương"
-    text: "Giữ quân địch trong tầm bắn của Liên Châu Xạ Vệ. Không được để chúng chia cắt đội hình!"
+    audioClip: {fileID: 8300000, guid: 79d24ad92bb51d34a992d53bf00f336e, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "An D\u01B0\u01A1ng V\u01B0\u01A1ng"
+    text: "Gi\u1EEF qu\xE2n \u0111\u1ECBch trong t\u1EA7m b\u1EAFn c\u1EE7a Li\xEAn
+      Ch\xE2u X\u1EA1 V\u1EC7. Kh\xF4ng \u0111\u01B0\u1EE3c \u0111\u1EC3 ch\xFAng
+      chia c\u1EAFt \u0111\u1ED9i h\xECnh!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
-  - speakerName: "Liên Châu Xạ Vệ"
-    text: "Cung nỏ đã sẵn sàng. Kẻ địch bước vào tầm bắn sẽ không thể tiến thêm!"
+    audioClip: {fileID: 8300000, guid: c6edfc0c881f1a74a9b634e6203b7b0e, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Li\xEAn Ch\xE2u X\u1EA1 V\u1EC7"
+    text: "Cung n\u1ECF \u0111\xE3 s\u1EB5n s\xE0ng. K\u1EBB \u0111\u1ECBch b\u01B0\u1EDBc
+      v\xE0o t\u1EA7m b\u1EAFn s\u1EBD kh\xF4ng th\u1EC3 ti\u1EBFn th\xEAm!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
-  - speakerName: "Huyền Giáp Hộ Vệ"
-    text: "Phòng tuyến vẫn còn. Chúng ta sẽ không lùi bước!"
+    audioClip: {fileID: 8300000, guid: db4363f8b0f0c824096ab427585007a0, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Huy\u1EC1n Gi\xE1p H\u1ED9 V\u1EC7"
+    text: "Ph\xF2ng tuy\u1EBFn v\u1EABn c\xF2n. Ch\xFAng ta s\u1EBD kh\xF4ng l\xF9i
+      b\u01B0\u1EDBc!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
-  - speakerName: "Thiết Kích Chiến Vệ"
-    text: "Kẻ nào vượt qua tuyến trước sẽ phải đối mặt với thiết kích của ta!"
+    audioClip: {fileID: 8300000, guid: 994f8754deef4f242978e6ae26fd5bcd, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
+  - speakerName: "Thi\u1EBFt K\xEDch Chi\u1EBFn V\u1EC7"
+    text: "K\u1EBB n\xE0o v\u01B0\u1EE3t qua tuy\u1EBFn tr\u01B0\u1EDBc s\u1EBD ph\u1EA3i
+      \u0111\u1ED1i m\u1EB7t v\u1EDBi thi\u1EBFt k\xEDch c\u1EE7a ta!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 32f9b3623364a7246a66d3c56e16a763, type: 3}
+    changeMusic: 0
+    musicClip: {fileID: 0}
   unlockPortrait: {fileID: 0}
-  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
   unlockHeroName: 
   unlockRole: 
   unlockDescription: 
