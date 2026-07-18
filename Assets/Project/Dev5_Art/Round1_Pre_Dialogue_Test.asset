@@ -15,85 +15,99 @@ MonoBehaviour:
   sequenceId: round1_pre_dialogue
   mode: 1
   lines:
-  - speakerName: "Người dẫn chuyện"
-    text: "Quân Hắc Mộc mang trong mình tà khí từ những ký ức bị bóp méo."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Qu\xE2n H\u1EAFc M\u1ED9c mang trong m\xECnh t\xE0 kh\xED t\u1EEB nh\u1EEFng
+      k\xFD \u1EE9c b\u1ECB b\xF3p m\xE9o."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 3d51069a73ba9cb48844be88f86252de, type: 3}
     changeMusic: 1
     musicClip: {fileID: 8300000, guid: 919c8f3fa5bd2964e8101a6b766ad57f, type: 3}
-  - speakerName: "Người dẫn chuyện"
-    text: "Khi quái vật bị tiêu diệt, Linh Thành thanh tẩy tà khí ấy thành Linh Khí."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Khi qu\xE1i v\u1EADt b\u1ECB ti\xEAu di\u1EC7t, Linh Th\xE0nh thanh t\u1EA9y
+      t\xE0 kh\xED \u1EA5y th\xE0nh Linh Kh\xED."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: bf16e1b48cffae943bba6295a64cb08a, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: "Thông báo"
-    text: "Tiêu diệt quái vật để nhận Linh Khí."
+  - speakerName: "Th\xF4ng b\xE1o"
+    text: "Ti\xEAu di\u1EC7t qu\xE1i v\u1EADt \u0111\u1EC3 nh\u1EADn Linh Kh\xED."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 7ee6dd279ac86fb4585ae98d1472a67b, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: "Người dẫn chuyện"
-    text: "Hãy dùng Linh Khí để mua và triển khai các Chiến Vệ."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "H\xE3y d\xF9ng Linh Kh\xED \u0111\u1EC3 mua v\xE0 tri\u1EC3n khai c\xE1c
+      Chi\u1EBFn V\u1EC7."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 38c0fdd6d7ab4b04da4d0ba30ca73596, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: "Thông báo"
-    text: "Hợp nhất các Chiến Vệ giống nhau để nâng sao, tăng sức mạnh và hồi đầy sinh mệnh."
+  - speakerName: "Th\xF4ng b\xE1o"
+    text: "H\u1EE3p nh\u1EA5t c\xE1c Chi\u1EBFn V\u1EC7 gi\u1ED1ng nhau \u0111\u1EC3
+      n\xE2ng sao, t\u0103ng s\u1EE9c m\u1EA1nh v\xE0 h\u1ED3i \u0111\u1EA7y sinh
+      m\u1EC7nh."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: ccffd7ea4ee31934fa4f45fb15060f75, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: "Người dẫn chuyện"
-    text: "Khe nứt Hắc Mộc đã mở ra. Một đàn Goblin đang tràn vào Linh Thành để dò xét phòng tuyến."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Khe n\u1EE9t H\u1EAFc M\u1ED9c \u0111\xE3 m\u1EDF ra. M\u1ED9t \u0111\xE0n
+      Goblin \u0111ang tr\xE0n v\xE0o Linh Th\xE0nh \u0111\u1EC3 d\xF2 x\xE9t ph\xF2ng
+      tuy\u1EBFn."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 1a563bd56a8ec8f4cb5a9dfc98f15333, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: "Goblin thủ lĩnh"
-    text: "Kho báu... Linh Khí... tất cả sẽ thuộc về Hắc Mộc!"
+  - speakerName: "Goblin th\u1EE7 l\u0129nh"
+    text: "Kho b\xE1u... Linh Kh\xED... t\u1EA5t c\u1EA3 s\u1EBD thu\u1ED9c v\u1EC1
+      H\u1EAFc M\u1ED9c!"
     portrait: {fileID: 0}
     portraitSide: 2
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 6d3762b7ca0826240aff5b34fc1e6551, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: "Người dẫn chuyện"
-    text: "Trước sự xâm nhập ấy, Linh Ấn Nỏ Thần bắt đầu phát sáng."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "Tr\u01B0\u1EDBc s\u1EF1 x\xE2m nh\u1EADp \u1EA5y, Linh \u1EA4n N\u1ECF
+      Th\u1EA7n b\u1EAFt \u0111\u1EA7u ph\xE1t s\xE1ng."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: ab2277563150e3544981af23bba3d48a, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: "Người dẫn chuyện"
-    text: "Từ đài chỉ huy, An Dương Vương ban xuống mệnh lệnh đầu tiên. Liên Châu Xạ Vệ đã được triệu tập."
+  - speakerName: "Ng\u01B0\u1EDDi d\u1EABn chuy\u1EC7n"
+    text: "T\u1EEB \u0111\xE0i ch\u1EC9 huy, An D\u01B0\u01A1ng V\u01B0\u01A1ng ban
+      xu\u1ED1ng m\u1EC7nh l\u1EC7nh \u0111\u1EA7u ti\xEAn. Li\xEAn Ch\xE2u X\u1EA1
+      V\u1EC7 \u0111\xE3 \u0111\u01B0\u1EE3c tri\u1EC7u t\u1EADp."
     portrait: {fileID: 0}
     portraitSide: 0
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: bcad955e00df6794199dbd381a500751, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: "An Dương Vương"
-    text: "Liên Châu Xạ Vệ, vào vị trí! Tà quân không được phép tiến thêm một bước trong Linh Thành!"
+  - speakerName: "An D\u01B0\u01A1ng V\u01B0\u01A1ng"
+    text: "Li\xEAn Ch\xE2u X\u1EA1 V\u1EC7, v\xE0o v\u1ECB tr\xED! T\xE0 qu\xE2n
+      kh\xF4ng \u0111\u01B0\u1EE3c ph\xE9p ti\u1EBFn th\xEAm m\u1ED9t b\u01B0\u1EDBc
+      trong Linh Th\xE0nh!"
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: f9537d8e296f0cd48880e66e3904feec, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
-  - speakerName: "Thông báo"
-    text: "Hãy dùng Linh Khí ban đầu để mua Liên Châu Xạ Vệ trong cửa hàng."
+  - speakerName: "Th\xF4ng b\xE1o"
+    text: "H\xE3y d\xF9ng Linh Kh\xED ban \u0111\u1EA7u \u0111\u1EC3 mua Li\xEAn
+      Ch\xE2u X\u1EA1 V\u1EC7 trong c\u1EEDa h\xE0ng."
     portrait: {fileID: 0}
     portraitSide: 1
-    audioClip: {fileID: 0}
+    audioClip: {fileID: 8300000, guid: 351f74c6440a8dc4abc41f02bdc60c61, type: 3}
     changeMusic: 0
     musicClip: {fileID: 0}
   unlockPortrait: {fileID: 0}
-  unlockTitle: "ĐÃ MỞ KHÓA"
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A"
   unlockHeroName: 
   unlockRole: 
   unlockDescription: 
