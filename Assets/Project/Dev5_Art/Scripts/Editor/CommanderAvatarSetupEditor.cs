@@ -80,6 +80,18 @@ namespace HonVietThuThanh.Dev5.Editor
         [MenuItem("Hon Viet/Dev5/Commander/Create Crimson Commander In Scene")]
         public static void CreateCrimsonCommanderInScene()
         {
+            bool confirmed = EditorUtility.DisplayDialog(
+                "Setup Legacy Main Menu Avatar",
+                "This manual command will create or update the legacy Crimson PlayerCommander, " +
+                "modify its material, and save the active scene.",
+                "Setup And Save",
+                "Cancel");
+
+            if (!confirmed)
+            {
+                return;
+            }
+
             Material material = ConfigureCrimsonMaterial();
             if (material == null)
             {
@@ -362,67 +374,4 @@ namespace HonVietThuThanh.Dev5.Editor
         }
     }
 
-    [InitializeOnLoad]
-    internal static class CommanderAvatarMaterialAutoFix
-    {
-        private const string SessionKey = "HonViet.Commander.CrimsonMaterialAutoFix.V2.Done";
-
-        static CommanderAvatarMaterialAutoFix()
-        {
-            EditorApplication.delayCall += TryAutoFix;
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-        }
-
-        private static void OnPlayModeStateChanged(PlayModeStateChange state)
-        {
-            if (state == PlayModeStateChange.EnteredEditMode)
-            {
-                EditorApplication.delayCall += TryAutoFix;
-            }
-        }
-
-        private static void TryAutoFix()
-        {
-            if (EditorApplication.isCompiling || EditorApplication.isUpdating)
-            {
-                EditorApplication.delayCall += TryAutoFix;
-                return;
-            }
-
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
-            {
-                return;
-            }
-
-            if (SessionState.GetBool(SessionKey, false))
-            {
-                return;
-            }
-
-            Material material = CommanderAvatarSetupEditor.ConfigureCrimsonMaterial();
-            if (material == null)
-            {
-                return;
-            }
-
-            CommanderAvatarSetupEditor.RemapCrimsonFbx(material);
-            GameObject commander = CommanderAvatarSetupEditor.EnsureCrimsonCommander(material);
-            if (commander == null)
-            {
-                return;
-            }
-
-            int assigned = CommanderAvatarSetupEditor.AssignMaterialToCommander(material);
-            if (assigned <= 0)
-            {
-                return;
-            }
-
-            Scene activeScene = SceneManager.GetActiveScene();
-            EditorSceneManager.MarkSceneDirty(activeScene);
-            EditorSceneManager.SaveScene(activeScene);
-            SessionState.SetBool(SessionKey, true);
-            Debug.Log($"[CommanderAvatarSetup] Auto-created/fixed Crimson PlayerCommander, assigned material to {assigned} renderer(s), and saved scene.");
-        }
-    }
 }
