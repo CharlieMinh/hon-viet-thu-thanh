@@ -71,12 +71,7 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            if (GamePhaseManager.Instance == null || WaveManager.Instance == null)
-            {
-                return;
-            }
-
-            if (!GamePhaseManager.Instance.IsPreparationPhase)
+            if (!IsPreparationOpenForStory())
             {
                 return;
             }
@@ -135,12 +130,7 @@ namespace HonVietThuThanh.Dev5
                 return false;
             }
 
-            if (GamePhaseManager.Instance == null || WaveManager.Instance == null)
-            {
-                return false;
-            }
-
-            if (!GamePhaseManager.Instance.IsPreparationPhase)
+            if (!IsPreparationOpenForStory())
             {
                 return false;
             }
@@ -168,12 +158,7 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            if (GamePhaseManager.Instance == null || WaveManager.Instance == null)
-            {
-                return;
-            }
-
-            if (!GamePhaseManager.Instance.IsPreparationPhase)
+            if (!IsPreparationOpenForStory())
             {
                 return;
             }
@@ -232,12 +217,7 @@ namespace HonVietThuThanh.Dev5
                 return false;
             }
 
-            if (GamePhaseManager.Instance == null || WaveManager.Instance == null)
-            {
-                return false;
-            }
-
-            if (!GamePhaseManager.Instance.IsPreparationPhase)
+            if (!IsPreparationOpenForStory())
             {
                 return false;
             }
@@ -265,12 +245,7 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            if (GamePhaseManager.Instance == null || WaveManager.Instance == null)
-            {
-                return;
-            }
-
-            if (!GamePhaseManager.Instance.IsPreparationPhase)
+            if (!IsPreparationOpenForStory())
             {
                 return;
             }
@@ -298,12 +273,7 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
-            if (GamePhaseManager.Instance == null || WaveManager.Instance == null)
-            {
-                return;
-            }
-
-            if (!GamePhaseManager.Instance.IsPreparationPhase)
+            if (!IsPreparationOpenForStory())
             {
                 return;
             }
@@ -338,6 +308,13 @@ namespace HonVietThuThanh.Dev5
             }
 
             presenter = FindAnyObjectByType<StoryPresenter>(FindObjectsInactive.Include);
+        }
+
+        private static bool IsPreparationOpenForStory()
+        {
+            return GamePhaseManager.Instance != null
+                && WaveManager.Instance != null
+                && GamePhaseManager.Instance.CurrentState == GameState.Preparation;
         }
     }
 }

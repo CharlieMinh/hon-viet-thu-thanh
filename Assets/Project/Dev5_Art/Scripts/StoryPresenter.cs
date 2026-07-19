@@ -73,6 +73,7 @@ namespace HonVietThuThanh.Dev5
 
         private void OnDisable()
         {
+            StopLineAudio();
             RemoveButtonListeners();
         }
 
@@ -126,6 +127,7 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
+            StopLineAudio();
             currentSequence = sequence;
             currentLineIndex = 0;
 
@@ -147,6 +149,7 @@ namespace HonVietThuThanh.Dev5
         {
             if (currentSequence == null)
             {
+                StopLineAudio();
                 HideAll();
                 return;
             }
@@ -157,6 +160,7 @@ namespace HonVietThuThanh.Dev5
                 return;
             }
 
+            StopLineAudio();
             currentLineIndex++;
 
             if (currentLineIndex >= currentSequence.lines.Count)
@@ -261,7 +265,16 @@ namespace HonVietThuThanh.Dev5
 
             if (line.audioClip != null && sfxAudioSource != null)
             {
+                StopLineAudio();
                 sfxAudioSource.PlayOneShot(line.audioClip, sfxVolume);
+            }
+        }
+
+        private void StopLineAudio()
+        {
+            if (sfxAudioSource != null && sfxAudioSource.isPlaying)
+            {
+                sfxAudioSource.Stop();
             }
         }
 
@@ -356,6 +369,7 @@ namespace HonVietThuThanh.Dev5
         private void CompleteCurrentSequence()
         {
             StorySequence completedSequence = currentSequence;
+            StopLineAudio();
             currentSequence = null;
             currentLineIndex = 0;
             HideAll();

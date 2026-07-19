@@ -15,8 +15,9 @@ MonoBehaviour:
   sequenceId: round2_unlock_chu_dong_tu
   mode: 2
   lines: []
-  unlockPortrait: {fileID: 21300000, guid: 644eec388185a1a40841d562312e5d30, type: 3}
-  unlockTitle: "ĐÃ MỞ KHÓA CHIẾN VỆ"
-  unlockHeroName: "Huyền Giáp Hộ Vệ"
-  unlockRole: "Chống chịu"
-  unlockDescription: "Sinh mệnh lớn, giúp giữ chân và giảm sát thương. Nên bố trí ở tuyến trước."
+  unlockPortrait: {fileID: 21300000, guid: 33babc92c18b14547b19760a5b9f2485, type: 3}
+  unlockTitle: "\u0110\xC3 M\u1EDE KH\xD3A CHI\u1EBEN V\u1EC6"
+  unlockHeroName: "Huy\u1EC1n Gi\xE1p H\u1ED9 V\u1EC7"
+  unlockRole: "Ch\u1ED1ng ch\u1ECBu"
+  unlockDescription: "Sinh m\u1EC7nh l\u1EDBn, gi\xFAp gi\u1EEF ch\xE2n v\xE0 gi\u1EA3m
+    s\xE1t th\u01B0\u01A1ng. N\xEAn b\u1ED1 tr\xED \u1EDF tuy\u1EBFn tr\u01B0\u1EDBc."
