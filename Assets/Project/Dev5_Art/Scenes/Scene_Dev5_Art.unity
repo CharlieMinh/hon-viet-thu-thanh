@@ -1216,13 +1216,13 @@ MonoBehaviour:
   shopUnits:
   - unitName: Knight
     price: 3
-    unitPrefab: {fileID: 8484363430545176675, guid: 1f0edb68504369541b08d630246c9117, type: 3}
+    unitPrefab: {fileID: 8484363430545176675, guid: c14b1b6f7e0c2a245a9fc70456e78239, type: 3}
   - unitName: Archer
     price: 4
     unitPrefab: {fileID: 7956021517865682089, guid: f336ddf92559c294dbe939eb24a44d5d, type: 3}
   - unitName: Tank
     price: 5
-    unitPrefab: {fileID: 2151458694166277999, guid: 5aee4facdf137bc4fbcbd9ad7f2ed9a4, type: 3}
+    unitPrefab: {fileID: 2151458694166277999, guid: 686cb4a9047725d45889dcce25d5eb08, type: 3}
   benchPoints:
   - {fileID: 1939149092}
   - {fileID: 1635405296}
