@@ -158,9 +158,9 @@ namespace HonVietThuThanh.Dev5
 
             if (statsText != null)
             {
-                statsText.text = "Sơn Tinh : 3 Linh Khí\n" +
-                                 "An Dương Vương : 4 Linh Khí\n" +
-                                 "Chử Đồng Tử : 5 Linh Khí";
+                statsText.text = "Chiến Vệ : 3 Linh Khí\n" +
+                                 "Xạ Vệ : 4 Linh Khí\n" +
+                                 "Hộ Vệ : 5 Linh Khí";
             }
 
             if (panelParent != null)
@@ -260,9 +260,9 @@ namespace HonVietThuThanh.Dev5
         {
             switch (unitName)
             {
-                case "Archer": return "An Dương Vương";
-                case "Tank": return "Chử Đồng Tử";
-                case "Knight": return "Sơn Tinh";
+                case "Archer": return "Xạ Vệ";
+                case "Tank": return "Hộ Vệ";
+                case "Knight": return "Chiến Vệ";
                 default: return unitName;
             }
         }

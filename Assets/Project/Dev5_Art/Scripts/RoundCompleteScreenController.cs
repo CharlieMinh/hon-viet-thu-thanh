@@ -259,11 +259,11 @@ namespace HonVietThuThanh.Dev5
             switch (unit.unitName)
             {
                 case "Archer":
-                    return "An Dương Vương";
+                    return "Xạ Vệ";
                 case "Tank":
-                    return "Chử Đồng Tử";
+                    return "Hộ Vệ";
                 case "Knight":
-                    return "Sơn Tinh";
+                    return "Chiến Vệ";
                 default:
                     return unit.unitName;
             }

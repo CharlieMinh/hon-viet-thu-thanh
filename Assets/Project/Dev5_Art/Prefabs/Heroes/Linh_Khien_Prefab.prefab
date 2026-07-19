@@ -407,7 +407,7 @@ MonoBehaviour:
   deathLingerSeconds: 0
   deathFallbackDelay: 0.85
   animator: {fileID: 0}
-  muteForTesting: 0
+  muteForTesting: 1
   attackAudioSource: {fileID: 0}
   deathAudioSource: {fileID: 0}
   attackClip: {fileID: 0}
@@ -419,7 +419,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2151458694166277999}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89fc0a937d56fe54fbe020f7f597f76d, type: 3}
   m_Name: 
@@ -431,7 +431,7 @@ MonoBehaviour:
   hitClips: []
   deathClips:
   - {fileID: 8300000, guid: 868ff436a8d9b3d47a4d07c6236a01e6, type: 3}
-  muteForTesting: 0
+  muteForTesting: 1
   masterVolume: 0.85
   pitchRange: {x: 0.96, y: 1.04}
   attackCooldown: 6.8
